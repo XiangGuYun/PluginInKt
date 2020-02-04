@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="PluginInKt" />
+        <module name="fx2android" />
+        <module name="JavaFX-ThreeKingdomsReader-master" />
+        <module name="three-kingdoms" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

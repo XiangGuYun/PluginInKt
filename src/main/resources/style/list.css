@@ -1,0 +1,32 @@
+#tvShow{
+    -fx-text-fill: #eeeeee;
+    -fx-background-color: #111111;
+    -fx-font-size: 20;
+}
+
+.tvCell{
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+    -fx-fit-to-height: true;
+}
+
+
+.list-cell{
+    -fx-background-color: #3C3F41;
+    -fx-pref-height: 40;
+}
+
+#labelDialog{
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.tvDialog{
+    -fx-text-fill: red;
+}
+
+.dialog{
+    -fx-background-color: #3C3F41;
+}

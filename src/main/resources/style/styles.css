@@ -1,0 +1,52 @@
+.root{
+    -fx-font-size: 11pt;
+    -fx-background-image: url(/src/main/resources/image/start.jpg);
+    -fx-background-size: stretch stretch;
+    -fx-background-position: center center;
+}
+
+.label{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+/*.button{*/
+    /*-fx-background-color: #000000;*/
+    /*-fx-text-fill: #ffffff;*/
+    /*-fx-background-radius: 6;*/
+/*}*/
+/*
+创建一个自定义样式
+ */
+.button-blue{
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 6;
+}
+/*
+对指定id的View设置样式
+ */
+#bold-label{
+    -fx-font-weight: bold;
+}
+
+/*Flat button example */
+.jfx-button {
+    -jfx-button-type: FLAT;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+#labelDialog{
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.tvDialog{
+    -fx-text-fill: red;
+}
+
+.dialog{
+    -fx-background-color: #3C3F41;
+}
