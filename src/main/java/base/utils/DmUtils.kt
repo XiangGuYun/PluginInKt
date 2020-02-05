@@ -320,14 +320,16 @@ interface DmUtils {
      * @param sim 双精度浮点数:相似度,取值范围0.1-1.0
      * @param dir 整形数:查找方向 0: 从左到右,从上到下 1: 从左到右,从下到上 2: 从右到左,从上到下 3: 从右到左, 从下到上
      */
-    fun Dispatch.findPic(x1:Int, y1:Int, x2:Int, y2:Int, picName:String, deltaColor:String, sim:Double, dir:DIR): String {
-        return Dispatch.call(this, "FindPicE", x1, y1, x2, y2, picName, deltaColor, sim,
+    fun Dispatch.findPic(x1:Int, y1:Int, x2:Int, y2:Int, picName:String, deltaColor:String, sim:Double, dir:DIR = DIR.LR_TB): String {
+        val result = Dispatch.call(this, "FindPicE", x1, y1, x2, y2, picName, deltaColor, sim,
                 when(dir){
                     DIR.LR_TB->0
                     DIR.LR_BT->1
                     DIR.RL_TB->2
                     else->3
                 }).string
+        println("==========FIND_PIC:图片\"${picName}\"查找结果是$result")
+        return result
     }
 
     /*******************************************************************************************************************
@@ -501,14 +503,43 @@ interface DmUtils {
      * 所以，在使用此函数时，也要特别注意这一点。
      */
     fun Dispatch.findStrFast(x1:Int, y1:Int, x2:Int, y2:Int, string: String, color_format:String, sim:Double): String {
-        return Dispatch.call(this, "FindStrFastE", x1, y1, x2, y2, string, color_format, sim).string
+        val result = Dispatch.call(this, "FindStrFastE", x1, y1, x2, y2, string, color_format, sim).string
+        println("##########文字\"${string}\"的查找结果是$result")
+        return result
     }
     /**
      * 绑定雷电模拟器
      */
-    fun Dispatch.bindLDMonitor(): Boolean {
-        val wh1 = this.findWindow("LDPlayerMainFrame", "雷电模拟器")
+    fun Dispatch.bindLDMonitor(title:String="雷电模拟器"): Boolean {
+        val wh1 = this.findWindow("LDPlayerMainFrame", title)
         val wh2 = this.findWindowEx(wh1, "RenderWindow", "TheRender")
         return this.bindWindow(wh2, DmUtils.Display.NORMAL, DmUtils.Mouse.WINDOWS, DmUtils.Keyboard.WINDOWS)
     }
+
+    /**
+     * 检查是否能找到图片，是则点击此处并返回true
+     */
+    fun Dispatch.checkAndClick(result: String): Boolean {
+        if (check(result)) {
+            this.click(result)
+            return true
+        }
+        return false
+    }
+
+    fun check(result: String): Boolean {
+        return result != "-1|-1|-1"
+    }
+
+    /**
+     * 移动鼠标到指定区域并点击
+     */
+    fun Dispatch.click(result: String) {
+        val arr = result.split("|")
+        Thread.sleep(100)
+        this.moveTo(arr[1].toInt(), arr[2].toInt())
+        Thread.sleep(100)
+        this.leftClick()
+    }
+
 }

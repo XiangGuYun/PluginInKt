@@ -1,8 +1,6 @@
 import base.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
-import com.sun.jna.Pointer
-import com.sun.jna.Structure
 import com.sun.jna.platform.win32.*
 import sample.base.KotlinActivity
 
@@ -10,7 +8,7 @@ import sample.base.KotlinActivity
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("win32api")
-class Win32ApiStudy : KotlinActivity(), DmUtils, Win32Utils {
+class Win32ApiApp : KotlinActivity(), DmUtils, Win32Utils {
 
     override fun init(window: Window) {
 
@@ -103,7 +101,7 @@ class Win32ApiStudy : KotlinActivity(), DmUtils, Win32Utils {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            launch(Win32ApiStudy::class.java)
+            launch(Win32ApiApp::class.java)
         }
     }
 }

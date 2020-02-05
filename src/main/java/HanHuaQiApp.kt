@@ -2,18 +2,10 @@ import base.Window
 import base.utils.DmUtils
 import base.utils.Win32Utils
 import javafx.application.Application
-import javafx.geometry.Insets
-import javafx.geometry.Pos
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
 import javafx.scene.image.Image
-import javafx.scene.layout.HBox
-import javafx.scene.text.Font
 import sample.base.KotlinActivity
 
-class HanHuaQi: KotlinActivity(), DmUtils, Win32Utils {
+class HanHuaQiApp: KotlinActivity(), DmUtils, Win32Utils {
 
     var isStop = false
 
@@ -48,7 +40,7 @@ class HanHuaQi: KotlinActivity(), DmUtils, Win32Utils {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            Application.launch(HanHuaQi::class.java)
+            Application.launch(HanHuaQiApp::class.java)
         }
     }
 

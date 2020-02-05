@@ -1,9 +1,7 @@
 package sample.base
 
 import base.*
-import base.utils.Constant
-import base.utils.HKUtils
-import base.utils.Key
+import base.utils.*
 import com.jfoenix.controls.JFXListView
 import com.melloware.jintellitype.HotkeyListener
 import com.melloware.jintellitype.JIntellitype
@@ -13,10 +11,7 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
@@ -29,7 +24,7 @@ import javafx.stage.Stage
 import java.io.*
 
 
-abstract class KotlinActivity:Application(),ViewHelper,ColorHelper, DialogUtils, Constant, HKUtils {
+abstract class KotlinActivity:Application(), CommonUtils, ViewHelper,ColorHelper, DialogUtils, Constant, HKUtils, AdbUtils{
 
     lateinit var window: Window
     lateinit var contentView:Parent
@@ -104,6 +99,10 @@ abstract class KotlinActivity:Application(),ViewHelper,ColorHelper, DialogUtils,
 
     fun lb(id:String):Label{
         return contentView.lookup("#$id") as Label
+    }
+
+    fun cb(id:String):ComboBox<String>{
+        return contentView.lookup("#$id") as ComboBox<String>
     }
 
     fun setContentView(name:String){

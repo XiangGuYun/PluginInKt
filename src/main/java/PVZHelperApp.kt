@@ -2,19 +2,14 @@ import base.*
 import base.utils.DmUtils
 import base.utils.Key
 import base.utils.Win32Utils
-import com.jfoenix.controls.JFXListView
-import com.melloware.jintellitype.JIntellitype
 import javafx.application.Platform
-import javafx.scene.input.KeyCharacterCombination
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
 import sample.base.KotlinActivity
 
 @AppTitle("植物大战僵尸辅助")
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("pvz")
-class PVZHelper : KotlinActivity(), DmUtils, Win32Utils {
+class PVZHelperApp : KotlinActivity(), DmUtils, Win32Utils {
 
     var wh = 0
 
@@ -65,7 +60,7 @@ class PVZHelper : KotlinActivity(), DmUtils, Win32Utils {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            launch(PVZHelper::class.java)
+            launch(PVZHelperApp::class.java)
         }
     }
 }

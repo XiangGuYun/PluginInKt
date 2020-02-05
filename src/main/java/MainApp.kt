@@ -12,9 +12,8 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import sample.base.KotlinActivity
-import java.util.*
 
-class Main : KotlinActivity(), DmUtils, Win32Utils {
+class MainApp : KotlinActivity(), DmUtils, Win32Utils {
 
     override fun init(window: Window) {
         window.apply {
@@ -155,7 +154,7 @@ class Main : KotlinActivity(), DmUtils, Win32Utils {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            Application.launch(Main::class.java)
+            Application.launch(MainApp::class.java)
         }
     }
 

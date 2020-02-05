@@ -10,7 +10,7 @@ import sample.base.KotlinActivity
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("dm_find_word")
-class DmWordFindTest : KotlinActivity(), DmUtils {
+class DmWordFindApp : KotlinActivity(), DmUtils {
 
     private lateinit var dm: Dispatch
 
@@ -39,7 +39,7 @@ class DmWordFindTest : KotlinActivity(), DmUtils {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            launch(DmWordFindTest::class.java)
+            launch(DmWordFindApp::class.java)
         }
     }
 }

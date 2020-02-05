@@ -39,15 +39,6 @@ interface Win32Utils {
     }
 
     /**
-     * 运行应用程序
-     */
-    fun runApp(appPath:String): Process? {
-        val runtime  = Runtime.getRuntime()
-        val process = runtime.exec(appPath)
-        return process
-    }
-
-    /**
      * 获取所有进程的id和名称
      */
     fun getProcessList(): ArrayList<Pair<String, String>> {

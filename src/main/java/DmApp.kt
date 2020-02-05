@@ -5,16 +5,14 @@ import base.utils.Win32Utils
 import com.jacob.com.Dispatch
 import com.sun.jna.platform.win32.Shell32
 import com.sun.jna.platform.win32.User32
-import com.sun.jna.platform.win32.User32Util
 import javafx.application.Platform
 import sample.base.KotlinActivity
-import java.awt.Robot
 
 @AppTitle("大漠练习1")
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("dmtest1")
-class DmTest1 : KotlinActivity(), DmUtils, Win32Utils {
+class DmApp : KotlinActivity(), DmUtils, Win32Utils {
 
     private lateinit var dm: Dispatch
 
@@ -83,7 +81,7 @@ class DmTest1 : KotlinActivity(), DmUtils, Win32Utils {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            launch(DmTest1::class.java)
+            launch(DmApp::class.java)
         }
     }
 
