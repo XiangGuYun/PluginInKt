@@ -42,7 +42,7 @@ class DotaApp : KotlinActivity(), DmUtils, Win32Utils {
         }
 
         //初始化大漠
-        initDM(2)
+        initDM(1)
 
         //打开模拟器
         btn("open").click {
@@ -83,43 +83,44 @@ class DotaApp : KotlinActivity(), DmUtils, Win32Utils {
         }
 
         btn("battle").click {
-            dmList.forEach {
-                if (!it.dm.checkAndClick(it.dm.findPic(816,562,969,606, "战役.bmp", "101010", 0.9, DmUtils.DIR.LR_TB))) {
-                    it.dm.capture(0,0,1280,720, "test.jpg")
+            dmList.forEachIndexed {i, it->
+                val findZhanYi = it.dm.checkAndClick(it.dm.findPic(608,422,727,453, "战役.bmp", "101010", 0.8, DmUtils.DIR.LR_TB))
+//                val findZhanYi = it.dm.checkAndClick(it.dm.findStrFast(608,422,727,453, "战役", "e5cb10-404040", 0.9))
+                if (!findZhanYi) {
+                    it.dm.capture(608,422,727,453, "test.jpg")
                     iv("iv").image = Image("file:C:\\Users\\Administrator\\damo\\test.jpg")
                     alert("未在游戏初始界面")
-                    return@forEach
+                    return@click
                 }
                 needStopBattle = false
                 Thread {
+                    Thread.sleep(i*1000L)
                     while (!needStopBattle) {
+                        //对于一个流程中必定出现的图片，如果检测到了，就不再在此次流程中继续检测
                         if (!it.find_第一关图标) {
-                            if (it.dm.checkAndClick(it.dm.findPic(228,491,349,583, "第一关图标.bmp", "101010", 0.9, DmUtils.DIR.LR_BT))) {
+                            if (it.dm.checkAndClick(it.dm.findPic(192,383,257,441, "第一关图标.bmp", "101010", 0.9, DmUtils.DIR.LR_BT))) {
                                 it.find_第一关图标 = true
                             }
                         }
                         if (!it.find_右箭头) {
-                            if (it.dm.checkAndClick(it.dm.findPic(1030,521,1205,698, "右箭头.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
+                            if (it.dm.checkAndClick(it.dm.findPic(798,423,879,501, "右箭头.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
                                 it.find_右箭头 = true
                             }
                         }
                         if (!it.find_开始战斗) {
-                            if (it.dm.checkAndClick(it.dm.findPic(1036,556,1184,697, "开始战斗.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
+                            if (it.dm.checkAndClick(it.dm.findPic(818,449,890,520, "开始战斗.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
                                 it.find_开始战斗 = true
                             }
                         }
-                        if (!it.find_关闭对话框) {
-                            if (it.dm.checkAndClick(it.dm.findPic(0, 0, 1280, 720, "关闭对话框.bmp", "101010", 0.9, DmUtils.DIR.LR_BT))) {
-                                it.find_关闭对话框 = true
-                            }
-                        }
-                        if (it.dm.checkAndClick(it.dm.findPic(0, 0, 1280, 720, "继续游戏.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
+                        //对于一个流程中可能出现的图片，需要不断进行检测
+                        it.dm.checkAndClick(it.dm.findPic(0, 0, 960, 540, "关闭对话框.bmp", "666666", 0.9, DmUtils.DIR.LR_BT))
+                        if (it.dm.checkAndClick(it.dm.findPic(0, 0, 960, 540, "继续游戏.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
                             it.find_第一关图标 = false
                             it.find_右箭头 = false
                             it.find_开始战斗 = false
                             it.find_关闭对话框 = false
                         }
-                        Thread.sleep(1000)
+                        Thread.sleep(600)
                     }
                 }.start()
             }
@@ -210,7 +211,9 @@ class DotaApp : KotlinActivity(), DmUtils, Win32Utils {
 
 
     override fun stop() {
-//        damo.unBindWindow()
+        dmList.forEach {
+            it.dm.unBindWindow()
+        }
     }
 
 }
