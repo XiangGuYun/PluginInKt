@@ -15,6 +15,14 @@ interface DmUtils {
         return ActiveXComponent("dm.dmsoft").`object`
     }
 
+    fun Dispatch.reg():Int{
+        return Dispatch.call(this, "Reg", "yida94563887ce815854f20ab8c0926f99a987b4cea", "uf3am").int
+    }
+
+    fun s(time: Long){
+        Thread.sleep(time)
+    }
+
     /**
      * 获取当前大漠的版本
      */
@@ -103,8 +111,8 @@ interface DmUtils {
     /**
      * 按住某键（根据按键码）
      */
-    fun Dispatch.keyDown(vk_code:Int): Int {
-        return Dispatch.call(this, "KeyDown", vk_code).int
+    fun Dispatch.keyDown(vk_code:Int): Boolean {
+        return Dispatch.call(this, "KeyDown", vk_code).int == 1
     }
 
     /**
@@ -381,14 +389,14 @@ interface DmUtils {
      * 绑定窗口
      */
     fun Dispatch.bindWindow(hwnd:Int, display:Display,mouse:Mouse,keyboard:Keyboard): Boolean {
-        return Dispatch.call(this, "BindWindow", hwnd,
+        return Dispatch.call(this, "BindWindowEx", hwnd,
                 when(display){
                     Display.NORMAL -> "normal"
                     Display.GDI -> "gdi"
                     Display.GDI2 -> "gdi2"
                     Display.DX2 -> "dx2"
                     Display.DX3 -> "dx3"
-                    else -> "dxx"
+                    else -> "dx.graphic.3d"
                 },
                 when(mouse){
                     Mouse.NORMAL -> "normal"
@@ -401,10 +409,15 @@ interface DmUtils {
                 when(keyboard){
                     Keyboard.NORMAL -> "normal"
                     Keyboard.WINDOWS -> "windows"
-                    else -> "dx"
+                    else -> "dx.public.active.api|dx.public.active.message| dx.keypad.state.api|dx.keypad.api|dx.keypad.input.lock.api"
                 },
+                null,
                 0
         ).int == 1
+    }
+
+    fun Dispatch.enableFakeActive(enable:Boolean):Boolean{
+        return Dispatch.call(this, "EnableFakeActive", if(enable) 1 else 0).int == 1
     }
 
     /**
@@ -527,8 +540,27 @@ interface DmUtils {
         return false
     }
 
+    fun Dispatch.checkAndDoubleClick(result: String): Boolean {
+        if (check(result)) {
+            this.doubleClick(result)
+            return true
+        }
+        return false
+    }
+
+    /**
+     * 是否成功检测到图或字
+     */
     fun check(result: String): Boolean {
         return result != "-1|-1|-1"
+    }
+
+    /**
+     * 将扫描到的位置信息转换为坐标点
+     */
+    fun String.toPoint(): Point {
+        val arr = this.split("|")
+        return Point(arr[1].toInt(), arr[2].toInt())
     }
 
     /**
@@ -541,5 +573,42 @@ interface DmUtils {
         Thread.sleep(100)
         this.leftClick()
     }
+
+    fun Dispatch.doubleClick(result: String) {
+        val arr = result.split("|")
+        Thread.sleep(100)
+        this.moveTo(arr[1].toInt(), arr[2].toInt())
+        Thread.sleep(100)
+        this.leftClick()
+        Thread.sleep(100)
+        this.leftClick()
+    }
+
+    fun Dispatch.goToLoc(meLoc:String, desLoc:String){
+        val mePoint = meLoc.toPoint()
+        val desPoint = desLoc.toPoint()
+        val dx = desPoint.x - mePoint.x
+        val dy = desPoint.y - mePoint.y
+        Thread{
+            while (true){
+                if(dx > 0){
+                    //向右移动dx
+                    keyDown(Key.right)
+                } else {
+                    //向左移动dx
+                    keyDown(Key.left)
+                }
+            }
+        }.start()
+//        if(dy > 0){
+//            //向下移动dy
+//        } else {
+//            //向上移动dy
+//        }
+    }
+
+
+
+
 
 }

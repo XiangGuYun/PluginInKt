@@ -9,4 +9,9 @@ interface CommonUtils {
         val process = runtime.exec(appPath)
         return process
     }
+
+    fun Thread.startThread(): Thread {
+        this.start()
+        return this
+    }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button id="bind" layoutX="38.0" layoutY="36.0" mnemonicParsing="false" text="绑定窗口" />
+      <Button id="enter" layoutX="43.0" layoutY="83.0" mnemonicParsing="false" text="进入副本" />
+      <Button id="buff" layoutX="43.0" layoutY="131.0" mnemonicParsing="false" text="上Buff" />
+      <Button id="btn4" layoutX="43.0" layoutY="177.0" mnemonicParsing="false" text="Button" />
+      <Button id="loc" layoutX="48.0" layoutY="229.0" mnemonicParsing="false" text="查看位置" />
+      <Button id="unbind" layoutX="127.0" layoutY="36.0" mnemonicParsing="false" text="解除绑定" />
+      <Label id="lb1" layoutX="136.0" layoutY="87.0" text="Label" />
+      <Button id="return" layoutX="213.0" layoutY="36.0" mnemonicParsing="false" text="返回城镇" />
+   </children>
+</AnchorPane>

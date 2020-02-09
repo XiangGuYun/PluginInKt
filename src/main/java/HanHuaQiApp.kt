@@ -1,6 +1,7 @@
 import base.Window
 import base.utils.DmUtils
 import base.utils.Win32Utils
+import com.jacob.activeX.ActiveXComponent
 import javafx.application.Application
 import javafx.scene.image.Image
 import sample.base.KotlinActivity
@@ -17,18 +18,22 @@ class HanHuaQiApp: KotlinActivity(), DmUtils, Win32Utils {
         }
         setContentView("layout/han_hua_qi")
 
-        val dm = initDmCom()
+//        val dm = initDmCom()
 
         btn("btnSend").click {
-            isStop = false
-            val wh = dm.findWindow(null, "无标题 - 记事本")
-            val whChild = dm.findWindowEx(wh, null, null)
-             Thread{
-                 while (!isStop){
-                     println(dm.sendString2(whChild, "${ta("taSend").text}\n"))
-                     Thread.sleep(tf("tfTime").text.toLong())
-                 }
-             }.start()
+
+            alert(ActiveXComponent("dm.dmsoft").invoke("Ver").string
+            )
+//            ActiveXComponent("dm.dmsoft").`object`
+//            isStop = false
+//            val wh = dm.findWindow(null, "无标题 - 记事本")
+//            val whChild = dm.findWindowEx(wh, null, null)
+//             Thread{
+//                 while (!isStop){
+//                     println(dm.sendString2(whChild, "${ta("taSend").text}\n"))
+//                     Thread.sleep(tf("tfTime").text.toLong())
+//                 }
+//             }.start()
         }
 
         btn("btnStop").click {
