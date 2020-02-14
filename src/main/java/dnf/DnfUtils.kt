@@ -1,7 +1,7 @@
 package dnf
 
 import base.utils.DmUtils
-import base.utils.Key
+import base.constant.Key
 import com.jacob.com.Dispatch
 
 interface DnfUtils : DmUtils {
@@ -21,27 +21,7 @@ interface DnfUtils : DmUtils {
      */
     fun Dispatch.room1() {
         Thread {
-            while (true){
-                if(check(findPic(0,751,77,818,"进入图1.bmp", "101010", 0.9))){
-                    buff()
-                    s(100)
-                    run(Dir.RIGHT, 1790)
-                    s(50)
-                    keyPress(Key.r)
-                    s(1000)
-                    keyDown(Key.right)
-                    keyDown(Key.down)
-                    s(2000)
-                    keyUp(Key.right)
-                    keyUp(Key.down)
-                    keyPress(Key.a)
-                    s(50)
-                    run(Dir.LEFT, 500)
-                    room2()
-                    return@Thread
-                }
-                s(100)
-            }
+
         }.start()
     }
 
@@ -53,33 +33,41 @@ interface DnfUtils : DmUtils {
             run(Dir.DOWN, 1200)
             keyPress(Key.w)
             s(500)
-            keepDownKey("5000", Key.right, Key.x)
+            run(Dir.RIGHT, 1000)
+            keyPressDelay(Key.a, 10)
             goToCornerAndNextRoom()
-            keepDownKey("2000", Key.right)
-            keyPressDelay(Key.q, 100)
+            //第三图
+            keepDownKeyRun("1000", Key.right)
             keepDownKey("3000", Key.t)
-            keepDownKey("5000", Key.right, Key.down)
-            keepDownKey("700", Key.left)
+            keepDownKey("5250", Key.right, Key.down)
+            //第四图
+            keepDownKey("610", Key.left)
             keyPress(Key.e)
             s(2000)
-            keepDownKey("300", Key.up)
             keyPress(Key.f)
             s(1000)
             keepDownKey("3000", Key.left, Key.down)
-            keepDownKey("1000", Key.up)
-            keyPressDelay(Key.d,100)
-            keyPressDelay(Key.h,100)
-            keepDownKey("2000", Key.down)
-//            while (true){
-//                if(checkAndClick(findPic(1000,0,1200,100,"进入图3.bmp","101010", 0.9))){
-//                    keyUp(Key.x)
-//                    s(100)6
-//                    keyDown(Key.t)
-//                    s(3000)
-//                    keyUp(Key.t)
-//                }
-//                Thread.sleep(500)
-//            }
+            keepDownKey("1100", Key.up)
+            //第五图
+            keyPressDelay(Key.h, 100) //45技能清怪
+            keepDownKey("2900", Key.down)
+            keepDownKey("300", Key.left)
+            keyPressDelay(Key.g, 100)
+            keepDownKey("1450", Key.right)
+            keyPressDelay(Key.d, 100)
+            keepDownKeyRun("3000", Key.right, Key.down)
+            keepDownKeyRun("600", Key.up)
+            run(Dir.RIGHT, 1000)
+            //第六图
+            keepDownKey("1000", Key.y)
+            keepDownKeyRun("5100", Key.right, Key.down)
+            keepDownKey("800", Key.right)
+            keyPressDelay(Key.r, 100)
+            while (!check(findPic(1100,200,1200,300, "是否继续.bmp", "101010", 0.9))){
+                s(1000)
+            }
+            println("f1 ......")
+            keyPressDelay(Key.f1, 1000)
         }.start()
     }
 
@@ -103,15 +91,15 @@ interface DnfUtils : DmUtils {
      */
     fun Dispatch.run(dir:Dir=Dir.RIGHT, time:Long=2000){
         val key = when(dir){
-            Dir.UP->Key.up
-            Dir.DOWN->Key.down
-            Dir.LEFT->Key.left
-            Dir.RIGHT->Key.right
+            Dir.UP-> Key.up
+            Dir.DOWN-> Key.down
+            Dir.LEFT-> Key.left
+            Dir.RIGHT-> Key.right
         }
         keyPress(key)
-        Thread.sleep(50)
+        Thread.sleep(30)
         keyPress(key)
-        Thread.sleep(50)
+        Thread.sleep(30)
         keyDown(key)
         Thread.sleep(time)
         keyUp(key)
@@ -121,8 +109,8 @@ interface DnfUtils : DmUtils {
      * 移到角落然后前往下个房间
      */
     fun Dispatch.goToCornerAndNextRoom(){
-        keepDownKey("2000", Key.right, Key.down)
-        keepDownKey("2000", Key.up)
+        keepDownKeyRun("3000", Key.right, Key.down)
+        keepDownKeyRun("1500", Key.up)
     }
 
     /**
@@ -130,6 +118,18 @@ interface DnfUtils : DmUtils {
      */
     fun Dispatch.keepDownKey(keepTime:String, vararg keyCodes:Int){
         keyCodes.forEach {
+            keyDown(it)
+        }
+        s(keepTime.toLong())
+        keyCodes.forEach {
+            keyUp(it)
+        }
+    }
+
+    fun Dispatch.keepDownKeyRun(keepTime:String, vararg keyCodes:Int){
+        keyCodes.forEach {
+            keyPress(it)
+            s(30)
             keyDown(it)
         }
         s(keepTime.toLong())

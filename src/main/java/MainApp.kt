@@ -1,6 +1,6 @@
 import base.utils.DmUtils
 import base.utils.Win32Utils
-import base.Window
+import base.constant.Window
 import com.jfoenix.controls.JFXDialog
 import com.jfoenix.controls.JFXListView
 import javafx.application.Application
@@ -11,9 +11,9 @@ import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
-import sample.base.KotlinActivity
+import sample.base.BaseApp
 
-class MainApp : KotlinActivity(), DmUtils, Win32Utils {
+class MainApp : BaseApp(), DmUtils, Win32Utils {
 
     override fun init(window: Window) {
         window.apply {

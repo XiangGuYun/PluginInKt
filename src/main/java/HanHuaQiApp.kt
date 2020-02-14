@@ -1,12 +1,12 @@
-import base.Window
+import base.constant.Window
 import base.utils.DmUtils
 import base.utils.Win32Utils
 import com.jacob.activeX.ActiveXComponent
 import javafx.application.Application
 import javafx.scene.image.Image
-import sample.base.KotlinActivity
+import sample.base.BaseApp
 
-class HanHuaQiApp: KotlinActivity(), DmUtils, Win32Utils {
+class HanHuaQiApp: BaseApp(), DmUtils, Win32Utils {
 
     var isStop = false
 

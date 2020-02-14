@@ -1,18 +1,17 @@
-import base.*
+import base.constant.*
 import base.utils.DmUtils
-import base.utils.Key
 import base.utils.Win32Utils
 import com.jacob.com.Dispatch
 import com.sun.jna.platform.win32.Shell32
 import com.sun.jna.platform.win32.User32
 import javafx.application.Platform
-import sample.base.KotlinActivity
+import sample.base.BaseApp
 
 @AppTitle("大漠练习1")
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("dmtest1")
-class DmApp : KotlinActivity(), DmUtils, Win32Utils {
+class DmApp : BaseApp(), DmUtils, Win32Utils {
 
     private lateinit var dm: Dispatch
 

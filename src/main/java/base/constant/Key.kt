@@ -1,4 +1,4 @@
-package base.utils
+package base.constant
 
 object Key {
 

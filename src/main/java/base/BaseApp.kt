@@ -1,12 +1,9 @@
 package sample.base
 
-import base.*
+import base.constant.*
 import base.utils.*
 import com.jfoenix.controls.JFXListView
-import com.melloware.jintellitype.HotkeyListener
-import com.melloware.jintellitype.JIntellitype
 import javafx.application.Application
-import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
 import javafx.scene.Parent
@@ -14,30 +11,27 @@ import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Pane
-import javafx.scene.layout.Region
-import javafx.scene.layout.StackPane
-import javafx.scene.layout.VBox
+import javafx.scene.layout.*
 import javafx.scene.media.Media
 import javafx.stage.Screen
 import javafx.stage.Stage
 import java.io.*
 
 
-abstract class KotlinActivity:Application(), CommonUtils, ViewHelper,ColorHelper, DialogUtils, Constant, HKUtils, AdbUtils{
+abstract class BaseApp:Application(), CommonUtils, ViewHelper,ColorHelper, DialogUtils, Constant, HKUtils, AdbUtils
+, PlatformUtils, WindowUtils, ScreenUtils, TextFieldUtils, MenuUtils{
 
+    lateinit var mainScene: Scene
     lateinit var window: Window
     lateinit var contentView:Parent
     val screen = Screen.getPrimary()
-    val minX = screen.bounds.minX
-    val minY = screen.bounds.minY
     val maxX = screen.bounds.maxX
     val maxY = screen.bounds.maxY
     var layoutId = ""
 
     @Throws(Exception::class)
-    override fun start(window: Stage) {
-        this.window = window
+    override fun start(mainWindow: Stage) {
+        this.window = mainWindow
 
         val annotations = this::class.annotations
         annotations.forEachIndexed { _, it->
@@ -54,6 +48,9 @@ abstract class KotlinActivity:Application(), CommonUtils, ViewHelper,ColorHelper
                 AppIcon::class->{
                     window.icons.add(Image("image/${(it as AppIcon).iconPath}"))
                 }
+                Style::class->{
+                    window.initStyle((it as Style).style)
+                }
             }
         }
 
@@ -62,6 +59,7 @@ abstract class KotlinActivity:Application(), CommonUtils, ViewHelper,ColorHelper
 
         init(window)
         window.show()
+
     }
 
     fun moveToCenter(width:Number,height: Number){
@@ -105,15 +103,21 @@ abstract class KotlinActivity:Application(), CommonUtils, ViewHelper,ColorHelper
         return contentView.lookup("#$id") as ComboBox<String>
     }
 
+    fun ap(id:String): AnchorPane {
+        return contentView.lookup("#$id") as AnchorPane
+    }
+
     fun setContentView(name:String){
         contentView = FXMLLoader.load<Parent>(javaClass.classLoader.getResource("$name.fxml"))
-        window.scene = Scene(contentView)
+        mainScene = Scene(contentView)
+        window.scene = mainScene
         window.scene.stylesheets.add("style/styles.css")
     }
 
     fun setContentView(name:String,width:Number,height: Number){
         contentView = FXMLLoader.load<Parent>(javaClass.classLoader.getResource("$name.fxml"))
-        window.scene = Scene(contentView,width.toDouble(),height.toDouble())
+        mainScene = Scene(contentView,width.toDouble(),height.toDouble())
+        window.scene = mainScene
         window.scene.stylesheets.add("style/styles.css")
         moveToCenter(width,height)
     }
@@ -137,21 +141,6 @@ abstract class KotlinActivity:Application(), CommonUtils, ViewHelper,ColorHelper
      */
     fun addStyle(path:String){
         window.scene.stylesheets.add("$path.css")
-    }
-
-    /**
-     * 跳转到另外一个窗口
-     * @param name String
-     * @param width Number
-     * @param height Number
-     */
-    fun startActivity(name:String,width: Number,height: Number){
-        window.scene = scene(name,width,height)
-        moveToCenter(width,height)
-    }
-
-    fun String.pln(){
-        println(this)
     }
 
 //    fun file(path:String): File {
@@ -190,14 +179,20 @@ abstract class KotlinActivity:Application(), CommonUtils, ViewHelper,ColorHelper
         children.add(child)
     }
 
+    fun Pane.addChildren(vararg child:Node){
+        children.addAll(child)
+    }
+
     companion object {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            Application.launch(KotlinActivity::class.java)
+            Application.launch(BaseApp::class.java)
         }
     }
 
-
+    fun openUrl(url:String){
+        hostServices.showDocument(url)
+    }
 
 }

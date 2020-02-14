@@ -1,20 +1,17 @@
 package dota
 
-import base.*
+import base.constant.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
 import com.jacob.com.Dispatch
-import javafx.collections.FXCollections
 import javafx.scene.image.Image
-import sample.base.KotlinActivity
-import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
+import sample.base.BaseApp
 
 @AppTitle("Dota传奇助手")
 @Resizable(false)
 @AppIcon("dota.bmp")
 @LayoutId("dota")
-class DotaApp : KotlinActivity(), DmUtils, Win32Utils {
+class DotaApp : BaseApp(), DmUtils, Win32Utils {
 
     companion object {
         @JvmStatic

@@ -1,14 +1,14 @@
-import base.*
+import base.constant.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
 import com.sun.jna.platform.win32.*
-import sample.base.KotlinActivity
+import sample.base.BaseApp
 
 @AppTitle("Win32Api学习")
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("win32api")
-class Win32ApiApp : KotlinActivity(), DmUtils, Win32Utils {
+class Win32ApiApp : BaseApp(), DmUtils, Win32Utils {
 
     override fun init(window: Window) {
 

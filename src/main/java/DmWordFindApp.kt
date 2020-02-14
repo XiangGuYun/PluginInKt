@@ -1,7 +1,7 @@
-import base.*
+import base.constant.*
 import base.utils.DmUtils
 import com.jacob.com.Dispatch
-import sample.base.KotlinActivity
+import sample.base.BaseApp
 
 /**
  * 大漠识字（在指定区域内识别文字）和找字（寻找文字所在坐标）
@@ -10,7 +10,7 @@ import sample.base.KotlinActivity
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("dm_find_word")
-class DmWordFindApp : KotlinActivity(), DmUtils {
+class DmWordFindApp : BaseApp(), DmUtils {
 
     private lateinit var dm: Dispatch
 

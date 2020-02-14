@@ -1,10 +1,10 @@
 package base.tools
 
-import base.*
+import base.constant.*
 import base.utils.DmUtils
 import javafx.collections.FXCollections
 import javafx.scene.image.Image
-import sample.base.KotlinActivity
+import sample.base.BaseApp
 
 /**
  * 大漠窗口绑定模式工具
@@ -13,7 +13,7 @@ import sample.base.KotlinActivity
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("bind_model_tool")
-class BindModelTool : KotlinActivity(), DmUtils {
+class BindModelTool : BaseApp(), DmUtils {
 
     companion object {
         @JvmStatic

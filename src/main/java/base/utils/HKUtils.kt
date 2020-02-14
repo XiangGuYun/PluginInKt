@@ -8,6 +8,25 @@ import javafx.application.Platform
  */
 interface HKUtils {
 
+    /*
+    regHK(1, Key.f1)
+
+    regHK(2, Key.f, CTRL+SHIFT)
+    2
+    setHKListener {
+        when(it){
+            1-> {
+                getProcessList().forEach {
+                    println(it.first+" "+it.second)
+                }
+            }
+            2->{
+                alert("这不是爱")
+            }
+        }
+    }
+     */
+
     val CTRL get() = JIntellitype.MOD_CONTROL
     val SHIFT get() = JIntellitype.MOD_SHIFT
     val ALT get() = JIntellitype.MOD_ALT
@@ -33,6 +52,5 @@ interface HKUtils {
             }
         }
     }
-
 
 }

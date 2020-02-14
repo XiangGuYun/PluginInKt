@@ -1,4 +1,4 @@
-package base
+package base.constant
 
 import javafx.stage.Stage
 

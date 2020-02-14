@@ -1,4 +1,4 @@
-package base
+package base.utils
 
 import javafx.scene.control.Alert
 

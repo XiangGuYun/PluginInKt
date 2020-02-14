@@ -1,8 +1,8 @@
-import base.*
+import base.constant.*
 import base.utils.DmUtils
 import com.jacob.com.Dispatch
 import javafx.application.Platform
-import sample.base.KotlinActivity
+import sample.base.BaseApp
 
 /**
  * 大漠找图
@@ -11,7 +11,7 @@ import sample.base.KotlinActivity
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("dm_find_pic")
-class DmPicFindApp : KotlinActivity(), DmUtils {
+class DmPicFindApp : BaseApp(), DmUtils {
 
     private lateinit var dm: Dispatch
 
