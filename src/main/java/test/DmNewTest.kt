@@ -6,8 +6,6 @@ import com.jacob.activeX.ActiveXComponent
 object DmNewTest:DmUtils {
     @JvmStatic
     fun main(args: Array<String>) {
-
+        println(getDmVersion())
     }
-
-
 }

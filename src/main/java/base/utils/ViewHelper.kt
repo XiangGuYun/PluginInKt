@@ -2,6 +2,7 @@ package sample.base
 
 import com.sun.javafx.css.Style
 import javafx.event.ActionEvent
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -238,6 +239,8 @@ interface ViewHelper {
             add(t, index % row, index / row)
         }
     }
+
+    val ActionEvent.text get() = (source as Labeled).text
 
 
 }
