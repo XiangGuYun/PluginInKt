@@ -1,14 +1,20 @@
 package base.utils
 
+import base.constant.Constant
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.Mnemonic
+import sample.base.ColorHelper
+import sample.base.ViewHelper
 import java.util.*
 
-interface CommonUtils {
+interface CommonUtils :  ViewHelper, ColorHelper, DialogUtils, Constant, HKUtils, AdbUtils
+        , PlatformUtils, WindowUtils, ScreenUtils, TextFieldUtils, MenuUtils {
     /**
      * 运行应用程序
      */
@@ -23,8 +29,12 @@ interface CommonUtils {
         return this
     }
 
-    fun Any.pln(){
-        println(this.toString())
+    fun Any.pln(pre:String=""){
+        println(pre+this.toString())
+    }
+
+    fun <T> newFxList(): ObservableList<T> {
+        return FXCollections.observableArrayList<T>()
     }
 
     fun Scene.setHotKey(keyCode:KeyCode, func:()->Unit, vararg km: KeyCombination.Modifier){

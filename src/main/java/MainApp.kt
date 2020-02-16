@@ -3,7 +3,9 @@ import base.utils.Win32Utils
 import base.constant.Window
 import com.jfoenix.controls.JFXDialog
 import com.jfoenix.controls.JFXListView
+import com.sun.prism.paint.Color
 import javafx.application.Application
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -34,13 +36,17 @@ class MainApp : BaseApp(), DmUtils, Win32Utils {
         }
         vb1.addChild(iv1)
 
-        lv.addView(Button("截图").apply {
+        lv.addView(Label("截图").apply {
             id = "btn1"
             click {
                 dm.capture(0, 300, 300, 600, "e:/javaPic.jpg")
                 iv1.image = Image("file:e:/javaPic.jpg")
             }
-        })
+        }.preSize(640,100).bgColor("#ff6666"))
+
+        lv.addView(Label("截图").preSize(640,100).bgColor("#66ff66"))
+
+        lv.addView(Label("截图").preSize(640,100).bgColor("#6666ff"))
 
         lv.addView(vb1)
 

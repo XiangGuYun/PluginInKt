@@ -4,9 +4,7 @@ import base.constant.AppTitle
 import base.constant.Window
 import javafx.event.EventHandler
 import javafx.scene.Scene
-import javafx.scene.control.Menu
-import javafx.scene.control.MenuItem
-import javafx.scene.control.RadioMenuItem
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
@@ -88,6 +86,8 @@ class MenuDemo : BaseApp() {
         ))
 
         window.scene = Scene(AnchorPane(menuBar.first.marginAp(0, 0, 0, -1)).preSize(500, 500))
+
+        menuBar.first.menus[0].items.add(CustomMenuItem().apply { content = Label("菜单").preSize(100,50) })
 
         menuBar.second.forEach {
             it.forEach {

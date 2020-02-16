@@ -9,6 +9,7 @@ import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.control.ButtonBase
 import javafx.scene.control.Labeled
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.*
@@ -21,6 +22,14 @@ interface ViewHelper {
     fun <T : Node> T.xy(x: Int, y: Int): T {
         layoutX = x.toDouble()
         layoutY = y.toDouble()
+        return this
+    }
+
+    fun <T : ImageView> T.fitSize(w: Number, h: Number): T {
+        if (w != -1)
+            fitWidth = w.toDouble()
+        if (h != -1)
+            fitHeight = h.toDouble()
         return this
     }
 
@@ -52,7 +61,7 @@ interface ViewHelper {
         return this
     }
 
-    fun <T : Labeled> T.textSize(size: Int): T {
+    fun <T : Labeled> T.textSize(size: Number): T {
         font = Font.font(size.toDouble())
         return this
     }
@@ -140,12 +149,12 @@ interface ViewHelper {
         return this
     }
 
-    fun Node.focus(bool: Boolean): Node {
+    fun <T:Node> T.focus(bool: Boolean): T {
         isFocusTraversable = bool
         return this
     }
 
-    fun Node.marginAp(left: Number, top: Number, right: Number, bottom: Number): Node {
+    fun <T:Node> T.marginAp(left: Number, top: Number, right: Number, bottom: Number): T {
         if (top != -1)
             AnchorPane.setTopAnchor(this, top.toDouble())
         if (left != -1)
@@ -160,7 +169,7 @@ interface ViewHelper {
     /**
      * 设置外边距，注意此方法不能在apply中调用
      */
-    fun Node.margin(left: Number, top: Number, right: Number, bottom: Number): Node {
+    fun <T:Node> T.margin(left: Number, top: Number, right: Number, bottom: Number): T {
         when (parent.javaClass.simpleName) {
             "HBox" -> HBox.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
             "VBox" -> VBox.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
@@ -183,53 +192,53 @@ interface ViewHelper {
         return this
     }
 
-    fun Node.alignBp(pos: Pos): Node {
+    fun <T:Node> T.alignBp(pos: Pos): T {
         BorderPane.setAlignment(this, pos)
         return this
     }
 
-    fun Node.marginHb(left: Number, top: Number, right: Number, bottom: Number): Node {
+    fun <T:Node> T.marginHb(left: Number, top: Number, right: Number, bottom: Number): T {
         HBox.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
         return this
     }
 
-    fun Node.marginVb(left: Number, top: Number, right: Number, bottom: Number): Node {
+    fun <T:Node> T.marginVb(left: Number, top: Number, right: Number, bottom: Number): T {
         VBox.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
         return this
     }
 
-    fun Node.marginBp(left: Number, top: Number, right: Number, bottom: Number): Node {
+    fun <T:Node> T.marginBp(left: Number, top: Number, right: Number, bottom: Number): T {
         BorderPane.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
         return this
     }
 
-    fun Node.marginSp(left: Number, top: Number, right: Number, bottom: Number): Node {
+    fun <T:Node> T.marginSp(left: Number, top: Number, right: Number, bottom: Number): T {
         StackPane.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
         return this
     }
 
-    fun Node.marginFp(left: Number, top: Number, right: Number, bottom: Number): Node {
+    fun <T:Node> T.marginFp(left: Number, top: Number, right: Number, bottom: Number): T {
         FlowPane.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
         return this
     }
 
-    fun Node.show(): Node {
+    fun <T:Node> T.show(): T {
         if (!isVisible) isVisible = true
         if (!isManaged) isManaged = true
         return this
     }
 
-    fun Node.hide(): Node {
+    fun <T:Node> T.hide(): T {
         isVisible = false
         return this
     }
 
-    fun Node.gone(): Node {
+    fun <T:Node> T.gone(): T {
         isManaged = false
         return this
     }
 
-    fun Node.alpha(alpha: Double): Node {
+    fun <T:Node> T.alpha(alpha: Double): T {
         opacity = 1 - alpha
         return this
     }
@@ -238,6 +247,21 @@ interface ViewHelper {
         list.forEachIndexed { index, t ->
             add(t, index % row, index / row)
         }
+    }
+
+    fun <T:Pane> T.addChild(child:Node): T {
+        children.add(child)
+        return this
+    }
+
+    fun <T:Pane> T.addChildren(vararg child:Node): T {
+        children.addAll(child)
+        return this
+    }
+
+    fun <T:Pane> T.addChildren(nodes:List<Node>): T {
+        children.addAll(nodes)
+        return this
     }
 
     val ActionEvent.text get() = (source as Labeled).text

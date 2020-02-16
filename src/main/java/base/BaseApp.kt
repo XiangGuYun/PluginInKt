@@ -18,8 +18,7 @@ import javafx.stage.Stage
 import java.io.*
 
 
-abstract class BaseApp:Application(), CommonUtils, ViewHelper,ColorHelper, DialogUtils, Constant, HKUtils, AdbUtils
-, PlatformUtils, WindowUtils, ScreenUtils, TextFieldUtils, MenuUtils{
+abstract class BaseApp:Application(), CommonUtils{
 
     lateinit var mainScene: Scene
     lateinit var window: Window
@@ -173,14 +172,6 @@ abstract class BaseApp:Application(), CommonUtils, ViewHelper,ColorHelper, Dialo
 
     fun media(path:String): Media {
         return Media(javaClass.getResource(path).toString())
-    }
-
-    fun Pane.addChild(child:Node){
-        children.add(child)
-    }
-
-    fun Pane.addChildren(vararg child:Node){
-        children.addAll(child)
     }
 
     companion object {

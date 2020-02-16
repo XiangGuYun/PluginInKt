@@ -44,7 +44,13 @@
 }
 
 .tvDialog{
-    -fx-text-fill: red;
+    -fx-text-fill: blue;
+}
+
+#btn1{
+    -fx-underline : true;
+    -fx-font-size : 40;
+     -fx-font-family:  "Consolas";
 }
 
 .dialog{
