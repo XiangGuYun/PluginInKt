@@ -1,20 +1,23 @@
 package base.utils
 
 import base.constant.Constant
+import base.utils.jfx.DialogUtils
+import base.utils.jfx.MenuUtils
+import base.utils.jfx.TextFieldUtils
+import base.utils.jfx.WindowUtils
+import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
-import javafx.scene.input.Mnemonic
-import sample.base.ColorHelper
-import sample.base.ViewHelper
+import javafx.scene.paint.Color
+import sample.base.ViewUtils
 import java.util.*
 
-interface CommonUtils :  ViewHelper, ColorHelper, DialogUtils, Constant, HKUtils, AdbUtils
-        , PlatformUtils, WindowUtils, ScreenUtils, TextFieldUtils, MenuUtils {
+interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
+        , WindowUtils, TextFieldUtils, MenuUtils {
     /**
      * 运行应用程序
      */
@@ -27,6 +30,14 @@ interface CommonUtils :  ViewHelper, ColorHelper, DialogUtils, Constant, HKUtils
     fun Thread.startThread(): Thread {
         this.start()
         return this
+    }
+
+    fun color(red:Int,green:Int,blue:Int,opacity:Double=1.0): Color {
+        return Color.rgb(red,green,blue,opacity)
+    }
+
+    fun color(value:String,alpha:Double=1.0): Color {
+        return Color.web(value,alpha)
     }
 
     fun Any.pln(pre:String=""){
@@ -65,6 +76,16 @@ interface CommonUtils :  ViewHelper, ColorHelper, DialogUtils, Constant, HKUtils
         b = if (b.length == 1) "0$b" else b
 
         return "#${r + g + b}"
+    }
+
+    fun runOnMainThread(callback:()->Unit){
+        Platform.runLater {
+            callback.invoke()
+        }
+    }
+
+    fun finish(){
+        Platform.exit()
     }
 
 
