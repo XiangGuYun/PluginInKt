@@ -1,7 +1,7 @@
 package base.jfx.view
 
 import base.constant.AppTitle
-import base.constant.RadioGroup
+import base.constant.*
 import base.constant.Window
 import javafx.scene.Scene
 import javafx.scene.control.CheckBox
@@ -20,7 +20,7 @@ class RadioButtonDemo : BaseApp() {
         val rbList = (1..5).toList().mapIndexed { index, i ->
             RadioButton(" rb${i} ")
         }
-        val rg = RadioGroup()
+        val rg = TG()
         rg.toggles.addAll(rbList)
         //监听选中事件
         rg.selectedToggleProperty().addListener { _, _, newValue ->

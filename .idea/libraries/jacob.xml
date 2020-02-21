@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/lib/jacob.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://D:/JDK32/source/jacob-1.14.3-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

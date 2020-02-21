@@ -29,7 +29,7 @@ class ScrollBarDemo : BaseApp(){
         window.scene = Scene(HBox().addChildren(
                 VBox().preSize(495,500),
                 sb,
-                Button("滚动").clickBtn {
+                Button("滚动").clickBN {
                     Timer().schedule(object :TimerTask(){
                         override fun run() {
                             sb.increment()

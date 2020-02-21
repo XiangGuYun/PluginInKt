@@ -6,11 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="PluginInKt" />
-        <module name="fx2android" />
+        <module name="myapp" />
         <module name="JavaFX-ThreeKingdomsReader-master" />
+        <module name="fx2android" />
         <module name="three-kingdoms" />
+        <module name="jme-lwjgl" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="app" target="8" />
+      <module name="App1" target="1.5" />
+      <module name="fxapp" target="1.5" />
+      <module name="JME与LWJGL" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

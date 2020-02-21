@@ -1,7 +1,7 @@
 package base.jfx.view
 
 import base.constant.AppTitle
-import base.constant.TextView
+import base.constant.LB
 import base.constant.Window
 import javafx.geometry.Pos
 import javafx.scene.Scene
@@ -19,7 +19,7 @@ class ComboBoxDemo : BaseApp() {
         cb.isEditable = true
         cb.promptText = "请输入选择"
         cb.focus(false)
-//        cb.placeholder = TextView("暂无选项") //设置占位图
+//        cb.placeholder = LB("暂无选项") //设置占位图
         cb.visibleRowCount = 5 //最多可视多少下拉项
         //选项过滤
         val allItems = cb.items
@@ -30,10 +30,10 @@ class ComboBoxDemo : BaseApp() {
             if (filterList.size != allItems.size)
                 cb.items = filterList
             else
-                cb.placeholder = TextView("暂无选项").preSize(200,500).align(Pos.CENTER)
+                cb.placeholder = LB("暂无选项").preSize(200,500).align(Pos.CENTER)
         }
 
-        window.scene = Scene(VBox().addChildren(cb, Button("添加").clickBtn {
+        window.scene = Scene(VBox().addChildren(cb, Button("添加").clickBN {
             cb.items.add(0, "NewItem")
         }).preSize(200, 500))
     }

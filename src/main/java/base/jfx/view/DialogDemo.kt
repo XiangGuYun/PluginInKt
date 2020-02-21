@@ -23,7 +23,7 @@ class DialogDemo : BaseApp(){
     override fun init(window: Window) {
         window.scene = Scene(
                 VBox().addChildren(
-                        Button("弹窗").clickBtn {
+                        Button("弹窗").clickBN {
                             val dialog = Dialog<ButtonType>()
                             dialog.initStyle(StageStyle.UTILITY)
                             dialog.dialogPane.background = Background.EMPTY
@@ -41,7 +41,7 @@ class DialogDemo : BaseApp(){
                                 add(ButtonType.PREVIOUS)
                                 add(ButtonType.NEXT)
                             }
-                            (dialog.dialogPane.lookupButton(ButtonType.OK) as Button).clickBtn {
+                            (dialog.dialogPane.lookupButton(ButtonType.OK) as Button).clickBN {
                                 "OK".pln()
                             }
                             dialog.graphic = ImageView(Image("image/pvz.jpg",300.0,300.0,true,true))
@@ -65,7 +65,7 @@ class DialogDemo : BaseApp(){
 //                                dialogPane.preSize(300,200)
 //                            }
                         },
-                        Button("弹窗").clickBtn {
+                        Button("弹窗").clickBN {
                             val dialog = Dialog<ButtonType>()
                             dialog.title = "数学题"
                             dialog.initStyle(StageStyle.UTILITY)

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<StackPane fx:id="container" maxWidth="640" prefHeight="380" prefWidth="640" xmlns:tools="http://schemas.android.com/tools" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+     <VBox fx:id="vb">
+
+     </VBox>
+</StackPane>

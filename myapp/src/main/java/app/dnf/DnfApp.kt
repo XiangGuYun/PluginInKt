@@ -2,11 +2,12 @@ package app.dnf
 
 import base.constant.*
 import base.utils.Win32Utils
+import com.sun.jna.ptr.IntByReference
 import sample.base.BaseApp
 
 @AppTitle("练习")
 @Resizable(false)
-@AppIcon("app.dota.bmp")
+@AppIcon("dota.bmp")
 @LayoutId("dnf_app")
 class DnfApp : BaseApp(), DnfUtils,Win32Utils {
 
@@ -23,6 +24,7 @@ class DnfApp : BaseApp(), DnfUtils,Win32Utils {
     override fun init(window: Window) {
         window.x = 1600.0
         dm = initDmCom()
+        println(getDmVersion())
         println("注册结果："+dm.reg())
         dm.setPath("D:/DM7.2/app.dnf")
 

@@ -1,6 +1,8 @@
 package base.utils
 
 import base.constant.Constant
+import base.constant.JO
+import base.jse.JseUtils
 import base.utils.jfx.DialogUtils
 import base.utils.jfx.MenuUtils
 import base.utils.jfx.TextFieldUtils
@@ -17,7 +19,7 @@ import sample.base.ViewUtils
 import java.util.*
 
 interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
-        , WindowUtils, TextFieldUtils, MenuUtils {
+        , WindowUtils, TextFieldUtils, MenuUtils, JseUtils {
     /**
      * 运行应用程序
      */
@@ -26,6 +28,12 @@ interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
         val process = runtime.exec(appPath)
         return process
     }
+
+    fun String.toResJfxPath(): String {
+        return javaClass.classLoader.getResource(this).toExternalForm()
+    }
+
+
 
     fun Thread.startThread(): Thread {
         this.start()

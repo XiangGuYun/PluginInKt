@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jme3-lwjgl3-3.2.1-stable">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jme-lwjgl/lib/jme3-lwjgl3-3.2.1-stable.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

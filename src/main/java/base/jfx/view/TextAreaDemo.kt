@@ -13,7 +13,7 @@ import java.util.function.UnaryOperator
 class TextAreaDemo : BaseApp() {
 
     override fun init(window: Window) {
-        val ta = FXTA().apply {
+        val ta = TA().apply {
             text = sanguo
             isWrapText = true //文本可换行
             preSize(300, 500)
@@ -45,64 +45,64 @@ class TextAreaDemo : BaseApp() {
         window.scene = Scene(VBox().addChildren(
                 ta,
                 HBox().addChildren(
-                        Btn("添加文本").clickBtn {
+                        BN("添加文本").clickBN {
                             ta.appendText("达大厦文峰塔和任何添加剂投影机就")
                         },
-                        Btn("删除文本").clickBtn {
+                        BN("删除文本").clickBN {
                             ta.deleteText(1, 20)
                         },
-                        Btn("插入文本").clickBtn {
+                        BN("插入文本").clickBN {
                             ta.insertText(ta.text.length / 2, "=插入文本=")
                         },
-                        Btn("替换文本").clickBtn {
+                        BN("替换文本").clickBN {
                             ta.replaceText(0, ta.text.length, "替换后的文本")
                         },
-                        Btn("全选文本").clickBtn {
+                        BN("全选文本").clickBN {
                             ta.selectAll()
                         },
-                        Btn("选择光标前").clickBtn {
+                        BN("选择光标前").clickBN {
                             ta.selectForward()
                         },
-                        Btn("选择光标长度").clickBtn {
+                        BN("选择光标长度").clickBN {
                             ta.selectPositionCaret(10)
                         },
-                        Btn("选择指定区域").clickBtn {
+                        BN("选择指定区域").clickBN {
                             ta.selectRange(10, 20)
                         }
                 ),
                 HBox().addChildren(
-                        Btn("选择光标后一个字符").clickBtn {
+                        BN("选择光标后一个字符").clickBN {
                             ta.selectForward()
                         },
-                        Btn("选择光标和指定处长度的字符").clickBtn {
+                        BN("选择光标和指定处长度的字符").clickBN {
                             ta.selectPositionCaret(10)
                         },
-                        Btn("选择指定区域").clickBtn {
+                        BN("选择指定区域").clickBN {
                             ta.selectRange(10, 20)
                         },
-                        Btn("选择当前至末尾").clickBtn {
+                        BN("选择当前至末尾").clickBN {
                             ta.selectEnd()
                         }
                 ),
                 HBox().addChildren(
-                        Btn("光标回到开始处").clickBtn {
+                        BN("光标回到开始处").clickBN {
                             ta.home()
                         },
-                        Btn("光标移到指定处").clickBtn {
+                        BN("光标移到指定处").clickBN {
                             ta.positionCaret(10)
                         },
-                        Btn("光标移到末尾处").clickBtn {
+                        BN("光标移到末尾处").clickBN {
                             ta.end()
                         },
-                        Btn("设置能否编辑").clickBtn {
+                        BN("设置能否编辑").clickBN {
                             ta.isEditable = !ta.isEditable
                         }
                 ),
                 HBox().addChildren(
-                        Btn("向下翻页").clickBtn {
+                        BN("向下翻页").clickBN {
                             ta.scrollTop = 200.0
                         },
-                        Btn("自动翻页").clickBtn {
+                        BN("自动翻页").clickBN {
                             var dy = 0.0
                             var inBtm = false
                             Thread {

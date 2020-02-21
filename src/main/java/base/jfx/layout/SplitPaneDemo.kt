@@ -1,7 +1,7 @@
 package base.jfx.layout
 
 import base.constant.AppTitle
-import base.constant.TextView
+import base.constant.LB
 import base.constant.Window
 import javafx.scene.Scene
 import javafx.scene.control.SplitPane
@@ -17,7 +17,7 @@ class SplitPaneDemo : BaseApp(){
         val sp = SplitPane().preSize(600,600)
         sp.items.addAll((1..3).toList().mapIndexed { index, i ->
             //关键1：设置每个面板的初始宽度
-            TextView().preSize(400,600).bgColor(randomColor()).apply {
+            LB().preSize(400,600).bgColor(randomColor()).apply {
                 //关键2：设置每个面板的最小宽度
                 minWidth = when(index){
                     0->100.0

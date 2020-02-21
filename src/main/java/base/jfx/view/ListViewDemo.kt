@@ -1,8 +1,8 @@
 package base.jfx.view
 
 import base.constant.AppTitle
-import base.constant.FXIV
-import base.constant.TextView
+import base.constant.IV
+import base.constant.LB
 import base.constant.Window
 import base.utils.CommonUtils
 import javafx.geometry.Insets
@@ -46,10 +46,10 @@ class ListViewDemo : BaseApp(){
         override fun updateItem(item: News?, empty: Boolean) {
             if(!empty){
                 this.graphic = HBox().addChildren(
-                        FXIV("image/${item!!.img}").fitSize(300,200),
+                        IV("image/${item!!.img}").fitSize(300,200),
                         VBox().addChildren(
-                                TextView(item.title).textSize(30).marginVb(20,0,0,0),
-                                TextView(item.content).textSize(16.5).apply {
+                                LB(item.title).textSize(30).marginVb(20,0,0,0),
+                                LB(item.content).textSize(16.5).apply {
                                     isWrapText = true
                                     maxWidth = 800.0-40-300-50
                                 }.marginVb(20,20,0,0)

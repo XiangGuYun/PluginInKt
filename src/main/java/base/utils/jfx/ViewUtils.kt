@@ -162,7 +162,7 @@ interface ViewUtils {
     /**
      * 此方法的调用优先级高于setOnMouseClicked
      */
-    fun <T : ButtonBase> T.clickBtn(function: (ActionEvent) -> Unit): T {
+    fun <T : ButtonBase> T.clickBN(function: (ActionEvent) -> Unit): T {
         setOnAction {
             function.invoke(it)
         }

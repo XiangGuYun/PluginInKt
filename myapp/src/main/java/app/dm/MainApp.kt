@@ -3,13 +3,12 @@ package app.dm
 import base.utils.DmUtils
 import base.utils.Win32Utils
 import base.constant.Window
-import com.jfoenix.controls.JFXDialog
-import com.jfoenix.controls.JFXListView
 import javafx.application.Application
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
@@ -27,7 +26,7 @@ class MainApp : BaseApp(), DmUtils, Win32Utils {
 
         val dm = initDmCom()
 
-        val lv = JFXListView<Node>()
+        val lv = ListView<Node>()
 
         val vb1 = VBox()
         val iv1 = ImageView().apply {
@@ -52,26 +51,14 @@ class MainApp : BaseApp(), DmUtils, Win32Utils {
 
         lv.addView(Button("获取坐标颜色值").apply {
             click {
-                JFXDialog().apply {
-                    content = Label(dm.getColor(100, 100)).apply {
-                        prefWidth = 200.0
-                        prefHeight = 120.0
-                        alignment = Pos.CENTER
-                    }
-                }.show(sp("container"))
+                 alert(dm.getColor(100, 100))
             }
         })
 
         lv.addView(Button("获取记事本窗口宽高值").apply {
             click {
                 val size = getWindowSize(null, "无标题 - 记事本")
-                JFXDialog().apply {
-                    content = Label("${size.first}x${size.second}").apply {
-                        prefWidth = 200.0
-                        prefHeight = 120.0
-                        alignment = Pos.CENTER
-                    }
-                }.show(sp("container"))
+                alert("${size.first}x${size.second}")
             }
         })
 

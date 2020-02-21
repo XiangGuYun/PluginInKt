@@ -3,6 +3,7 @@ package base.utils
 import base.constant.Key
 import com.jacob.activeX.ActiveXComponent
 import com.jacob.com.Dispatch
+import com.sun.jna.ptr.IntByReference
 import java.awt.MouseInfo
 import java.awt.Point
 
@@ -59,6 +60,12 @@ interface DmUtils {
      */
     fun Dispatch.getWindowTitle(windHandle:Long): String {
         return Dispatch.call(this, "GetWindowTitle", windHandle).toString()
+    }
+
+    fun Dispatch.getWindowRect(wh:Int, x1:Int, y1:Int,
+                               x2:Int, y2:Int): Boolean {
+        return Dispatch.call(this, "GetWindowRect", wh,
+                x1, y1, x2, y2).int == 1
     }
 
     /**

@@ -1,9 +1,6 @@
 package base.jfx.view
 
-import base.constant.AppTitle
-import base.constant.Btn
-import base.constant.FXIV
-import base.constant.Window
+import base.constant.*
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -33,8 +30,8 @@ class PaginationDemo : BaseApp(){
                     //设置页面内容
                     pageFactory = Callback<Int, Node> {
                         VBox().addChildren(
-                                FXIV("image/pvz.jpg"),
-                                Btn("Button$it")
+                                IV("image/pvz.jpg"),
+                                BN("Button$it")
                         ).apply {
                             alignment = Pos.CENTER
                             spacing = 10.0

@@ -1,0 +1,35 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="myapp">
+    <output-path>$PROJECT_DIR$/out/artifacts/myapp</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="app.dm.PVZHelperApp" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="myapp.jar">
+        <element id="module-output" name="myapp" />
+        <element id="module-output" name="PluginInKt" />
+        <element id="library" level="project" name="jacob" />
+        <element id="library" level="project" name="jintellitype-1.3.9" />
+        <element id="library" level="project" name="jna-5.5.0" />
+        <element id="library" level="project" name="jna-platform-5.5.0" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.2.51" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.2.51" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.2.51" />
+        <element id="library" level="project" name="Maven: org.jetbrains:annotations:13.0" />
+        <element id="library" level="project" name="Maven: com.jfoenix:jfoenix:8.0.4" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.51" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.51" />
+        <element id="library" level="project" name="Maven: commons-io:commons-io:2.6" />
+        <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
+      </element>
+    </root>
+  </artifact>
+</component>

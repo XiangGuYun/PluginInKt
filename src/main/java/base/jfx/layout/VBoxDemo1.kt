@@ -1,7 +1,7 @@
 package base.jfx.layout
 
 import base.constant.AppTitle
-import base.constant.TextView
+import base.constant.LB
 import base.constant.Window
 import javafx.geometry.Pos
 import javafx.scene.Scene
@@ -18,7 +18,7 @@ class VBoxDemo1 : BaseApp() {
                 VBox().addChildren(
                         (1..100).toList().mapIndexed { index, i ->
                             VBox().addChildren(
-                                    TextView("Item$i").textSize(24).preSize(300, 70).align(Pos.CENTER),
+                                    LB("Item$i").textSize(24).preSize(300, 70).align(Pos.CENTER),
                                     Line(0.0,70.0,300.0,70.0).alpha(0.9)
                             )
                         }

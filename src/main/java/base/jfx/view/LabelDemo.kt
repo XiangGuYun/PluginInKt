@@ -16,13 +16,13 @@ class LabelDemo : BaseApp(){
 
     override fun init(window: Window) {
 
-        val tv1 = TextView("tv1", Btn("按钮1")).align(Pos.CENTER)
+        val tv1 = LB("tv1", BN("按钮1")).align(Pos.CENTER)
         tv1.contentDisplay = ContentDisplay.RIGHT
-        val tv2 = TextView("", HBox().addChildren(
-                FXIV("image/pvz.jpg").fitSize(300,200),
+        val tv2 = LB("", HBox().addChildren(
+                IV("image/pvz.jpg").fitSize(300,200),
                 VBox().addChildren(
-                        TextView("植物大战僵尸").textSize(30).marginVb(20,0,0,0),
-                        TextView(content).textSize(16.5).apply {
+                        LB("植物大战僵尸").textSize(30).marginVb(20,0,0,0),
+                        LB(content).textSize(16.5).apply {
                             isWrapText = true
                             maxWidth = 800.0-40-300
                         }.marginVb(20,20,0,0)

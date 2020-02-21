@@ -17,7 +17,8 @@ class DmApp : BaseApp(), DmUtils, Win32Utils {
 
     private lateinit var dm: Dispatch
 
-    override fun init(window: Window) {
+    override fun init(wd: Window) {
+
         dm = initDmCom()
         dm.setPath(DESKTOP)
 
@@ -68,14 +69,10 @@ class DmApp : BaseApp(), DmUtils, Win32Utils {
            }.start()
         }
 
+
         btn("btnClear").click {
             alert("清除了 ${Shell32.INSTANCE.SHEmptyRecycleBin(User32.INSTANCE.FindWindow(null, "大漠练习1"), null, 0)}")
         }
-
-    }
-
-    override fun stop() {
-        super.stop()
 
     }
 

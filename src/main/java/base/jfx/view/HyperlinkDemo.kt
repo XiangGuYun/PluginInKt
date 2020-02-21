@@ -13,7 +13,7 @@ class HyperlinkDemo : BaseApp(){
 
     override fun init(window: Window) {
         val link = Hyperlink("www.baidu.com", Button("跳转")).preSize(300,200).align(Pos.CENTER).textSize(20)
-                .clickBtn {
+                .clickBN {
                     hostServices.showDocument("www.baidu.com")
                 }
         window.scene = Scene(link)

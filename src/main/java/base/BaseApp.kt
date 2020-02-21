@@ -61,6 +61,10 @@ abstract class BaseApp:Application(), CommonUtils{
 
     }
 
+    fun String.toResPath(): String {
+        return javaClass.classLoader.getResource(this).path
+    }
+
     fun moveToCenter(width:Number,height: Number){
         window.x = (maxX - width.toDouble())/2
         window.y = (maxY-height.toDouble())/2
@@ -160,13 +164,13 @@ abstract class BaseApp:Application(), CommonUtils{
         return reader.readText()
     }
 
-    fun <T> JFXListView<T>.itemClick(func:(T)->Unit){
+    fun <T> ListView<T>.itemClick(func:(T)->Unit){
         selectionModel.selectedItemProperty().addListener { observable, oldValue, newValue ->
            func.invoke(newValue)
         }
     }
 
-    fun <T> JFXListView<T>.addView(data:T){
+    fun <T> ListView<T>.addView(data:T){
        items.add(data)
     }
 

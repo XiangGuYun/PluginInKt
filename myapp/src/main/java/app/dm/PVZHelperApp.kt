@@ -3,6 +3,9 @@ package app.dm
 import base.constant.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
+import com.sun.jna.Pointer
+import com.sun.jna.ptr.IntByReference
+import com.sun.jna.ptr.PointerByReference
 import javafx.application.Platform
 import sample.base.BaseApp
 
@@ -10,7 +13,7 @@ import sample.base.BaseApp
 @Resizable(false)
 @AppIcon("sanguo.png")
 @LayoutId("pvz")
-class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
+open class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
 
     var wh = 0
     var sunshineBaseAddress = 0x00755E0C
@@ -20,6 +23,7 @@ class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
     override fun init(window: Window) {
         val dm = initDmCom()
         dm.reg()
+
         Thread{
           while (true){
               wh = dm.findWindow("MainWindow", "Plants vs. Zombies")

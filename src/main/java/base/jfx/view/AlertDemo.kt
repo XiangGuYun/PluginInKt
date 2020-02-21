@@ -16,35 +16,37 @@ import sample.base.BaseApp
 class AlertDemo : BaseApp(){
 
     override fun init(window: Window) {
+
+
         window.scene = Scene(
                 VBox().addChildren(
-                        Button("确认弹窗").clickBtn {
+                        Button("确认弹窗").clickBN {
                             Alert(Alert.AlertType.CONFIRMATION).apply {
                                 headerText = null
                             }.show()
                         }.preSize(500,60),
-                        Button("报错弹窗").clickBtn {
+                        Button("报错弹窗").clickBN {
                             Alert(Alert.AlertType.ERROR).apply {
                                 headerText = null
                             }.show()
                         }.preSize(500,60),
-                        Button("信息弹窗").clickBtn {
+                        Button("信息弹窗").clickBN {
                             Alert(Alert.AlertType.INFORMATION).apply {
                                 headerText = null
                             }.show()
                         }.preSize(500,60),
-                        Button("空弹窗").clickBtn {
+                        Button("空弹窗").clickBN {
                             Alert(Alert.AlertType.NONE).apply {
                                 headerText = null
                                 dialogPane.buttonTypes.add(ButtonType.CANCEL)
                             }.show()
                         }.preSize(500,60),
-                        Button("警告弹窗").clickBtn {
+                        Button("警告弹窗").clickBN {
                             Alert(Alert.AlertType.WARNING).apply {
                                 headerText = null
                             }.show()
                         }.preSize(500,60),
-                        Button("选择弹窗").clickBtn {
+                        Button("选择弹窗").clickBN {
                             ChoiceDialog<String>("颜色", newFxList<String>().apply { addAll("红","橙","黄") })
                             .apply {
                                 headerText = null
@@ -53,12 +55,12 @@ class AlertDemo : BaseApp(){
                                 }
                             }.show()
                         }.preSize(500,60),
-                        Button("文本输入弹窗").clickBtn {
+                        Button("文本输入弹窗").clickBN {
                             TextInputDialog("这是默认值")
                                     .apply {
                                         headerText = null
 //                                        graphic = null
-                                        (dialogPane.lookupButton(ButtonType.OK) as Button).clickBtn {
+                                        (dialogPane.lookupButton(ButtonType.OK) as Button).clickBN {
                                             editor.text.pln()
                                         }
                                     }.show()
