@@ -1,9 +1,7 @@
 package base.utils
 
-import base.constant.Key
 import com.jacob.activeX.ActiveXComponent
 import com.jacob.com.Dispatch
-import com.sun.jna.ptr.IntByReference
 import java.awt.MouseInfo
 import java.awt.Point
 
