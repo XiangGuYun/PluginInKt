@@ -1,6 +1,5 @@
 package sample.base
 
-import com.sun.javafx.css.Style
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Insets
@@ -209,11 +208,6 @@ interface ViewUtils {
                 StackPane.setMargin(this, Insets(top.toDouble(), right.toDouble(), bottom.toDouble(), left.toDouble()))
             }
         }
-        return this
-    }
-
-    fun <T:Node> T.alignBp(pos: Pos): T {
-        BorderPane.setAlignment(this, pos)
         return this
     }
 

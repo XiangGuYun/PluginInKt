@@ -1,6 +1,7 @@
 package base.jfx.layout
 
 import base.constant.Window
+import base.utils.DmUtils
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.Button
@@ -9,6 +10,7 @@ import sample.base.BaseApp
 
 class VBoxDemo : BaseApp() {
     override fun init(window: Window) {
+
         window.size(480, 720)
         window.scene = Scene(VBox().apply {
             addChildren(

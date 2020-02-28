@@ -33,7 +33,11 @@ interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
         return javaClass.classLoader.getResource(this).toExternalForm()
     }
 
+    val String.file get() = "file:src/main/resources/$this"
 
+    fun s(time: Long){
+        Thread.sleep(time)
+    }
 
     fun Thread.startThread(): Thread {
         this.start()

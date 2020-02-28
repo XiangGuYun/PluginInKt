@@ -24,7 +24,7 @@ class TabPaneDemo : BaseApp() {
                                         Label("色彩$i").preSize(325, 100).bgColor(randomColor()).align(Pos.CENTER)
                                     }
                             )
-                            graphic = IV("image/sanguo.png").fitSize(25, 15)
+                            graphic = IV("image/sanguo.png".file).fitSize(25, 15)
                             isClosable = false //是否可关闭
                             setOnSelectionChanged {
                                 ("TAB事件"+(it.source as Tab).text+(it.source as Tab).isSelected).pln()

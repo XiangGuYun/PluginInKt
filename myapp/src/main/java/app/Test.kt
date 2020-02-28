@@ -1,12 +1,9 @@
 package app
 
-import base.utils.Win32Utils
 
-class Test{
-    companion object : Win32Utils{
-        @JvmStatic
-        fun main(args:Array<String>){
-
-        }
+object Test{
+    @JvmStatic
+    fun main(args:Array<String>){
+        println(7%6)
     }
 }

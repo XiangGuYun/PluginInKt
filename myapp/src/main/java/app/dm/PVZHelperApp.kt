@@ -16,9 +16,9 @@ open class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
         var wh = 0
         //初始化和注册大漠插件
         val dm = initDmCom()
-        dm.reg()
+        dm.reg().pln("注册结果：")
         //开启线程检测游戏进程是否运行
-        Timer().schedule(object:TimerTask(){
+        Timer().schedule(object : TimerTask() {
             override fun run() {
                 wh = dm.findWindow("MainWindow", "Plants vs. Zombies")
                 runOnMainThread {
@@ -28,7 +28,7 @@ open class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
         }, 0, 1000)
 
         tf("tfSunshine").textProperty().addListener { observable, oldValue, newValue ->
-            if(newValue.matches(Regex("^[0-9]*\$")) && newValue.length<=4){
+            if (newValue.matches(Regex("^[0-9]*\$")) && newValue.length <= 4) {
                 tf("tfSunshine").text = newValue
             } else {
                 tf("tfSunshine").text = oldValue

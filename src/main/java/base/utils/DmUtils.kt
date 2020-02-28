@@ -19,10 +19,6 @@ interface DmUtils {
         return Dispatch.call(this, "Reg", "yida94563887ce815854f20ab8c0926f99a987b4cea", "uf3am").int
     }
 
-    fun s(time: Long){
-        Thread.sleep(time)
-    }
-
     /**
      * 获取当前大漠的版本
      */
@@ -43,6 +39,10 @@ interface DmUtils {
 
     fun Dispatch.findWindowEx(parent:Int, windowClass:String?, windowTitle:String?): Int {
         return Dispatch.call(this, "FindWindowEx", parent, windowClass, windowTitle).int
+    }
+
+    fun Dispatch.enumWindow(parent:Int=0, title:String?, class_name:String?, filter:Int=1): String {
+        return Dispatch.call(this, "EnumWindow", parent, title, class_name, filter).string
     }
 
     /**
@@ -124,79 +124,79 @@ interface DmUtils {
     /**
      * 按住某键（根据键位上的字符，例如enter、1、F1、a、B，不区分大小写）
      */
-    fun Dispatch.keyDownChar(vk_str:String): Int {
-        return Dispatch.call(this, "KeyDownChar", vk_str).int
+    fun Dispatch.keyDownChar(vk_str:String): Boolean {
+        return Dispatch.call(this, "KeyDownChar", vk_str).int == 1
     }
 
     /**
      * 按下某键（根据按键码）
      */
-    fun Dispatch.keyPress(vk_code:Int): Int {
-        return Dispatch.call(this, "KeyPress", vk_code).int
+    fun Dispatch.keyPress(vk_code:Int): Boolean {
+        return Dispatch.call(this, "KeyPress", vk_code).int == 1
     }
 
     /**
      * 按下某键（根据键位上的字符，例如enter、1、F1、a、B，不区分大小写）
      */
-    fun Dispatch.keyPressChar(vk_str:String): Int {
-        return Dispatch.call(this, "KeyPressChar", vk_str).int
+    fun Dispatch.keyPressChar(vk_str:String): Boolean {
+        return Dispatch.call(this, "KeyPressChar", vk_str).int == 1
     }
 
     /**
      * 根据指定的字符串序列，依次按顺序按下其中的字符
      * @param delay 按下字符后的间隔时间，单位是毫秒
      */
-    fun Dispatch.keyPressStr(vk_str:String, delay:Int): Int {
-        return Dispatch.call(this, "KeyPressStr", vk_str, delay).int
+    fun Dispatch.keyPressStr(vk_str:String, delay:Int): Boolean {
+        return Dispatch.call(this, "KeyPressStr", vk_str, delay).int == 1
     }
 
     /**
      * 松开某键（根据按键码）
      */
-    fun Dispatch.keyUp(vk_code:Int): Int {
-        return Dispatch.call(this, "KeyUp", vk_code).int
+    fun Dispatch.keyUp(vk_code:Int): Boolean {
+        return Dispatch.call(this, "KeyUp", vk_code).int == 1
     }
 
     /**
      * 松开某键（根据键位上的字符，例如enter、1、F1、a、B，不区分大小写）
      */
-    fun Dispatch.keyUpChar(vk_str:String): Int {
-        return Dispatch.call(this, "KeyUpChar", vk_str).int
+    fun Dispatch.keyUpChar(vk_str:String): Boolean {
+        return Dispatch.call(this, "KeyUpChar", vk_str).int == 1
     }
 
     /**
      * 单击鼠标左键
      */
-    fun Dispatch.leftClick(): Int {
-        return Dispatch.call(this, "LeftClick").int
+    fun Dispatch.leftClick(): Boolean {
+        return Dispatch.call(this, "LeftClick").int == 1
     }
 
     /**
      * 双击鼠标左键
      */
-    fun Dispatch.leftDoubleClick(): Int {
-        return Dispatch.call(this, "LeftDoubleClick").int
+    fun Dispatch.leftDoubleClick(): Boolean {
+        return Dispatch.call(this, "LeftDoubleClick").int == 1
     }
 
     /**
      * 按住鼠标左键
      */
-    fun Dispatch.leftDown(): Int {
-        return Dispatch.call(this, "LeftDown").int
+    fun Dispatch.leftDown(): Boolean {
+        return Dispatch.call(this, "LeftDown").int == 1
     }
 
     /**
      * 松开鼠标左键
      */
-    fun Dispatch.leftUp(): Int {
-        return Dispatch.call(this, "LeftUp").int
+    fun Dispatch.leftUp(): Boolean {
+        return Dispatch.call(this, "LeftUp").int == 1
     }
 
     /**
      * 按下鼠标滚轮
      */
-    fun Dispatch.middleClick(): Int {
-        return Dispatch.call(this, "MiddleClick").int
+    fun Dispatch.middleClick(): Boolean {
+        return Dispatch.call(this, "MiddleClick").int == 1
     }
 
     /**
@@ -223,22 +223,22 @@ interface DmUtils {
     /**
      * 按下鼠标右键
      */
-    fun Dispatch.rightClick(): Int {
-        return Dispatch.call(this, "RightClick").int
+    fun Dispatch.rightClick(): Boolean {
+        return Dispatch.call(this, "RightClick").int == 1
     }
 
     /**
      * 按住鼠标右键
      */
-    fun Dispatch.rightDown(): Int {
-        return Dispatch.call(this, "RightDown").int
+    fun Dispatch.rightDown(): Boolean {
+        return Dispatch.call(this, "RightDown").int == 1
     }
 
     /**
      * 松开鼠标右键
      */
-    fun Dispatch.rightUp(): Int {
-        return Dispatch.call(this, "RightUp").int
+    fun Dispatch.rightUp(): Boolean {
+        return Dispatch.call(this, "RightUp").int == 1
     }
 
     /**
@@ -254,27 +254,27 @@ interface DmUtils {
     /**
      * 设置按键时，键盘按下和弹起的时间间隔
      */
-    fun Dispatch.setKeypadDelay(type:KMType, delay: Int): Int {
+    fun Dispatch.setKeypadDelay(type:KMType, delay: Int): Boolean {
         return Dispatch.call(this, "SetKeypadDelay",
                 when(type){
                     KMType.NORMAL->"normal"
                     KMType.WINDOWS->"windows"
                     else->"dx"
                 },
-                delay).int
+                delay).int == 1
     }
 
     /**
      * 设置鼠标时，鼠标按下和弹起的时间间隔
      */
-    fun Dispatch.setMouseDelay(type:KMType, delay: Int): Int {
+    fun Dispatch.setMouseDelay(type:KMType, delay: Int): Boolean {
         return Dispatch.call(this, "SetMouseDelay",
                 when(type){
                     KMType.NORMAL->"normal"
                     KMType.WINDOWS->"windows"
                     else->"dx"
                 },
-                delay).int
+                delay).int == 1
     }
 
     /**
@@ -288,15 +288,15 @@ interface DmUtils {
     /**
      * 滚轮向下滚
      */
-    fun Dispatch.wheelDown(): Int {
-        return Dispatch.call(this, "WheelDown").int
+    fun Dispatch.wheelDown(): Boolean {
+        return Dispatch.call(this, "WheelDown").int == 1
     }
 
     /**
      * 滚轮向上滚
      */
-    fun Dispatch.wheelUp(): Int {
-        return Dispatch.call(this, "WheelUp").int
+    fun Dispatch.wheelUp(): Boolean {
+        return Dispatch.call(this, "WheelUp").int == 1
     }
 
     /*******************************************************************************************************************
@@ -335,7 +335,7 @@ interface DmUtils {
      * @param dir 整形数:查找方向 0: 从左到右,从上到下 1: 从左到右,从下到上 2: 从右到左,从上到下 3: 从右到左, 从下到上
      */
     fun Dispatch.findPic(x1:Int, y1:Int, x2:Int, y2:Int, picName:String, deltaColor:String, sim:Double, dir:DIR = DIR.LR_TB): String {
-        val result = Dispatch.call(this, "FindPicE", x1, y1, x2, y2, picName, deltaColor, sim,
+        val result = Dispatch.call(this, "FindPicE", x1, y1, x2, y2, "$picName.bmp", deltaColor, sim,
                 when(dir){
                     DIR.LR_TB->0
                     DIR.LR_BT->1
@@ -615,6 +615,12 @@ interface DmUtils {
         this.leftClick()
     }
 
+    fun Dispatch.click(x:Int, y:Int) {
+        this.moveTo(x, y)
+        Thread.sleep(100)
+        this.leftClick()
+    }
+
     fun Dispatch.doubleClick(result: String) {
         val arr = result.split("|")
         Thread.sleep(100)
@@ -624,5 +630,14 @@ interface DmUtils {
         Thread.sleep(100)
         this.leftClick()
     }
-    
+
+    fun Dispatch.doubleClick(x:Int, y: Int) {
+        Thread.sleep(100)
+        this.moveTo(x, y)
+        Thread.sleep(100)
+        this.leftClick()
+        Thread.sleep(100)
+        this.leftClick()
+    }
+
 }

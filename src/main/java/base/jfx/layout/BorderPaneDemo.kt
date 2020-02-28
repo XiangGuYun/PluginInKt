@@ -14,7 +14,7 @@ class BorderPaneDemo : BaseApp() {
         window.size(720, 480)
         window.scene = Scene(BorderPane().apply {
             top = Label("标题").textSize(20).align(Pos.CENTER).preSize(window.width/4,50)
-                    .bgColor("#ff6666").marginBp(5,5,5,5).alignBp(Pos.CENTER)
+                    .bgColor("#ff6666").marginBp(5,5,5,5)
             bottom = AnchorPane().preSize(window.width,50).bgColor("#66fe71")
                     .marginBp(5,5,5,5)
             center = AnchorPane().bgColor("#666666")

@@ -11,8 +11,8 @@ import java.io.File
 @AppTitle("")
 class ModelApp : BaseApp(){
 
-    override fun init(wd: Window) {
-        alert("这个世界")
+    override fun init(window: Window) {
+
     }
 
     companion object {
