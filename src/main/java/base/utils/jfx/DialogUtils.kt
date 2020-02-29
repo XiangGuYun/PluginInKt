@@ -6,12 +6,13 @@ import sample.base.ViewUtils
 
 interface DialogUtils : ViewUtils {
 
-    fun alert(content: Any, title: String = "提示") {
+    fun alert(content: Any, title: String = "提示"): Alert {
         val alert = Alert(Alert.AlertType.INFORMATION)
         alert.title = title
         alert.headerText = null
         alert.contentText = content.toString()
         alert.show()
+        return alert
     }
 
     fun alertW(content: Any, title: String = "警告") {
@@ -41,15 +42,17 @@ interface DialogUtils : ViewUtils {
     /**
      * 显示输入对话框
      */
-    fun showInputDialog(text: String = "", defValue: String = "", getResult: (result: String) -> Unit) {
-        TextInputDialog(defValue)
+    fun showInputDialog(text: String = "", defValue: String = "", getResult: (result: String) -> Unit): TextInputDialog {
+        val dialog = TextInputDialog(defValue)
                 .apply {
                     headerText = null
                     title = text
                     (dialogPane.lookupButton(ButtonType.OK) as Button).clickBN {
                         getResult.invoke(editor.text)
                     }
-                }.show()
+                }
+        dialog.show()
+        return dialog
     }
 
     /**

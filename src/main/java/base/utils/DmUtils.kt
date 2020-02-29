@@ -15,7 +15,7 @@ interface DmUtils {
         return ActiveXComponent("dm.dmsoft").`object`
     }
 
-    fun Dispatch.reg():Int{
+    fun Dispatch.reg(): Int {
         return Dispatch.call(this, "Reg", "yida94563887ce815854f20ab8c0926f99a987b4cea", "uf3am").int
     }
 
@@ -33,35 +33,35 @@ interface DmUtils {
     /**
      * 获取窗口句柄
      */
-    fun Dispatch.findWindow(windowClass:String?, windowTitle:String?): Int {
+    fun Dispatch.findWindow(windowClass: String?, windowTitle: String?): Int {
         return Dispatch.call(this, "FindWindow", windowClass, windowTitle).int
     }
 
-    fun Dispatch.findWindowEx(parent:Int, windowClass:String?, windowTitle:String?): Int {
+    fun Dispatch.findWindowEx(parent: Int, windowClass: String?, windowTitle: String?): Int {
         return Dispatch.call(this, "FindWindowEx", parent, windowClass, windowTitle).int
     }
 
-    fun Dispatch.enumWindow(parent:Int=0, title:String?, class_name:String?, filter:Int=1): String {
+    fun Dispatch.enumWindow(parent: Int = 0, title: String?, class_name: String?, filter: Int = 1): String {
         return Dispatch.call(this, "EnumWindow", parent, title, class_name, filter).string
     }
 
     /**
      * 设置窗口宽高
      */
-    fun Dispatch.setWindowSize(windHandle:Long, width:Int, height:Int): Boolean {
+    fun Dispatch.setWindowSize(windHandle: Long, width: Int, height: Int): Boolean {
         val result = Dispatch.call(this, "SetWindowSize", windHandle, width, height).int
-        return result==1
+        return result == 1
     }
 
     /**
      * 获取窗口标题
      */
-    fun Dispatch.getWindowTitle(windHandle:Long): String {
+    fun Dispatch.getWindowTitle(windHandle: Long): String {
         return Dispatch.call(this, "GetWindowTitle", windHandle).toString()
     }
 
-    fun Dispatch.getWindowRect(wh:Int, x1:Int, y1:Int,
-                               x2:Int, y2:Int): Boolean {
+    fun Dispatch.getWindowRect(wh: Int, x1: Int, y1: Int,
+                               x2: Int, y2: Int): Boolean {
         return Dispatch.call(this, "GetWindowRect", wh,
                 x1, y1, x2, y2).int == 1
     }
@@ -69,32 +69,32 @@ interface DmUtils {
     /**
      * 获取窗口类名
      */
-    fun Dispatch.getWindowClass(wh:Int): String {
+    fun Dispatch.getWindowClass(wh: Int): String {
         return Dispatch.call(this, "GetWindowClass", wh).toString()
     }
 
     /**
      * 获取窗口进程ID
      */
-    fun Dispatch.getWindowProcessId(wh:Int):Int {
+    fun Dispatch.getWindowProcessId(wh: Int): Int {
         return Dispatch.call(this, "GetWindowProcessId", wh).int
     }
 
     /**
      * 向指定窗口发送文本数据
      */
-    fun Dispatch.sendString(wh:Int, str:String): Boolean {
+    fun Dispatch.sendString(wh: Int, str: String): Boolean {
         return Dispatch.call(this, "SendString", wh, str).int == 1
     }
 
-    fun Dispatch.sendString2(wh:Int, str:String): Boolean {
+    fun Dispatch.sendString2(wh: Int, str: String): Boolean {
         return Dispatch.call(this, "SendString2", wh, str).int == 1
     }
 
     /**
      * 设置窗口标题
      */
-    fun Dispatch.setWindowText(wh:Int, title:String): Boolean {
+    fun Dispatch.setWindowText(wh: Int, title: String): Boolean {
         return Dispatch.call(this, "SetWindowText", wh, title).int == 1
     }
 
@@ -117,28 +117,28 @@ interface DmUtils {
     /**
      * 按住某键（根据按键码）
      */
-    fun Dispatch.keyDown(vk_code:Int): Boolean {
+    infix fun Dispatch.keyDown(vk_code: Int): Boolean {
         return Dispatch.call(this, "KeyDown", vk_code).int == 1
     }
 
     /**
      * 按住某键（根据键位上的字符，例如enter、1、F1、a、B，不区分大小写）
      */
-    fun Dispatch.keyDownChar(vk_str:String): Boolean {
+    fun Dispatch.keyDownChar(vk_str: String): Boolean {
         return Dispatch.call(this, "KeyDownChar", vk_str).int == 1
     }
 
     /**
      * 按下某键（根据按键码）
      */
-    fun Dispatch.keyPress(vk_code:Int): Boolean {
+    infix fun Dispatch.keyPress(vk_code: Int): Boolean {
         return Dispatch.call(this, "KeyPress", vk_code).int == 1
     }
 
     /**
      * 按下某键（根据键位上的字符，例如enter、1、F1、a、B，不区分大小写）
      */
-    fun Dispatch.keyPressChar(vk_str:String): Boolean {
+    fun Dispatch.keyPressChar(vk_str: String): Boolean {
         return Dispatch.call(this, "KeyPressChar", vk_str).int == 1
     }
 
@@ -146,21 +146,21 @@ interface DmUtils {
      * 根据指定的字符串序列，依次按顺序按下其中的字符
      * @param delay 按下字符后的间隔时间，单位是毫秒
      */
-    fun Dispatch.keyPressStr(vk_str:String, delay:Int): Boolean {
+    fun Dispatch.keyPressStr(vk_str: String, delay: Int): Boolean {
         return Dispatch.call(this, "KeyPressStr", vk_str, delay).int == 1
     }
 
     /**
      * 松开某键（根据按键码）
      */
-    fun Dispatch.keyUp(vk_code:Int): Boolean {
+    infix fun Dispatch.keyUp(vk_code: Int): Boolean {
         return Dispatch.call(this, "KeyUp", vk_code).int == 1
     }
 
     /**
      * 松开某键（根据键位上的字符，例如enter、1、F1、a、B，不区分大小写）
      */
-    fun Dispatch.keyUpChar(vk_str:String): Boolean {
+    fun Dispatch.keyUpChar(vk_str: String): Boolean {
         return Dispatch.call(this, "KeyUpChar", vk_str).int == 1
     }
 
@@ -202,21 +202,21 @@ interface DmUtils {
     /**
      * 移动鼠标到某坐标点
      */
-    fun Dispatch.moveTo(x:Int, y:Int): Boolean {
+    fun Dispatch.moveTo(x: Int, y: Int): Boolean {
         return Dispatch.call(this, "MoveTo", x, y).int == 1
     }
 
     /**
      * 偏移鼠标坐标点
      */
-    fun Dispatch.moveR(x:Int, y:Int){
+    fun Dispatch.moveR(x: Int, y: Int) {
         Dispatch.call(this, "MoveR", x, y)
     }
 
     /**
      * 移动鼠标到指定区域的随机一个点上
      */
-    fun Dispatch.moveToEx(x:Int, y:Int, w:Int, h:Int): String {
+    fun Dispatch.moveToEx(x: Int, y: Int, w: Int, h: Int): String {
         return Dispatch.call(this, "MoveToEx", x, y, w, h).string
     }
 
@@ -247,19 +247,19 @@ interface DmUtils {
      * WINDOWS：对应windows键盘，默认内部延时为10ms；对应windows鼠标，默认内部延时为10ms
      * DX：对应dx键盘，默认内部延时为50ms；对应dx鼠标，默认内部延时为40ms
      */
-    enum class KMType{
+    enum class KMType {
         NORMAL, WINDOWS, DX
     }
 
     /**
      * 设置按键时，键盘按下和弹起的时间间隔
      */
-    fun Dispatch.setKeypadDelay(type:KMType, delay: Int): Boolean {
+    fun Dispatch.setKeypadDelay(type: KMType, delay: Int): Boolean {
         return Dispatch.call(this, "SetKeypadDelay",
-                when(type){
-                    KMType.NORMAL->"normal"
-                    KMType.WINDOWS->"windows"
-                    else->"dx"
+                when (type) {
+                    KMType.NORMAL -> "normal"
+                    KMType.WINDOWS -> "windows"
+                    else -> "dx"
                 },
                 delay).int == 1
     }
@@ -267,12 +267,12 @@ interface DmUtils {
     /**
      * 设置鼠标时，鼠标按下和弹起的时间间隔
      */
-    fun Dispatch.setMouseDelay(type:KMType, delay: Int): Boolean {
+    fun Dispatch.setMouseDelay(type: KMType, delay: Int): Boolean {
         return Dispatch.call(this, "SetMouseDelay",
-                when(type){
-                    KMType.NORMAL->"normal"
-                    KMType.WINDOWS->"windows"
-                    else->"dx"
+                when (type) {
+                    KMType.NORMAL -> "normal"
+                    KMType.WINDOWS -> "windows"
+                    else -> "dx"
                 },
                 delay).int == 1
     }
@@ -281,7 +281,7 @@ interface DmUtils {
      * 等待指定的按键按下 (前台,不是后台)
      * @param time_out 等待多久，单位毫秒。如果是0，表示一直等待
      */
-    fun Dispatch.waitKey(vk_code:Int,time_out:Int){
+    fun Dispatch.waitKey(vk_code: Int, time_out: Int) {
         Dispatch.call(this, "WaitKey", vk_code, time_out)
     }
 
@@ -306,19 +306,19 @@ interface DmUtils {
     /**
      * 截图
      */
-    fun Dispatch.capture(x1:Int, y1:Int, x2:Int, y2:Int, filePath:String): Boolean {
+    fun Dispatch.capture(x1: Int, y1: Int, x2: Int, y2: Int, filePath: String): Boolean {
         return Dispatch.call(this, "Capture", x1, y1, x2, y2, filePath).int == 1
     }
 
 
-    fun Dispatch.getColor(x:Int, y:Int): String {
+    fun Dispatch.getColor(x: Int, y: Int): String {
         return Dispatch.call(this, "GetColor", x, y).string
     }
 
     /*
     0: 从左到右,从上到下 1: 从左到右,从下到上 2: 从右到左,从上到下 3: 从右到左, 从下到上
      */
-    enum class DIR{
+    enum class DIR {
         LR_TB, LR_BT, RL_TB, RL_BT
     }
 
@@ -334,15 +334,15 @@ interface DmUtils {
      * @param sim 双精度浮点数:相似度,取值范围0.1-1.0
      * @param dir 整形数:查找方向 0: 从左到右,从上到下 1: 从左到右,从下到上 2: 从右到左,从上到下 3: 从右到左, 从下到上
      */
-    fun Dispatch.findPic(x1:Int, y1:Int, x2:Int, y2:Int, picName:String, deltaColor:String, sim:Double, dir:DIR = DIR.LR_TB): String {
-        val result = Dispatch.call(this, "FindPicE", x1, y1, x2, y2, "$picName.bmp", deltaColor, sim,
-                when(dir){
-                    DIR.LR_TB->0
-                    DIR.LR_BT->1
-                    DIR.RL_TB->2
-                    else->3
+    fun Dispatch.findPic(x1: Int, y1: Int, x2: Int, y2: Int, name: String, deltaColor: String="101010", sim: Double=0.9, dir: DIR = DIR.LR_TB): String {
+        val result = Dispatch.call(this, "FindPicE", x1, y1, x2, y2, "$name.bmp", deltaColor, sim,
+                when (dir) {
+                    DIR.LR_TB -> 0
+                    DIR.LR_BT -> 1
+                    DIR.RL_TB -> 2
+                    else -> 3
                 }).string
-        println("==========FIND_PIC:图片\"${picName}\"查找结果是$result")
+        println("==========FIND_PIC:图片\"${name}\"查找结果是$result")
         return result
     }
 
@@ -350,15 +350,15 @@ interface DmUtils {
      * 系统模块
      *******************************************************************************************************************/
 
-    fun Dispatch.runApp(appPath:String, mode:Int): Boolean {
+    fun Dispatch.runApp(appPath: String, mode: Int): Boolean {
         return Dispatch.call(this, "RunApp", appPath, mode).int == 1
     }
 
-    fun Dispatch.setClipboard(value:String): Boolean {
+    fun Dispatch.setClipboard(value: String): Boolean {
         return Dispatch.call(this, "SetClipboard", value).int == 1
     }
 
-    fun Dispatch.getClipboard():String{
+    fun Dispatch.getClipboard(): String {
         return Dispatch.call(this, "GetClipboard").string
     }
 
@@ -367,7 +367,7 @@ interface DmUtils {
      * 后台模块
      *******************************************************************************************************************/
 
-    enum class Display{
+    enum class Display {
         NORMAL,
         GDI,
         GDI2,
@@ -376,7 +376,7 @@ interface DmUtils {
         DX
     }
 
-    enum class Mouse{
+    enum class Mouse {
         NORMAL,
         WINDOWS,
         WINDOWS2,
@@ -385,7 +385,7 @@ interface DmUtils {
         DX2
     }
 
-    enum class Keyboard{
+    enum class Keyboard {
         NORMAL,
         WINDOWS,
         DX
@@ -394,9 +394,9 @@ interface DmUtils {
     /**
      * 绑定窗口
      */
-    fun Dispatch.bindWindow(hwnd:Int, display:Display,mouse:Mouse,keyboard:Keyboard): Boolean {
+    fun Dispatch.bindWindow(hwnd: Int, display: Display, mouse: Mouse, keyboard: Keyboard): Boolean {
         return Dispatch.call(this, "BindWindowEx", hwnd,
-                when(display){
+                when (display) {
                     Display.NORMAL -> "normal"
                     Display.GDI -> "gdi"
                     Display.GDI2 -> "gdi2"
@@ -404,7 +404,7 @@ interface DmUtils {
                     Display.DX3 -> "dx3"
                     else -> "dx.graphic.3d"
                 },
-                when(mouse){
+                when (mouse) {
                     Mouse.NORMAL -> "normal"
                     Mouse.WINDOWS -> "windows"
                     Mouse.WINDOWS2 -> "windows2"
@@ -412,7 +412,7 @@ interface DmUtils {
                     Mouse.DX -> "dx"
                     else -> "dx2"
                 },
-                when(keyboard){
+                when (keyboard) {
                     Keyboard.NORMAL -> "normal"
                     Keyboard.WINDOWS -> "windows"
                     else -> "dx.public.active.api|dx.public.active.message| dx.keypad.state.api|dx.keypad.api|dx.keypad.input.lock.api"
@@ -422,14 +422,14 @@ interface DmUtils {
         ).int == 1
     }
 
-    fun Dispatch.enableFakeActive(enable:Boolean):Boolean{
-        return Dispatch.call(this, "EnableFakeActive", if(enable) 1 else 0).int == 1
+    fun Dispatch.enableFakeActive(enable: Boolean): Boolean {
+        return Dispatch.call(this, "EnableFakeActive", if (enable) 1 else 0).int == 1
     }
 
     /**
      * 解除绑定窗口,并释放系统资源
      */
-    fun Dispatch.unBindWindow():Boolean{
+    fun Dispatch.unBindWindow(): Boolean {
         return Dispatch.call(this, "UnBindWindow").int == 1
     }
 
@@ -441,7 +441,7 @@ interface DmUtils {
     /**
      * 设置全局路径,设置了此路径后,所有接口调用中,相关的文件都相对于此路径. 比如图片,字库等
      */
-    fun Dispatch.setPath(path:String) : Boolean{
+    fun Dispatch.setPath(path: String): Boolean {
         return Dispatch.call(this, "SetPath", path).int == 1
     }
 
@@ -452,7 +452,7 @@ interface DmUtils {
     /**
      * 对指定地址写入二进制数据
      */
-    fun Dispatch.writeData(wh:Int, addr:String, data:String) : Boolean{
+    fun Dispatch.writeData(wh: Int, addr: String, data: String): Boolean {
         return Dispatch.call(this, "WriteData", wh, addr, data).int == 1
     }
 
@@ -463,7 +463,7 @@ interface DmUtils {
      * 1 : Unicode字符串
      * 2 : UTF8字符串
      */
-    fun Dispatch.writeString(wh:Int, addr: String, type: Int, data: String): Boolean {
+    fun Dispatch.writeString(wh: Int, addr: String, type: Int, data: String): Boolean {
         return Dispatch.call(this, "WriteString", wh, addr, type, data).int == 1
     }
 
@@ -487,20 +487,20 @@ interface DmUtils {
      *  5 : 16位无符号
      *  6 : 8位无符号
      */
-    fun Dispatch.readInt(wh: Int, addr: String, type:Int): Long {
+    fun Dispatch.readInt(wh: Int, addr: String, type: Int): Long {
         return Dispatch.call(this, "ReadInt", wh, addr, type).long
     }
 
-    enum class Type{
+    enum class Type {
         BIT32, BIT16, BIT8
     }
 
     /**
      * 对指定地址写入整数数值，类型可以是8位，16位 或者 32位
      */
-    fun Dispatch.writeInt(wh:Int, addr:String, type:Type, intValue:Int) : Boolean{
+    fun Dispatch.writeInt(wh: Int, addr: String, type: Type, intValue: Int): Boolean {
         return Dispatch.call(this, "WriteInt", wh, addr,
-                when(type){
+                when (type) {
                     Type.BIT32 -> 0
                     Type.BIT16 -> 1
                     else -> 2
@@ -516,7 +516,7 @@ interface DmUtils {
      * @param index 整形数:字库的序号,取值为0-9,目前最多支持10个字库
      * @param file 字符串:字库文件名
      */
-    fun Dispatch.setDict(index:Int, file:String): Boolean {
+    fun Dispatch.setDict(index: Int, file: String): Boolean {
         return Dispatch.call(this, "SetDict", index, file).int == 1
     }
 
@@ -532,7 +532,7 @@ interface DmUtils {
      * @param sim 双精度浮点数:相似度,取值范围0.1-1.0
      * @return 返回识别到的字符串
      */
-    fun Dispatch.ocr(x1:Int, y1:Int, x2:Int, y2:Int, color_format:String, sim:Double): String {
+    fun Dispatch.ocr(x1: Int, y1: Int, x2: Int, y2: Int, color_format: String, sim: Double): String {
         return Dispatch.call(this, "Ocr", x1, y1, x2, y2, color_format, sim).string
     }
 
@@ -556,15 +556,16 @@ interface DmUtils {
      * "张三"肯定是找不到的，但是用FindStrFastE却可以找到，因为"和"这个字符没有列入查找计划中
      * 所以，在使用此函数时，也要特别注意这一点。
      */
-    fun Dispatch.findStrFast(x1:Int, y1:Int, x2:Int, y2:Int, string: String, color_format:String, sim:Double): String {
+    fun Dispatch.findStrFast(x1: Int, y1: Int, x2: Int, y2: Int, string: String, color_format: String, sim: Double): String {
         val result = Dispatch.call(this, "FindStrFastE", x1, y1, x2, y2, string, color_format, sim).string
         println("##########文字\"${string}\"的查找结果是$result")
         return result
     }
+
     /**
      * 绑定雷电模拟器
      */
-    fun Dispatch.bindLDMonitor(title:String="雷电模拟器"): Boolean {
+    fun Dispatch.bindLDMonitor(title: String = "雷电模拟器"): Boolean {
         val wh1 = this.findWindow("LDPlayerMainFrame", title)
         val wh2 = this.findWindowEx(wh1, "RenderWindow", "TheRender")
         return this.bindWindow(wh2, DmUtils.Display.NORMAL, DmUtils.Mouse.WINDOWS, DmUtils.Keyboard.WINDOWS)
@@ -615,7 +616,7 @@ interface DmUtils {
         this.leftClick()
     }
 
-    fun Dispatch.click(x:Int, y:Int) {
+    fun Dispatch.click(x: Int, y: Int) {
         this.moveTo(x, y)
         Thread.sleep(100)
         this.leftClick()
@@ -631,7 +632,7 @@ interface DmUtils {
         this.leftClick()
     }
 
-    fun Dispatch.doubleClick(x:Int, y: Int) {
+    fun Dispatch.doubleClick(x: Int, y: Int) {
         Thread.sleep(100)
         this.moveTo(x, y)
         Thread.sleep(100)

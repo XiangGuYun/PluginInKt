@@ -1,11 +1,9 @@
 package app.dnf
 
-import base.utils.DmUtils
 import base.constant.Key
 import base.utils.CommonUtils
+import base.utils.DmUtils
 import com.jacob.com.Dispatch
-import java.awt.Robot
-import java.awt.event.InputEvent
 
 interface DnfUtils : DmUtils, CommonUtils {
 
@@ -15,8 +13,21 @@ interface DnfUtils : DmUtils, CommonUtils {
     fun Dispatch.bindDNF(): Boolean {
         return Dispatch.call(this, "BindWindowEx", findWindow("地下城与勇士", "地下城与勇士"),
                 "dx.graphic.3d",
-                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.focus.input.api|dx.mouse.focus.input.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.state.message|dx.mouse.api|dx.mouse.cursor|dx.mouse.raw.input|dx.mouse.input.lock.api2|dx.mouse.input.lock.api3",
-//                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.api|dx.mouse.cursor",//
+//                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.focus.input.api|dx.mouse.focus.input.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.state.message|dx.mouse.api|dx.mouse.cursor|dx.mouse.raw.input|dx.mouse.input.lock.api2|dx.mouse.input.lock.api3",
+                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.api|dx.mouse.cursor",//
+                "dx.keypad.input.lock.api|dx.keypad.state.api|dx.keypad.api|dx.keypad.raw.input",//|
+                "dx.public.active.api|dx.public.active.message|dx.public.hide.dll|dx.public.input.ime|dx.public.graphic.protect|dx.public.anti.api|dx.public.km.protect|dx.public.prevent.block|dx.public.down.cpu",
+                0).int == 1
+    }
+
+    /**
+     * 绑定DNF窗口，需要传入窗口句柄
+     */
+    fun Dispatch.bindDNF(wh:Int): Boolean {
+        return Dispatch.call(this, "BindWindowEx", wh,
+                "dx.graphic.3d",
+//                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.focus.input.api|dx.mouse.focus.input.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.state.message|dx.mouse.api|dx.mouse.cursor|dx.mouse.raw.input|dx.mouse.input.lock.api2|dx.mouse.input.lock.api3",
+                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.api|dx.mouse.cursor",//
                 "dx.keypad.input.lock.api|dx.keypad.state.api|dx.keypad.api|dx.keypad.raw.input", "dx.public.active.api|dx.public.active.message|dx.public.hide.dll|dx.public.input.ime|dx.public.graphic.protect|dx.public.anti.api|dx.public.km.protect|dx.public.prevent.block|dx.public.down.cpu", 0).int == 1
     }
 
@@ -42,10 +53,10 @@ interface DnfUtils : DmUtils, CommonUtils {
      * 角色加BUFF
      */
     fun Dispatch.buff() {
-        keyPress(Key.right)
-        Thread.sleep(50)
-        keyPress(Key.right)
-        Thread.sleep(50)
+        keyPress(RIGHT)
+        s(50.r())
+        keyPress(RIGHT)
+        s(50.r())
         keyPress(Key.space)
     }
 
@@ -54,17 +65,17 @@ interface DnfUtils : DmUtils, CommonUtils {
      */
     fun Dispatch.run(dir: Dir = Dir.RIGHT, time: Long = 2000) {
         val key = when (dir) {
-            Dir.UP -> Key.up
-            Dir.DOWN -> Key.down
-            Dir.LEFT -> Key.left
-            Dir.RIGHT -> Key.right
+            Dir.UP -> UP
+            Dir.DOWN -> DOWN
+            Dir.LEFT -> LEFT
+            Dir.RIGHT -> RIGHT
         }
         keyPress(key)
-        Thread.sleep(30)
+        s(30.r())
         keyPress(key)
-        Thread.sleep(30)
+        s(30.r())
         keyDown(key)
-        Thread.sleep(time)
+        s(time.toInt())
         keyUp(key)
     }
 
@@ -75,7 +86,7 @@ interface DnfUtils : DmUtils, CommonUtils {
         keyCodes.forEach {
             keyDown(it)
         }
-        s(keepTime)
+        s(keepTime.toInt())
         keyCodes.forEach {
             keyUp(it)
         }
@@ -87,10 +98,10 @@ interface DnfUtils : DmUtils, CommonUtils {
     fun Dispatch.keepDownKeyRun(keepTime: Long, vararg keyCodes: Int) {
         keyCodes.forEach {
             keyPress(it)
-            s(30)
+            s(30.r(5))
             keyDown(it)
         }
-        s(keepTime.toLong())
+        s(keepTime.toInt())
         keyCodes.forEach {
             keyUp(it)
         }
@@ -99,7 +110,7 @@ interface DnfUtils : DmUtils, CommonUtils {
     /**
      * 按下某键位，并在按下的前后添加延迟时间
      */
-    fun Dispatch.keyPressDelay(kc: Int, time: Long) {
+    fun Dispatch.keyPressDelay(kc: Int, time: Int) {
         s(time)
         keyPress(kc)
         s(time)
@@ -110,9 +121,9 @@ interface DnfUtils : DmUtils, CommonUtils {
      */
     fun Dispatch.autoPick() {
         this.keyPress(Key.enter)
-        s(100)
+        s(100.r())
         this.sendString2(this.findWindow("地下城与勇士", "地下城与勇士"), "//移动物品")
-        s(100)
+        s(100.r())
         this.keyPress(Key.enter)
     }
 
@@ -120,56 +131,112 @@ interface DnfUtils : DmUtils, CommonUtils {
      * 向左走一段时间
      */
     fun Dispatch.walkLeft(time: Int) {
-        this.keepDownKey(time.toLong(), Key.left)
+        this.keepDownKey(time.toLong(), LEFT)
     }
 
     /**
      * 向上走一段时间
      */
     fun Dispatch.walkUp(time: Int) {
-        this.keepDownKey(time.toLong(), Key.up)
+        this.keepDownKey(time.toLong(), UP)
     }
 
     /**
      * 向右走一段时间
      */
     fun Dispatch.walkRight(time: Int) {
-        this.keepDownKey(time.toLong(), Key.right)
+        this.keepDownKey(time.toLong(), RIGHT)
     }
 
     /**
      * 向下走一段时间
      */
     fun Dispatch.walkDown(time: Int) {
-        this.keepDownKey(time.toLong(), Key.down)
+        this.keepDownKey(time.toLong(), DOWN)
+    }
+
+    /**
+     * 向左上走一段时间
+     */
+    fun Dispatch.walkLeftUp(time: Int) {
+        this.keepDownKey(time.toLong(), LEFT, UP)
+    }
+
+    /**
+     * 向右上走一段时间
+     */
+    fun Dispatch.walkRightUp(time: Int) {
+        this.keepDownKey(time.toLong(), RIGHT, UP)
+    }
+
+    /**
+     * 向左下走一段时间
+     */
+    fun Dispatch.walkLeftDown(time: Int) {
+        this.keepDownKey(time.toLong(), LEFT, DOWN)
+    }
+
+    /**
+     * 向右下走一段时间
+     */
+    fun Dispatch.walkRightDown(time: Int) {
+        this.keepDownKey(time.toLong(), RIGHT, DOWN)
     }
 
     /**
      * 向左跑一段时间
      */
     fun Dispatch.runLeft(time: Int) {
-        this.keepDownKeyRun(time.toLong(), Key.left)
+        this.keepDownKeyRun(time.toLong(), LEFT)
     }
 
     /**
      * 向上跑一段时间
      */
     fun Dispatch.runUp(time: Int) {
-        this.keepDownKeyRun(time.toLong(), Key.up)
+        this.keepDownKeyRun(time.toLong(), UP)
     }
 
     /**
      * 向右跑一段时间
      */
     fun Dispatch.runRight(time: Int) {
-        this.keepDownKeyRun(time.toLong(), Key.right)
+        this.keepDownKeyRun(time.toLong(), RIGHT)
     }
 
     /**
      * 向下跑一段时间
      */
     fun Dispatch.runDown(time: Int) {
-        this.keepDownKeyRun(time.toLong(), Key.down)
+        this.keepDownKeyRun(time.toLong(), DOWN)
+    }
+
+    /**
+     * 向左上跑一段时间
+     */
+    fun Dispatch.runLeftUp(time: Int) {
+        this.keepDownKeyRun(time.toLong(), LEFT, UP)
+    }
+
+    /**
+     * 向左上跑一段时间
+     */
+    fun Dispatch.runRightUp(time: Int) {
+        this.keepDownKeyRun(time.toLong(), RIGHT, UP)
+    }
+
+    /**
+     * 向左下跑一段时间
+     */
+    fun Dispatch.runLeftDown(time: Int) {
+        this.keepDownKeyRun(time.toLong(), LEFT, DOWN)
+    }
+
+    /**
+     * 向右下跑一段时间
+     */
+    fun Dispatch.runRightDown(time: Int) {
+        this.keepDownKeyRun(time.toLong(),RIGHT, DOWN)
     }
 
     /**
@@ -177,9 +244,9 @@ interface DnfUtils : DmUtils, CommonUtils {
      */
     fun Dispatch.goToCharacterPage() {
         this.keyPress(Key.esc)
-        s(100)
-        this.moveTo(682*2/3, 679*2/3)
-        s(100)
+        s(100.r())
+        this.moveTo(682 * 2 / 3, 679 * 2 / 3)
+        s(100.r())
         this.leftDoubleClick()
     }
 
@@ -188,12 +255,23 @@ interface DnfUtils : DmUtils, CommonUtils {
      */
     fun Dispatch.selectCharacter(pos: Int) {
         if (pos < 1) return
-        this.moveTo(140*2/3 + 180*2/3 * ((pos - 1) % 6), 300*2/3 + ((pos - 1) / 6) * 300*2/3)
-        s(100)
+        this.moveTo(140 * 2 / 3 + 180 * 2 / 3 * ((pos - 1) % 6), 300 * 2 / 3 + ((pos - 1) / 6) * 300 * 2 / 3)
+        s(100.r())
         this.leftDoubleClick()
-        s(100)
-        this.moveTo(700*2/3, 800*2/3)
-        s(100)
+        s(100.r())
+        this.moveTo(700 * 2 / 3, 800 * 2 / 3)
+        s(100.r())
+        this.leftDoubleClick()
+    }
+
+    /**
+     * 选择下一个角色
+     */
+    fun Dispatch.selectNextCharacter(){
+        this.keyPress(RIGHT)
+        s(1000.r())
+        this.moveTo(700 * 2 / 3, 800 * 2 / 3)
+        s(100.r())
         this.leftDoubleClick()
     }
 

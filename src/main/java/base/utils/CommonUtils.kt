@@ -19,7 +19,7 @@ import sample.base.ViewUtils
 import java.util.*
 
 interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
-        , WindowUtils, TextFieldUtils, MenuUtils, JseUtils {
+        , WindowUtils, TextFieldUtils, MenuUtils, JseUtils, KeyUtils {
     /**
      * 运行应用程序
      */
@@ -35,8 +35,8 @@ interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
 
     val String.file get() = "file:src/main/resources/$this"
 
-    fun s(time: Long){
-        Thread.sleep(time)
+    fun s(time: Int){
+        Thread.sleep(time.toLong())
     }
 
     fun Thread.startThread(): Thread {
@@ -98,6 +98,27 @@ interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
 
     fun finish(){
         Platform.exit()
+    }
+
+    /**
+     * 取随机数，取值范围为“原值-range ~ 原值"
+     */
+    fun Int.ru(range: Int = this/10): Int {
+        return this + (1..range).shuffled().last()
+    }
+
+    /**
+     * 取随机数，取值范围为“原值 ~ 原值+range"
+     */
+    fun Int.rd(range: Int = this/10): Int {
+        return this - (1..range).shuffled().last()
+    }
+
+    /**
+     * 取随机数，取值范围为“原值-range ~ 原值+range"
+     */
+    fun Int.r(range: Int = this/10): Int {
+        return this - range + (1..range).shuffled().last()*2
     }
 
 

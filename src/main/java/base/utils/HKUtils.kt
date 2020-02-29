@@ -27,10 +27,10 @@ interface HKUtils {
     }
      */
 
-    val CTRL get() = JIntellitype.MOD_CONTROL
-    val SHIFT get() = JIntellitype.MOD_SHIFT
-    val ALT get() = JIntellitype.MOD_ALT
-    val WIN get() = JIntellitype.MOD_WIN
+    val _CTRL get() = JIntellitype.MOD_CONTROL
+    val _SHIFT get() = JIntellitype.MOD_SHIFT
+    val _ALT get() = JIntellitype.MOD_ALT
+    val _WIN get() = JIntellitype.MOD_WIN
 
     /**
      * 注册热键
