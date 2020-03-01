@@ -3,6 +3,7 @@ package app.dm
 import base.constant.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
+import base.utils.dm.MemoryUtils
 import sample.base.BaseApp
 import java.util.*
 
@@ -46,7 +47,7 @@ open class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
                     //根据一级偏移地址获取二级偏移地址
                     val second = (dm.readInt(wh, first, 0) + "5578".toInt(16)).toString(16)
                     //修改阳光数量
-                    dm.writeInt(wh, second, DmUtils.Type.BIT32, tf("tfSunshine").text.toInt())
+                    dm.writeInt(wh, second, MemoryUtils.Type.BIT32, tf("tfSunshine").text.toInt())
                 }
             }
         }

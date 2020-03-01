@@ -3,6 +3,7 @@ package app.dota
 import base.constant.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
+import base.utils.dm.PictureColorUtils
 import com.jacob.com.Dispatch
 import javafx.scene.image.Image
 import sample.base.BaseApp
@@ -81,7 +82,7 @@ class DotaApp : BaseApp(), DmUtils, Win32Utils {
 
         btn("battle").click {
             dmList.forEachIndexed {i, it->
-                val findZhanYi = it.dm.checkAndClick(it.dm.findPic(608,422,727,453, "战役.bmp", "101010", 0.8, DmUtils.DIR.LR_TB))
+                val findZhanYi = it.dm.checkAndClick(it.dm.findPic(608,422,727,453, "战役.bmp", "101010", 0.8, PictureColorUtils.DIR.LR_TB))
 //                val findZhanYi = it.dm.checkAndClick(it.dm.findStrFast(608,422,727,453, "战役", "e5cb10-404040", 0.9))
                 if (!findZhanYi) {
                     it.dm.capture(608,422,727,453, "test.jpg")
@@ -95,23 +96,23 @@ class DotaApp : BaseApp(), DmUtils, Win32Utils {
                     while (!needStopBattle) {
                         //对于一个流程中必定出现的图片，如果检测到了，就不再在此次流程中继续检测
                         if (!it.find_第一关图标) {
-                            if (it.dm.checkAndClick(it.dm.findPic(192,383,257,441, "第一关图标.bmp", "101010", 0.9, DmUtils.DIR.LR_BT))) {
+                            if (it.dm.checkAndClick(it.dm.findPic(192,383,257,441, "第一关图标.bmp", "101010", 0.9, PictureColorUtils.DIR.LR_BT))) {
                                 it.find_第一关图标 = true
                             }
                         }
                         if (!it.find_右箭头) {
-                            if (it.dm.checkAndClick(it.dm.findPic(798,423,879,501, "右箭头.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
+                            if (it.dm.checkAndClick(it.dm.findPic(798,423,879,501, "右箭头.bmp", "101010", 0.9, PictureColorUtils.DIR.RL_BT))) {
                                 it.find_右箭头 = true
                             }
                         }
                         if (!it.find_开始战斗) {
-                            if (it.dm.checkAndClick(it.dm.findPic(818,449,890,520, "开始战斗.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
+                            if (it.dm.checkAndClick(it.dm.findPic(818,449,890,520, "开始战斗.bmp", "101010", 0.9, PictureColorUtils.DIR.RL_BT))) {
                                 it.find_开始战斗 = true
                             }
                         }
                         //对于一个流程中可能出现的图片，需要不断进行检测
-                        it.dm.checkAndClick(it.dm.findPic(0, 0, 960, 540, "关闭对话框.bmp", "666666", 0.9, DmUtils.DIR.LR_BT))
-                        if (it.dm.checkAndClick(it.dm.findPic(0, 0, 960, 540, "继续游戏.bmp", "101010", 0.9, DmUtils.DIR.RL_BT))) {
+                        it.dm.checkAndClick(it.dm.findPic(0, 0, 960, 540, "关闭对话框.bmp", "666666", 0.9, PictureColorUtils.DIR.LR_BT))
+                        if (it.dm.checkAndClick(it.dm.findPic(0, 0, 960, 540, "继续游戏.bmp", "101010", 0.9, PictureColorUtils.DIR.RL_BT))) {
                             it.find_第一关图标 = false
                             it.find_右箭头 = false
                             it.find_开始战斗 = false
@@ -186,7 +187,7 @@ class DotaApp : BaseApp(), DmUtils, Win32Utils {
                                                 }
                                             } else {
 //                                                val result2 = damo.findStrFast( 553,587,723,642, "进入游戏", "f5c40e-303030", 0.95)
-                                                val result2 = damo.findPic(553,587,723,642, "进入游戏.bmp", "101010", 0.9, DmUtils.DIR.LR_BT)
+                                                val result2 = damo.findPic(553,587,723,642, "进入游戏.bmp", "101010", 0.9, PictureColorUtils.DIR.LR_BT)
                                                 if (damo.checkAndClick(result2)) return@Thread
                                             }
                                             Thread.sleep(500)

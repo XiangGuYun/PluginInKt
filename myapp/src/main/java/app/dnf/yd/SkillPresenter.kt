@@ -7,8 +7,8 @@ import java.util.concurrent.ExecutorService
 
 interface SkillPresenter : CommonUtils, DmUtils {
 
-    fun Dispatch.common(boolean: Boolean) {
-        while (boolean) {
+    fun Dispatch.common() {
+        while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
             this keyPress A
             s(300.r())
             this keyPress S
@@ -18,8 +18,8 @@ interface SkillPresenter : CommonUtils, DmUtils {
         }
     }
 
-    fun Dispatch.hongYan(boolean: Boolean) {
-        while (boolean) {
+    fun Dispatch.hongYan() {
+        while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
             this keyPress A
             s(150.r())
             this keyPress A
@@ -39,8 +39,8 @@ interface SkillPresenter : CommonUtils, DmUtils {
         }
     }
 
-    fun Dispatch.ciKe(boolean: Boolean) {
-        while (boolean) {
+    fun Dispatch.ciKe() {
+        while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
             this keyPress S
             s(100.r())
             this keyPress S
@@ -67,22 +67,35 @@ interface SkillPresenter : CommonUtils, DmUtils {
         s(100.r())
     }
 
-    fun Dispatch.jianHunEx(cacheService: ExecutorService, boolean: Boolean) {
+    fun Dispatch.jianHunEx(cacheService: ExecutorService) {
         cacheService.submit {
-            while (boolean) {
+            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
                 this.jianHun()
             }
         }
         cacheService.submit {
-            while (boolean) {
+            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
                 this keyPress Q
                 s(1000)
             }
         }
         cacheService.submit {
-            while (boolean) {
+            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
                 this keyPress W
                 s(200)
+            }
+        }
+        cacheService.submit {
+            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+                this keyPress RIGHT
+                this keyPress E
+                s(100)
+                this keyPress LEFT
+                this keyPress E
+                s(100)
+                this keyPress RIGHT
+                this keyPress E
+                s(100)
             }
         }
     }

@@ -22,6 +22,7 @@ import java.util.concurrent.Executors
 @Style(StageStyle.UTILITY)
 @AppTitle("YellowDragonApp")
 class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
+
     //该线程池用于灵活释放技能
     private lateinit var cacheService: ExecutorService
     //该线程池用于执行基本流程
@@ -34,14 +35,29 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
     private lateinit var dm: Dispatch
     //是否需要关闭黄龙的任务对话框（针对部分角色）
     private var needCloseTaskDialog = true
-    //当此标志为true时，暂停技能循环释放
-    private var needPauseSkills = false
-    //是否处于绑定大漠状态
-    private var isBind = false
+
+    companion object{
+        //当此标志为true时，暂停技能循环释放
+        var needPauseSkills = false
+        //是否处于绑定大漠状态
+        var isBind = false
+        @JvmStatic
+        fun main(args: Array<String>) {
+            launch(YellowDragonApp::class.java)
+        }
+    }
 
     override fun init(window: Window) {
         initComponent()
         initView(window)
+    }
+
+    override fun stop() {
+        //当应用停止后必须解除绑定，并关闭线程池
+        isBind = false
+        dm.unBindWindow().pln("解除绑定结果：")
+        service.shutdownNow()
+        cacheService.shutdownNow()
     }
 
     private fun initComponent() {
@@ -50,6 +66,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         cacheService = Executors.newCachedThreadPool()
         println("注册结果：" + dm.reg())
         println("路径设置结果：" + dm.setPath("${DESKTOP}yellow_dragon"))
+        println("字库设置结果：" + dm.setDict(0,"字库.txt"))
     }
 
     private fun initView(window: Window) {
@@ -135,9 +152,9 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     //创建一个线程专门负责循环放技能
                     service.submit {
                         when (currentCharacter) {
-                            in 1..8 -> dm.common(isBind && !needPauseSkills)
-                            9 -> dm.hongYan(isBind && !needPauseSkills)
-                            10 -> dm.jianHunEx(cacheService, isBind && !needPauseSkills)
+                            in 1..8 -> dm.common()
+                            9 -> dm.hongYan()
+                            10 -> dm.jianHunEx(cacheService)
                         }
                     }
                 }
@@ -154,22 +171,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
             walkUp(1500)
             walkRight(3500)
             walkDown(500)
-            walkRight(1000)
-        }
-    }
-
-    override fun stop() {
-        //当应用停止后必须解除绑定，并关闭线程池
-        isBind = false
-        dm.unBindWindow().pln("解除绑定结果：")
-        service.shutdownNow()
-        cacheService.shutdownNow()
-    }
-
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            launch(YellowDragonApp::class.java)
+            walkRight(2000)
         }
     }
 

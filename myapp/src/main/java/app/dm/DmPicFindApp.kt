@@ -2,6 +2,7 @@ package app.dm
 
 import base.constant.*
 import base.utils.DmUtils
+import base.utils.dm.PictureColorUtils
 import com.jacob.com.Dispatch
 import javafx.application.Platform
 import sample.base.BaseApp
@@ -27,7 +28,7 @@ class DmPicFindApp : BaseApp(), DmUtils {
 
         btn("findPic").click {
             Thread{
-                val result = dm.findPic(0, 0, 1280, 720, "dota3.bmp", "202020", 0.9, DmUtils.DIR.RL_TB)
+                val result = dm.findPic(0, 0, 1280, 720, "dota3.bmp", "202020", 0.9, PictureColorUtils.DIR.RL_TB)
                 Platform.runLater {
                     alert(result)
                 }

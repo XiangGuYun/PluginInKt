@@ -3,6 +3,8 @@ package app.dm
 import base.constant.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
+import base.utils.dm.BackgroundUtils
+import base.utils.dm.PictureColorUtils
 import com.jacob.com.Dispatch
 import com.sun.jna.platform.win32.Shell32
 import com.sun.jna.platform.win32.User32
@@ -23,8 +25,8 @@ class DmApp : BaseApp(), DmUtils, Win32Utils {
         dm.setPath(DESKTOP)
 
         btn("btnBindBaidu").click {
-            val result = dm.bindWindow(132112, DmUtils.Display.GDI,
-                    DmUtils.Mouse.NORMAL, DmUtils.Keyboard.NORMAL)
+            val result = dm.bindWindow(132112, BackgroundUtils.Display.GDI,
+                    BackgroundUtils.Mouse.NORMAL, BackgroundUtils.Keyboard.NORMAL)
             alert("bind is success? $result")
         }
 
@@ -50,14 +52,14 @@ class DmApp : BaseApp(), DmUtils, Win32Utils {
         btn("btnBindLeiDian").click{
             val wh1 = dm.findWindow("LDPlayerMainFrame", "雷电模拟器")
             val wh2 = dm.findWindowEx(wh1, "RenderWindow", "TheRender")
-            val result = dm.bindWindow(wh2, DmUtils.Display.NORMAL, DmUtils.Mouse.WINDOWS, DmUtils.Keyboard.WINDOWS)
+            val result = dm.bindWindow(wh2, BackgroundUtils.Display.NORMAL, BackgroundUtils.Mouse.WINDOWS, BackgroundUtils.Keyboard.WINDOWS)
             alert("绑定是否成功？$result")
         }
 
 
         btn("btnFIndPic1").click {
            Thread{
-               val result = dm.findPic(0, 0, 1280, 720, "pic1.bmp", "202020", 0.9, DmUtils.DIR.LR_TB)
+               val result = dm.findPic(0, 0, 1280, 720, "pic1.bmp", "202020", 0.9, PictureColorUtils.DIR.LR_TB)
                Platform.runLater {
                    alert(result)
                }

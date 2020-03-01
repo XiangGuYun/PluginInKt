@@ -98,7 +98,7 @@ interface DnfUtils : DmUtils, CommonUtils {
     fun Dispatch.keepDownKeyRun(keepTime: Long, vararg keyCodes: Int) {
         keyCodes.forEach {
             keyPress(it)
-            s(30.r(5))
+            s(30)
             keyDown(it)
         }
         s(keepTime.toInt())
@@ -251,6 +251,17 @@ interface DnfUtils : DmUtils, CommonUtils {
     }
 
     /**
+     * 返回城镇
+     */
+    fun Dispatch.backToTown() {
+        this.keyPress(Key.esc)
+        s(100.r())
+        this.moveTo(580,440)
+        s(100.r())
+        this.leftDoubleClick()
+    }
+
+    /**
      * 选择角色，目前仅限于1~12号
      */
     fun Dispatch.selectCharacter(pos: Int) {
@@ -273,6 +284,28 @@ interface DnfUtils : DmUtils, CommonUtils {
         this.moveTo(700 * 2 / 3, 800 * 2 / 3)
         s(100.r())
         this.leftDoubleClick()
+    }
+
+    /**
+     * 检查是否卡屏，可判断左上角和右上角
+     */
+    fun Dispatch.checkIsDeadDisplay(isGoLeftTop:Boolean, sec:Int, size:Int=30): Boolean {
+        return if(isGoLeftTop)
+            this.IsDisplayDead(960-size, 0, 960,size, sec)
+        else
+            this.IsDisplayDead(0, 0, size,size, sec)
+    }
+
+    /**
+     * 检查是否卡屏
+     */
+    fun Dispatch.checkIsDeadDisplay(dir:Int, sec:Int, size:Int=30): Boolean {
+        return when(dir) {
+             1 -> this.IsDisplayDead(0, 0, size,size, sec)
+             2 -> this.IsDisplayDead(960-size, 0, 960,size, sec)
+             3 -> this.IsDisplayDead(0, 0, size,size, sec)
+             else -> this.IsDisplayDead(0, 0, size,size, sec)
+        }
     }
 
 

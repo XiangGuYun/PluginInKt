@@ -121,5 +121,7 @@ interface CommonUtils :  ViewUtils, DialogUtils, Constant, HKUtils, AdbUtils
         return this - range + (1..range).shuffled().last()*2
     }
 
+    val Int.r get() = this - this/10 + (1..this/10).shuffled().last()*2
+
 
 }

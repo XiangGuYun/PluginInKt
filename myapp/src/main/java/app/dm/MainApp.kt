@@ -3,6 +3,7 @@ package app.dm
 import base.utils.DmUtils
 import base.utils.Win32Utils
 import base.constant.Window
+import base.utils.dm.BackgroundUtils
 import javafx.application.Application
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -106,8 +107,8 @@ class MainApp : BaseApp(), DmUtils, Win32Utils {
 
         lv.addView(Button("绑定窗口").apply {
             click {
-                println("绑定窗口是否成功 ${dm.bindWindow(dm.findWindow(null, "无标题 - 记事本"), DmUtils.Display.NORMAL,
-                        DmUtils.Mouse.WINDOWS, DmUtils.Keyboard.WINDOWS)}")
+                println("绑定窗口是否成功 ${dm.bindWindow(dm.findWindow(null, "无标题 - 记事本"), BackgroundUtils.Display.NORMAL,
+                        BackgroundUtils.Mouse.WINDOWS, BackgroundUtils.Keyboard.WINDOWS)}")
                 dm.capture(0, 0, 200, 200, "e:/notepad.jpg")
             }
         })
