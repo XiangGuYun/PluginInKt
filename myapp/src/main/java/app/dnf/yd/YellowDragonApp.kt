@@ -30,7 +30,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
     //当前的角色
     private var currentCharacter = 1
     //总共角色数量
-    private val maxSize = 10
+    private val maxSize = 11
     //大漠组件
     private lateinit var dm: Dispatch
     //是否需要关闭黄龙的任务对话框（针对部分角色）
@@ -153,8 +153,8 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     service.submit {
                         when (currentCharacter) {
                             in 1..8 -> dm.common()
-                            9 -> dm.hongYan()
-                            10 -> dm.jianHunEx(cacheService)
+                            10 -> dm.hongYan()
+                            11 -> dm.jianHunEx(cacheService)
                         }
                     }
                 }

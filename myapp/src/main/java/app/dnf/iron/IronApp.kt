@@ -17,8 +17,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
- * 钢铁脚本
- * 编写思路
+ * 钢铁脚本编写思路
  * 首先必须清楚一点，图色脚本搬砖肯定是慢于手动搬砖的，但是优势是全自动多线程且非常稳定，因此需要做到的是尽量优化脚本来缩短流程耗时。
  * DNF的角色位置是随机的，再加上其它不确定性，因此很难有一条写死的脚本可以一直前往下一个房间，而且技能释放完时可以仍有怪存活，
  * 因此必须要制定一套算法来解决这些问题。
@@ -28,13 +27,12 @@ import java.util.concurrent.Executors
  * 3.根据房间入口的位置来决定寻找的路线，寻找的同时如果有残存的怪（可以根据小地图或者房间灯泡来判断）也会被吸引过来，
  *   如果存在，可以一边走动，一边用技能来消灭余怪。
  * 4.找入口时，有时可以根据左右入口上面或下面以及上下路口的左边或右边的截图来判断当前角色卡位的方向。
+ * 5.找到入口后，需要添加一小段额外脚本来衔接当前的房间脚本。
  */
 @Style(StageStyle.UTILITY)
 @AppTitle("IronApp")
 class IronApp : BaseApp(), DnfUtils {
 
-    //该线程池用于灵活释放技能
-//    private lateinit var cacheService: ExecutorService
     //该线程池用于执行基本流程
     private lateinit var service: ExecutorService
     //当前的角色
