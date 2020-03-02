@@ -4,9 +4,14 @@ import com.jacob.com.Dispatch
 import java.awt.MouseInfo
 import java.awt.Point
 
+/**
+ * 大漠键鼠模块
+ */
 interface KeyboardMouseUtils {
+
     /**
-     * 获取鼠标指针位置
+     * 获取鼠标当前位置
+     * @return Point 包含x和y坐标
      */
     fun getCursorPos(): Point {
         val pi = MouseInfo.getPointerInfo()
@@ -32,6 +37,9 @@ interface KeyboardMouseUtils {
 
     /**
      * 按下某键（根据按键码）
+     * @receiver Dispatch
+     * @param vk_code Int 按键码
+     * @return Boolean 是否成功
      */
     infix fun Dispatch.keyPress(vk_code: Int): Boolean {
         return Dispatch.call(this, "KeyPress", vk_code).int == 1

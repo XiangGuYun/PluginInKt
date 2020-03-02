@@ -51,6 +51,8 @@ interface DmUtils : WindowUtils, KeyboardMouseUtils, PictureColorUtils, Backgrou
 
     /**
      * 判断是否成功检测到图或字
+     * @param result String 格式为"x|y|z"的字符串
+     * @return Boolean true表示成功
      */
     fun check(result: String): Boolean {
         return result != "-1|-1|-1"

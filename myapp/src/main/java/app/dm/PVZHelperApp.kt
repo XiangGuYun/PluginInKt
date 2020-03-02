@@ -4,6 +4,7 @@ import base.constant.*
 import base.utils.DmUtils
 import base.utils.Win32Utils
 import base.utils.dm.MemoryUtils
+import com.sun.jna.platform.win32.WinDef
 import sample.base.BaseApp
 import java.util.*
 
@@ -34,6 +35,13 @@ open class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
             } else {
                 tf("tfSunshine").text = oldValue
             }
+        }
+
+        btn("getWindowSize").clickBN {
+//            val rect = WinDef.RECT()
+//            user32.GetWindowRect(user32.FindWindow("MainWindow", "Plants vs. Zombies"), rect)
+//            alert(((rect.right - rect.left)*1.5).toString()+"x"+(rect.bottom-rect.top)*1.5)
+            dm.setWindowSize(wh, 1209, 744)
         }
 
         //点击设置阳光值

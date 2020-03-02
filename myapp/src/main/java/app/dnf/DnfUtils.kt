@@ -291,9 +291,9 @@ interface DnfUtils : DmUtils, CommonUtils {
      */
     fun Dispatch.checkIsDeadDisplay(isGoLeftTop:Boolean, sec:Int, size:Int=30): Boolean {
         return if(isGoLeftTop)
-            this.IsDisplayDead(960-size, 0, 960,size, sec)
+            this.isDisplayDead(960-size, 0, 960,size, sec)
         else
-            this.IsDisplayDead(0, 0, size,size, sec)
+            this.isDisplayDead(0, 0, size,size, sec)
     }
 
     /**
@@ -301,10 +301,10 @@ interface DnfUtils : DmUtils, CommonUtils {
      */
     fun Dispatch.checkIsDeadDisplay(dir:Int, sec:Int, size:Int=30): Boolean {
         return when(dir) {
-             1 -> this.IsDisplayDead(0, 0, size,size, sec)
-             2 -> this.IsDisplayDead(960-size, 0, 960,size, sec)
-             3 -> this.IsDisplayDead(0, 0, size,size, sec)
-             else -> this.IsDisplayDead(0, 0, size,size, sec)
+             1 -> this.isDisplayDead(0, 0, size,size, sec)
+             2 -> this.isDisplayDead(960-size, 0, 960,size, sec)
+             3 -> this.isDisplayDead(0, 0, size,size, sec)
+             else -> this.isDisplayDead(0, 0, size,size, sec)
         }
     }
 

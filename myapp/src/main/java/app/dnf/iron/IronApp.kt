@@ -127,319 +127,20 @@ class IronApp : BaseApp(), DnfUtils {
         service.submit {
             while (isBind) {
                 if (check(dm.findPic(122, 533, 143, 552, "进图"))) {
-                    dm keyPress W
-                    if (!pressH) {
-                        //加一绝
-                        dm keyPress H
-                        pressH = true
-                    }
-                    s(800)
-                    dm keyPress Y //旋刃冲击清理一图怪
-                    s(1000) //1500
-                    dm.runRight(1500)
-                    dm.runLeft(100)
-                    s(100)
-                    dm.runUp(500)
-                    s(100)
-                    dm.runRight(600)
-                    dm.runDown(150)
-                    pauseZ = false
-                    s(1500)
-                    dm keyPress E //雷光清理二图怪
-                    s(1000)
-                    pauseZ = true
-                    s(1000)
-                    s(100)
-                    dm.runRight(2000)
-                    dm.runLeft(200)
-                    dm.runUp(200)
-                    dm.runRight(200)
-                    dm.runRightDown(500)
-                    var needMoreActTo3 = false
-                    //判断是否进入第三图
-                    while (!check(dm.findPic(880, 45, 935, 67, "第三图", "101010", 0.7))) {
-                        if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
-                            needMoreActTo3 = true
-                            if (isLeftTop) {
-                                dm.walkLeft(300)
-                                dm.walkDown(350)
-                                dm.keyPress(S)
-                                dm.runRight(500)
-                                dm.keyPress(R)
-                                step++
-                                if (step >= 3) {
-                                    step = 0
-                                    isLeftTop = false
-                                }
-                            } else {
-                                dm.walkLeft(300)
-                                dm.walkUp(350)
-                                dm.keyPress(S)
-                                dm.runRight(500)
-                                dm.keyPress(R)
-                                step++
-                                if (step >= 3) {
-                                    step = 0
-                                    isLeftTop = true
-                                }
-                            }
-                        }
-                        s(100)
-                    }
-                    step = 0
-                    if (needMoreActTo3) {
-                        dm.runRightDown(500)
-                    }
-
-                    //剑刃风暴清理三图怪
-                    for (i in 1..5) {
-                        dm.keyPress(G)
-                        s(100)
-                    }
-                    dm.runDown(1700)
-                    //检查是否进入了第四图
-                    var needMoreActTo4 = false
-                    while (!check(dm.findPic(900, 48, 937, 84, "第四图"))) {
-                        needMoreActTo4 = true
-                        if (check(dm.findPic(0, 0, 70, 30, "第三图左上角", "101010", 0.8))) {
-                            isLeftTop = false
-                        }
-                        if(check(dm.findPic(0,0,83,35, "第三图左上角1", "101010", 0.8))){
-                            isLeftTop = false
-                        }
-                        if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
-                            if (check(dm.findPic(908, 147, 960, 192, "第三图卡右", "101010", 0.8))) {
-                                dm.runUp(300)
-                                dm.runLeft(450)
-                                dm.runDown(1000)
-                            }
-                            if(check(dm.findPic(659,425,821,525, "第三图先往右", "101010", 0.7))){
-                                isLeftTop = false
-                            }
-                            if (isLeftTop) {
-                                dm.runLeft(300)
-                                dm.runDown(300)
-                                dm.keyPress(if (step % 2 == 0) S else R)
-                                dm.keyPress(X)
-                                step++
-                                if (step >= 3) {
-                                    step = 0
-                                    isLeftTop = false
-                                }
-                            } else {
-                                dm.runRight(300)
-                                dm.runDown(300)
-                                dm.keyPress(if (step % 2 == 0) S else R)
-                                dm.keyPress(X)
-                                step++
-                                if (step >= 3) {
-                                    step = 0
-                                    isLeftTop = true
-                                }
-                            }
-
-                        }
-                        s(100)
-                    }
-                    step = 0
-                    if (needMoreActTo4) {
-                        dm.runDown(300)
-                    }
-                    dm.runRight(300)
-                    dm.walkLeft(80)
-                    dm.keyPress(H)
-                    s(2500)
-                    dm.runLeft(2000)
-                    isLeftTop = true
-                    var needAddActTo5 = false
-                    //检查是否进入了第五图
-                    while (!check(dm.findPic(895, 45, 935, 85, "第五图", "101010", 0.8))) {
-                        if (dm.checkIsDeadDisplay(true, 1)) {
-                            needAddActTo5 = true
-                            isLeftTop = check(dm.findPic(102,243,228,374,"第四图卡在下面","101010",0.7))
-                            if (isLeftTop) {
-                                dm.runRight(100)
-                                dm.runUp(100)
-                                dm.runLeft(300)
-                                dm.keyPress(if (step % 2 == 0) S else R)
-                                step++
-                                if (step >= 4) {
-                                    step = 0
-                                    isLeftTop = false
-                                }
-                            } else {
-                                dm.runRight(100)
-                                dm.runDown(100)
-                                dm.runLeft(300)
-                                dm.keyPress(if (step % 2 == 0) S else R)
-                                step++
-                                if (step >= 4) {
-                                    step = 0
-                                    isLeftTop = true
-                                }
-                            }
-                        } else {
-                            "没有卡屏".pln()
-                        }
-                        s(100)
-                    }
-                    println("进入了第五图")
-                    if (needAddActTo5) {
-                        dm.runLeft(1000)
-                    }
-                    s(300)
-                    //剑刃风暴清理五图怪
-                    for (i in 1..10) {
-                        dm.keyPress(G)
-                        s(100)
-                    }
-                    dm.runLeft(300)
-                    dm.runDown(2000)
-                    //检查是否进入了第六图
-                    isLeftTop = !needAddActTo5
-                    var needMoreActTo6 = false
-                    while (!check(dm.findPic(895, 63, 920, 102, "第六图", "101010", 0.7))) {
-                        if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
-                            needMoreActTo6 = true
-                            if (isLeftTop) {
-                                dm.runLeft(200)
-                                dm.runDown(200)
-                                dm.keyPress(if (step % 2 == 0) S else R)
-                                dm.keyPress(X)
-                                step++
-                                if (step >= 4) {
-                                    step = 0
-                                    isLeftTop = false
-                                }
-                            } else {
-                                dm.runRight(200)
-                                dm.runDown(200)
-                                dm.keyPress(if (step % 2 == 0) S else R)
-                                dm.keyPress(X)
-                                step++
-                                if (step >= 4) {
-                                    step = 0
-                                    isLeftTop = true
-                                }
-                            }
-
-                        }
-                        s(100)
-                    }
-                    step = 0
-                    if (needMoreActTo6) {
-                        dm.runDown(500)
-                        dm.runLeft(500)
-                        dm.runRight(80)
-                    }
-                    pauseZ = false
-                    dm.keepDownKey(1500L, Q)
-                    pauseZ = true
-                    dm.walkRight(200)
-                    dm.keyPress(Y)
-                    dm.runRight(2000)
-                    dm.runUp(500)
-                    dm.runRight(1500)
-                    dm.runDown(500)
-
-                    //检查是否进入了第七图
-                    isLeftTop = true
-                    var needMoreActTo7 = false
-                    while (!check(dm.findPic(916, 82, 953, 105, "第七图", "101010", 0.7))) {
-                        if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
-                            needMoreActTo7 = true
-//                            if(!check(dm.findPic(727,397,916,492, "第六图往上走","101010",0.7))){
-//                                isLeftTop = true
-//                            }
-                            if (!isLeftTop) {
-                                dm.runLeft(200)
-                                dm.keyPress(S)
-                                dm.keyPress(X)
-                                dm.runDown(300)
-                                dm.runRight(400)
-                                dm.keyPress(R)
-                                dm.keyPress(X)
-                                step++
-                                if (step >= 3) {
-                                    step = 0
-                                    isLeftTop = true
-                                }
-                            } else {
-                                dm.runLeft(200)
-                                dm.keyPress(S)
-                                dm.keyPress(X)
-                                dm.runUp(300)
-                                dm.runRight(400)
-                                dm.keyPress(R)
-                                dm.keyPress(X)
-                                step++
-                                if (step >= 3) {
-                                    step = 0
-                                    isLeftTop = false
-                                }
-                            }
-
-                        }
-                        s(100)
-                    }
-                    step = 0
-                    if (needMoreActTo7) {
-                        dm.runRight(800)
-                        dm.runDown(500)
-                    }
-
-                    //剑刃风暴清理七图怪
-                    for (i in 1..5) {
-                        dm.keyPress(G)
-                        s(100)
-                    }
-                    dm.runUp(100)
-                    dm.runRight(2000)
-
-                    //检查是否进入了第Boss图
-                    isLeftTop = false
-                    while (!check(dm.findPic(914, 82, 956, 101, "Boss图", "101010", 0.7))) {
-                        if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
-                            if (isLeftTop) {
-                                dm.runLeft(100)
-                                dm.keyPress(S)
-                                dm.runDown(300)
-                                dm.runRight(600)
-                                dm.keyPress(R)
-                                step++
-                                if (step >= 4) {
-                                    step = 0
-                                    isLeftTop = false
-                                }
-                            } else {
-                                dm.runLeft(100)
-                                dm.keyPress(S)
-                                dm.runUp(300)
-                                dm.runRight(600)
-                                dm.keyPress(R)
-                                step++
-                                if (step >= 4) {
-                                    step = 0
-                                    isLeftTop = true
-                                }
-                            }
-
-                        }
-                        s(100)
-                    }
-                    step = 0
-                    dm.runRightDown(800)
-//                    dm.keyPress(UP)
-//                    s(50)
-//                    dm.keyPress(DOWN)
-//                    s(50)
-//                    dm.keyPress(SPACE)
-                    dm.walkLeft(50)
-                    dm.keyPress(T)
-                    dm.beep(1000, 2000)
-                    s(5000)
-//                    dm.keyPress(F12)
-                    pressH = false
+                    room1()
+                    room2()
+                    checkInRoom3()
+                    room3()
+                    checkInRoom4()
+                    room4()
+                    val addActTo5 = checkInRoom5()
+                    room5()
+                    checkInRoom6(addActTo5)
+                    room6()
+                    checkInRoom7()
+                    room7()
+                    checkInRoom8()
+                    room8()
                 }
             }
             s(1000)
@@ -452,6 +153,360 @@ class IronApp : BaseApp(), DnfUtils {
             }
         }
 
+    }
+
+    private fun room8() {
+        dm.runRightDown(800)
+//                    dm.keyPress(UP)
+//                    s(50)
+//                    dm.keyPress(DOWN)
+//                    s(50)
+//                    dm.keyPress(SPACE)
+        dm.walkLeft(50)
+        dm.keyPress(T)
+        dm.beep(1000, 2000)
+        s(5000)
+//                    dm.keyPress(F12)
+        pressH = false
+    }
+
+    private fun checkInRoom8() {
+        //检查是否进入了第Boss图
+        isLeftTop = false
+        while (!check(dm.findPic(914, 82, 956, 101, "Boss图", "101010", 0.7))) {
+            if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
+                if (isLeftTop) {
+                    dm.runLeft(100)
+                    dm.keyPress(S)
+                    dm.runDown(300)
+                    dm.runRight(600)
+                    dm.keyPress(R)
+                    step++
+                    if (step >= 4) {
+                        step = 0
+                        isLeftTop = false
+                    }
+                } else {
+                    dm.runLeft(100)
+                    dm.keyPress(S)
+                    dm.runUp(300)
+                    dm.runRight(600)
+                    dm.keyPress(R)
+                    step++
+                    if (step >= 4) {
+                        step = 0
+                        isLeftTop = true
+                    }
+                }
+
+            }
+            s(100)
+        }
+        step = 0
+    }
+
+    private fun room7() {
+        //剑刃风暴清理七图怪
+        for (i in 1..5) {
+            dm.keyPress(G)
+            s(100)
+        }
+        dm.runUp(100)
+        dm.runRight(2000)
+    }
+
+    private fun checkInRoom7() {
+        //检查是否进入了第七图
+        isLeftTop = true
+        var needMoreActTo7 = false
+        while (!check(dm.findPic(916, 82, 953, 105, "第七图", "101010", 0.7))) {
+            if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
+                needMoreActTo7 = true
+//                            if(!check(dm.findPic(727,397,916,492, "第六图往上走","101010",0.7))){
+//                                isLeftTop = true
+//                            }
+                if (!isLeftTop) {
+                    dm.runLeft(200)
+                    dm.keyPress(S)
+                    dm.keyPress(X)
+                    dm.runDown(300)
+                    dm.runRight(400)
+                    dm.keyPress(R)
+                    dm.keyPress(X)
+                    step++
+                    if (step >= 3) {
+                        step = 0
+                        isLeftTop = true
+                    }
+                } else {
+                    dm.runLeft(200)
+                    dm.keyPress(S)
+                    dm.keyPress(X)
+                    dm.runUp(300)
+                    dm.runRight(400)
+                    dm.keyPress(R)
+                    dm.keyPress(X)
+                    step++
+                    if (step >= 3) {
+                        step = 0
+                        isLeftTop = false
+                    }
+                }
+
+            }
+            s(100)
+        }
+        step = 0
+        if (needMoreActTo7) {
+            dm.runRight(800)
+            dm.runDown(500)
+        }
+    }
+
+    private fun room6() {
+        pauseZ = false
+        dm.keepDownKey(1500L, Q)
+        pauseZ = true
+        dm.walkRight(200)
+        dm.keyPress(Y)
+        dm.runRight(2000)
+        dm.runUp(500)
+        dm.runRight(1500)
+        dm.runDown(500)
+    }
+
+    private fun checkInRoom6(addActTo5: Boolean) {
+        //检查是否进入了第六图
+        isLeftTop = !addActTo5
+        var needMoreActTo6 = false
+        while (!check(dm.findPic(895, 63, 920, 102, "第六图", "101010", 0.7))) {
+            if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
+                needMoreActTo6 = true
+                if (isLeftTop) {
+                    dm.runLeft(200)
+                    dm.runDown(200)
+                    dm.keyPress(if (step % 2 == 0) S else R)
+                    dm.keyPress(X)
+                    step++
+                    if (step >= 4) {
+                        step = 0
+                        isLeftTop = false
+                    }
+                } else {
+                    dm.runRight(200)
+                    dm.runDown(200)
+                    dm.keyPress(if (step % 2 == 0) S else R)
+                    dm.keyPress(X)
+                    step++
+                    if (step >= 4) {
+                        step = 0
+                        isLeftTop = true
+                    }
+                }
+
+            }
+            s(100)
+        }
+        step = 0
+        if (needMoreActTo6) {
+            dm.runDown(500)
+            dm.runLeft(500)
+            dm.runRight(80)
+        }
+    }
+
+    private fun room5() {
+        s(300)
+        //剑刃风暴清理五图怪
+        for (i in 1..10) {
+            dm.keyPress(G)
+            s(100)
+        }
+        dm.runLeft(300)
+        dm.runDown(2000)
+    }
+
+    private fun checkInRoom5(): Boolean {
+        isLeftTop = true
+        var addActTo5 = false
+        //检查是否进入了第五图
+        while (!check(dm.findPic(895, 45, 935, 85, "第五图", "101010", 0.8))) {
+            if (dm.checkIsDeadDisplay(true, 1)) {
+                addActTo5 = true
+                isLeftTop = check(dm.findPic(102, 243, 228, 374, "第四图卡在下面", "101010", 0.7))
+                if (isLeftTop) {
+                    dm.runRight(100)
+                    dm.runUp(100)
+                    dm.runLeft(300)
+                    dm.keyPress(if (step % 2 == 0) S else R)
+                    step++
+                    if (step >= 4) {
+                        step = 0
+                        isLeftTop = false
+                    }
+                } else {
+                    dm.runRight(100)
+                    dm.runDown(100)
+                    dm.runLeft(300)
+                    dm.keyPress(if (step % 2 == 0) S else R)
+                    step++
+                    if (step >= 4) {
+                        step = 0
+                        isLeftTop = true
+                    }
+                }
+            } else {
+                "没有卡屏".pln()
+            }
+            s(100)
+        }
+        println("进入了第五图")
+        if (addActTo5) {
+            dm.runLeft(1000)
+        }
+        return addActTo5
+    }
+
+    private fun room4() {
+        dm.runRight(300)
+        dm.walkLeft(80)
+        dm.keyPress(H)
+        s(2500)
+        dm.runLeft(2000)
+    }
+
+    private fun checkInRoom4() {
+        //检查是否进入了第四图
+        var needMoreActTo4 = false
+        while (!check(dm.findPic(900, 48, 937, 84, "第四图"))) {
+            needMoreActTo4 = true
+            if (check(dm.findPic(0, 0, 70, 30, "第三图左上角", "101010", 0.8))) {
+                isLeftTop = false
+            }
+            if (check(dm.findPic(0, 0, 83, 35, "第三图左上角1", "101010", 0.8))) {
+                isLeftTop = false
+            }
+            if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
+                if (check(dm.findPic(908, 147, 960, 192, "第三图卡右", "101010", 0.8))) {
+                    dm.runUp(300)
+                    dm.runLeft(450)
+                    dm.runDown(1000)
+                }
+                if (check(dm.findPic(659, 425, 821, 525, "第三图先往右", "101010", 0.7))) {
+                    isLeftTop = false
+                }
+                if (isLeftTop) {
+                    dm.runLeft(300)
+                    dm.runDown(300)
+                    dm.keyPress(if (step % 2 == 0) S else R)
+                    dm.keyPress(X)
+                    step++
+                    if (step >= 3) {
+                        step = 0
+                        isLeftTop = false
+                    }
+                } else {
+                    dm.runRight(300)
+                    dm.runDown(300)
+                    dm.keyPress(if (step % 2 == 0) S else R)
+                    dm.keyPress(X)
+                    step++
+                    if (step >= 3) {
+                        step = 0
+                        isLeftTop = true
+                    }
+                }
+
+            }
+            s(100)
+        }
+        step = 0
+        if (needMoreActTo4) {
+            dm.runDown(300)
+        }
+    }
+
+    private fun room3() {
+        //剑刃风暴清理三图怪
+        for (i in 1..5) {
+            dm.keyPress(G)
+            s(100)
+        }
+        dm.runDown(1700)
+    }
+
+    /**
+     * 判断是否进入第三图
+     */
+    private fun checkInRoom3() {
+        var needMoreActTo3 = false
+        while (!check(dm.findPic(880, 45, 935, 67, "第三图", "101010", 0.7))) {
+            if (dm.checkIsDeadDisplay(isLeftTop, 1)) {
+                needMoreActTo3 = true
+                if (isLeftTop) {
+                    dm.walkLeft(300)
+                    dm.walkDown(350)
+                    dm.keyPress(S)
+                    dm.runRight(500)
+                    dm.keyPress(R)
+                    step++
+                    if (step >= 3) {
+                        step = 0
+                        isLeftTop = false
+                    }
+                } else {
+                    dm.walkLeft(300)
+                    dm.walkUp(350)
+                    dm.keyPress(S)
+                    dm.runRight(500)
+                    dm.keyPress(R)
+                    step++
+                    if (step >= 3) {
+                        step = 0
+                        isLeftTop = true
+                    }
+                }
+            }
+            s(100)
+        }
+        step = 0
+        if (needMoreActTo3) {
+            dm.runRightDown(500)
+        }
+    }
+
+    private fun room2() {
+        dm.runDown(150)
+        pauseZ = false
+        s(1500)
+        dm keyPress E //雷光清理二图怪
+        s(1000)
+        pauseZ = true
+        s(1000)
+        s(100)
+        dm.runRight(2000)
+        dm.runLeft(200)
+        dm.runUp(200)
+        dm.runRight(200)
+        dm.runRightDown(500)
+    }
+
+    private fun room1() {
+        dm keyPress W
+        if (!pressH) {
+            //加一绝
+            dm keyPress H
+            pressH = true
+        }
+        s(800)
+        dm keyPress Y //旋刃冲击清理一图怪
+        s(1000) //1500
+        dm.runRight(1500)
+        dm.runLeft(100)
+        s(100)
+        dm.runUp(500)
+        s(100)
+        dm.runRight(600)
     }
 
 }

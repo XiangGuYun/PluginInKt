@@ -2,29 +2,27 @@ package base.utils.dm
 
 import com.jacob.com.Dispatch
 
+/**
+ * 大漠后台模块
+ */
 interface BackgroundUtils {
+
     enum class Display {
         NORMAL,
         GDI,
-        GDI2,
-        DX2,
-        DX3,
-        DX
+        GDI2
     }
 
     enum class Mouse {
         NORMAL,
         WINDOWS,
         WINDOWS2,
-        WINDOWS3,
-        DX,
-        DX2
+        WINDOWS3
     }
 
     enum class Keyboard {
         NORMAL,
-        WINDOWS,
-        DX
+        WINDOWS
     }
 
     /**
@@ -35,18 +33,13 @@ interface BackgroundUtils {
                 when (display) {
                     Display.NORMAL -> "normal"
                     Display.GDI -> "gdi"
-                    Display.GDI2 -> "gdi2"
-                    Display.DX2 -> "dx2"
-                    Display.DX3 -> "dx3"
-                    else -> "dx.graphic.3d"
+                    else -> "gdi2"
                 },
                 when (mouse) {
                     Mouse.NORMAL -> "normal"
                     Mouse.WINDOWS -> "windows"
                     Mouse.WINDOWS2 -> "windows2"
-                    Mouse.WINDOWS3 -> "windows3"
-                    Mouse.DX -> "dx"
-                    else -> "dx2"
+                    else -> "windows3"
                 },
                 when (keyboard) {
                     Keyboard.NORMAL -> "normal"

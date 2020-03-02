@@ -2,7 +2,11 @@ package base.utils.dm
 
 import com.jacob.com.Dispatch
 
+/**
+ * 大漠内存模块
+ */
 interface MemoryUtils {
+
     /**
      * 对指定地址写入二进制数据
      */

@@ -2,6 +2,9 @@ package base.utils.dm
 
 import com.jacob.com.Dispatch
 
+/**
+ * 大漠文字识别模块
+ */
 interface CharRecognitionUtils{
 
     /**
@@ -29,7 +32,6 @@ interface CharRecognitionUtils{
         return Dispatch.call(this, "Ocr", x1, y1, x2, y2, color_format, sim).string
     }
 
-//    string FindStrFastE(x1,y1,x2,y2,string,color_format,sim)
     /**
      * 快速在指定区域内查找文字
      *
