@@ -65,8 +65,8 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         service = Executors.newFixedThreadPool(10)
         cacheService = Executors.newCachedThreadPool()
         println("注册结果：" + dm.reg())
-        println("路径设置结果：" + dm.setPath("${DESKTOP}yellow_dragon"))
-        println("字库设置结果：" + dm.setDict(0,"字库.txt"))
+        println("路径设置结果：" + dm.setPath("${getUserDesktop()}/yellow_dragon"))
+//        println("字库设置结果：" + dm.setDict(0,"字库.txt"))
     }
 
     private fun initView(window: Window) {
@@ -124,8 +124,8 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                         dm.goToCharacterPage()
                         s(3000)
                         if (++currentCharacter > maxSize) {
-                            //todo 退出游戏，并关机
-                            alert("结束啦！")
+                            //退出游戏，并关机
+                            dm.exitOs(1)
                         } else {
                             dm.selectCharacter(currentCharacter)
                             s(3000)
@@ -152,7 +152,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     //创建一个线程专门负责循环放技能
                     service.submit {
                         when (currentCharacter) {
-                            in 1..8 -> dm.common()
+                            in 1..9 -> dm.common()
                             10 -> dm.hongYan()
                             11 -> dm.jianHunEx(cacheService)
                         }

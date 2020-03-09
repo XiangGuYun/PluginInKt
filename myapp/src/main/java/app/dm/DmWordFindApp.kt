@@ -27,7 +27,7 @@ class DmWordFindApp : BaseApp(), DmUtils {
         }
         //找字
         btn("find").click {
-            tf("field").text = dm.findStrFast(500,483,778,571,
+            tf("field").text = dm.findStr(500,483,778,571,
                     "登录游戏",
                     "ffffff-101010",
                     0.95)
