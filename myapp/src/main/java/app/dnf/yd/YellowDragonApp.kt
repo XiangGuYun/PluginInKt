@@ -103,30 +103,42 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         //创建一个线程专门负责“再次挑战”
         service.submit {
             while (isBind) {
+                //检查指定位置是否存在“返回城镇.bmp”
                 val result = dm.findPic(770, 130, 840, 160, "返回城镇")
-                if (result != "-1|-1|-1") {
+                if (check(result)) {
+                    //如果存在
+                    //暂停技能释放
                     needPauseSkills = true
+                    //关闭黄龙任务弹窗
                     if (needCloseTaskDialog) {
                         dm keyPress SPACE
                         s(100)
                         dm keyPress SPACE
                     }
                     s(2000.r(100)) //这个时间不能短于一轮技能的时间总和
+                    //自动拾取
                     dm.autoPick()
                     s(100)
                     for (i in 1..19) {
                         dm keyPress X
                         s(200.r())
                     }
-                    if (check(dm.findPic(770, 75, 840, 100, "再次挑战"))) {
+                    //查找是否存在置灰的“再次挑战.bmp"
+                    if (check(dm.findPic(770, 75, 840, 100, "再次挑战",
+                                    "101010", 0.8))) {
+                        //返回城镇
                         dm keyPress F12
                         s(3000)
+                        //前往选择角色界面
                         dm.goToCharacterPage()
                         s(3000)
                         if (++currentCharacter > maxSize) {
+                            //如果角色已经刷满了
+                            alert("结束啦！")
                             //退出游戏，并关机
                             dm.exitOs(1)
                         } else {
+                            //如果角色没有刷满
                             dm.selectCharacter(currentCharacter)
                             s(3000)
                             goToYellowDragon(false)
@@ -135,8 +147,9 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                             needPauseSkills = false
                         }
                     } else {
+                        //再次挑战
                         dm keyPress B
-                        s(4000)
+                        s(6000)
                         needPauseSkills = false
                     }
                 }
@@ -146,8 +159,11 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         //创建一个线程专门负责跳过对战表
         service.submit {
             while (isBind) {
+                //查找指定位置是否有“对.bmp”
                 if (check(dm.findPic(420, 60, 470, 100, "对"))) {
+                    //如果存在则按下SPACE跳过对战表
                     dm keyPress SPACE
+                    //设置不需要暂停技能释放
                     needPauseSkills = false
                     //创建一个线程专门负责循环放技能
                     service.submit {
@@ -159,6 +175,15 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     }
                 }
                 s(2000)
+            }
+        }
+        //创建一个线程用于监测是否存在卡屏
+        service.submit {
+            while (isBind){
+                s(10000)
+                if(dm.isDisplayDead(0,0,100,100,10)){
+                    dm.beep(1000, 3000)
+                }
             }
         }
 

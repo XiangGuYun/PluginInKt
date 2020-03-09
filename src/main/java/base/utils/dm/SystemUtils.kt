@@ -58,4 +58,47 @@ interface SystemUtils {
     fun Dispatch.getClipboard(): String {
         return Dispatch.call(this, "GetClipboard").string
     }
+
+    /**
+     * 函数简介: 得到系统的路径
+     * @param type Int
+     *  0 : 获取当前路径
+     *  1 : 获取系统路径(system32路径)
+     *  2 : 获取windows路径(windows所在路径)
+     *  3 : 获取临时目录路径(temp)
+     *  4 : 获取当前进程(exe)所在的路径
+     * @return String
+     */
+    fun Dispatch.getDir(type: Int): String {
+        return Dispatch.call(this, "GetDir", type).string
+    }
+
+    /**
+     * 函数简介: 检测当前系统是否开启了UAC
+     * @receiver Dispatch
+     * @return Boolean
+     */
+    fun Dispatch.checkUAC(): Boolean {
+        return Dispatch.call(this, "CheckUAC").int == 1
+    }
+
+    /**
+     * 函数简介: 设置当前系统的UAC
+     * @receiver Dispatch
+     * @param enable Boolean
+     * @return Boolean
+     */
+    fun Dispatch.setUAC(enable: Boolean = true): Boolean {
+        return Dispatch.call(this, "SetUAC").int == 1
+    }
+
+    /**
+     * 函数简介: 获取当前系统从开机到现在所经历过的时间，单位是毫秒
+     * @receiver Dispatch
+     * @return Long
+     */
+    fun Dispatch.getTime(): Long {
+        return Dispatch.call(this, "GetTime").long
+    }
+
 }
