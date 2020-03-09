@@ -2,6 +2,7 @@ package base.utils.dm
 
 import com.jacob.activeX.ActiveXComponent
 import com.jacob.com.Dispatch
+import com.sun.org.apache.xpath.internal.operations.Bool
 
 /**
  * 大漠基本设置模块
@@ -55,6 +56,86 @@ interface BasicSettingUtils {
      */
     fun Dispatch.setPath(path: String): Boolean {
         return Dispatch.call(this, "SetPath", path).int == 1
+    }
+
+    /**
+     * 函数简介: 获取注册在系统中的dm.dll的路径
+     * @receiver Dispatch
+     * @return String
+     */
+    fun Dispatch.getBasePath(): String{
+        return Dispatch.call(this, "GetBasePath").string
+    }
+
+    /**
+     * 函数简介: 返回当前大漠对象的ID值，这个值对于每个对象是唯一存在的，可以用来判定两个大漠对象是否一致
+     * @receiver Dispatch
+     * @return Int
+     */
+    fun Dispatch.getId():Int{
+        return Dispatch.call(this, "GetId").int
+    }
+
+    /**
+     * 函数简介: 返回当前进程已经创建的dm对象个数
+     * @receiver Dispatch
+     * @return Int
+     */
+    fun Dispatch.getDmCount():Int{
+        return Dispatch.call(this, "GetDmCount").int
+    }
+
+    /**
+     * 函数简介: 返回当前设置的全局路径
+     * @receiver Dispatch
+     * @return String
+     */
+    fun Dispatch.getPath(): String{
+        return Dispatch.call(this, "GetPath").string
+    }
+
+    /**
+     * 函数简介: 设定图色的获取方式，默认是显示器或者后台窗口(具体参考BindWindow)
+     * @param mode 字符串: 图色输入模式取值有以下几种
+     * 1. "screen": 这个是默认的模式，表示使用显示器或者后台窗口
+     * 2. "pic:file": 指定输入模式为指定的图片。如果使用了这个模式，则所有和图色相关的函数
+     * 均视为对此图片进行处理，比如文字识别查找图片、颜色等等一切图色函数
+     * 需要注意的是，设定以后，此图片就已经加入了缓冲，如果更改了源图片内容，那么需要释放此缓冲，重新设置
+     * 3. "mem: addr,size": 指定输入模式为指定的图片，此图片在内存当中。addr为图像内存地址，size为图像内存大小
+     * 如果使用了这个模式，则所有和图色相关的函数,均视为对此图片进行处理
+     * 比如文字识别 查找图片 颜色 等等一切图色函数
+     * 代码示例:
+     * <code>
+     *     // 设定为默认的模式
+     *     dm_ret = dm.SetDisplayInput("screen")
+     *     // 设定为图片模式 图片采用相对路径模式 相对于SetPath的路径
+     *     dm_ret = dm.SetDisplayInput("pic:test.bmp")
+     *     // 设为图片模式 图片采用绝对路径模式
+     *     dm_ret = dm.SetDisplayInput("pic:d:\test\test.bmp")
+     *     // 设为图片模式 但是每次设置前 先清除缓冲
+     *     dm_ret = dm.FreePic("test.bmp")
+     *     dm_ret = dm.SetDisplayInput("pic:test.bmp")
+     *     // 设置为图片模式,图片从内存中获取
+     *     dm_ret = dm.SetDisplayInput("mem:1230434,884")
+     * </code>
+     * @return Boolean
+     */
+    fun Dispatch.setDisplayInput(mode: Int): Boolean {
+        return Dispatch.call(this, "SetDisplayInput", mode).int == 1
+    }
+
+    /**
+     * 函数简介: 设置是否对前台图色进行加速(默认是关闭)，对于不绑定，或者绑定图色为normal生效，仅对WIN8以上系统有效
+     * @param enable Boolean
+     * @return Boolean
+     * 注: WIN8以上系统，由于AERO的开启，导致前台图色速度很慢，使用此接口可以显著提速
+     * WIN7系统无法使用，只能通过关闭aero来对前台图色提速
+     * 每个进程,最多只能有一个对象开启此加速接口,如果要用开启别的对象的加速，那么要先关闭之前开启的
+     * 并且开启此接口后,仅能对主显示器的屏幕进行截图，分屏的显示器上的内容无法截图
+     * 另外需要注意: 开启此接口后，程序CPU会有一定上升，因为这个方法是以牺牲CPU性能来提升速度的
+     */
+    fun Dispatch.speedNormalGraphic(enable: Boolean): Boolean {
+        return Dispatch.call(this, "SpeedNormalGraphic", if(enable)1 else 0).int == 1
     }
 
 }

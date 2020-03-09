@@ -7,8 +7,8 @@ import java.awt.MouseInfo
 import java.awt.Point
 
 
-interface DmUtils : WindowUtils, KeyboardMouseUtils, PictureColorUtils, BackgroundUtils, BasicSettingUtils,
-        MemoryUtils, CharRecognitionUtils, SystemUtils {
+interface DmUtils : ArithmeticUtils, WindowUtils, KeyboardMouseUtils, PictureColorUtils, BackgroundUtils,
+        BasicSettingUtils, MemoryUtils, CharRecognitionUtils, SystemUtils, OtherUtils {
 
     /**
      * 初始化大漠插件
@@ -23,7 +23,7 @@ interface DmUtils : WindowUtils, KeyboardMouseUtils, PictureColorUtils, Backgrou
     fun Dispatch.bindLDMonitor(title: String = "雷电模拟器"): Boolean {
         val wh1 = this.findWindow("LDPlayerMainFrame", title)
         val wh2 = this.findWindowEx(wh1, "RenderWindow", "TheRender")
-        return this.bindWindow(wh2, BackgroundUtils.Display.NORMAL, BackgroundUtils.Mouse.WINDOWS,
+        return this.bindWindowLite(wh2, BackgroundUtils.Display.NORMAL, BackgroundUtils.Mouse.WINDOWS,
                 BackgroundUtils.Keyboard.WINDOWS)
     }
 

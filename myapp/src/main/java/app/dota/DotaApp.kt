@@ -163,7 +163,7 @@ class DotaApp : BaseApp(), DmUtils, Win32Utils {
                 val monitorSize = getWindowSize(null, "雷电模拟器"+if(index==0) "" else "-$index")
                 if (monitorSize.first > monitorSize.second) {
                     println("已经进入横屏模式")
-                    val result = damo.findStrFast(560,480,690,550, "登录", "ffffff-202020", 0.90)
+                    val result = damo.findStr(560,480,690,550, "登录", "ffffff-202020", 0.90)
                     damo.capture(560,480,690,550, "test${index}.jpg")
                     iv("iv$index").image = Image("file:C:\\Users\\Administrator\\damo\\test${index}.jpg")
 //                    val result = damo.findPic(560,470,690,550, "dota3.bmp", "101010", 0.9, DmUtils.DIR.RL_BT)
@@ -172,7 +172,7 @@ class DotaApp : BaseApp(), DmUtils, Win32Utils {
                         Thread {
                             while (true) {
                                 //val result = damo.findPic(700,300,800,350, "进入游戏.bmp", "101010", 0.9)
-                                val result = damo.findStrFast(700,270,850,310, "进入游戏", "1e93ff-202020", 0.9)
+                                val result = damo.findStr(700,270,850,310, "进入游戏", "1e93ff-202020", 0.9)
                                 damo.capture(700,300,800,350, "test.jpg")
                                 iv("iv").image = Image("file:C:\\Users\\Administrator\\damo\\test.jpg")
                                 if (damo.checkAndClick(result)){
