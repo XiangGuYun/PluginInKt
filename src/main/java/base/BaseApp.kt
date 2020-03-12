@@ -16,6 +16,7 @@ import javafx.scene.media.Media
 import javafx.stage.Screen
 import javafx.stage.Stage
 import java.io.*
+import kotlin.system.exitProcess
 
 
 abstract class BaseApp:Application(), CommonUtils{
@@ -45,7 +46,7 @@ abstract class BaseApp:Application(), CommonUtils{
                     window.isResizable = (it as Resizable).resizable
                 }
                 AppIcon::class->{
-                    window.icons.add(Image("image/${(it as AppIcon).iconPath}"))
+                    window.icons.add(Image("image/${(it as AppIcon).iconPath}".file))
                 }
                 Style::class->{
                     window.initStyle((it as Style).style)
@@ -188,6 +189,11 @@ abstract class BaseApp:Application(), CommonUtils{
 
     fun openUrl(url:String){
         hostServices.showDocument(url)
+    }
+
+    override fun stop() {
+        super.stop()
+        exitProcess(0)
     }
 
 }
