@@ -187,7 +187,7 @@ interface BackgroundUtils {
      * 而用同步就没有这个担心
      */
     fun Dispatch.enableKeypadSync(enable: Boolean, time_out: Int): Boolean {
-        return Dispatch.call(this, "EnableKeypadSync", if (enable) 1 else 0).int == 1
+        return Dispatch.call(this, "EnableKeypadSync", if (enable) 1 else 0, time_out).int == 1
     }
 
     /**
@@ -201,7 +201,7 @@ interface BackgroundUtils {
      * 而用同步就没有这个担心
      */
     fun Dispatch.enableMouseSync(enable: Boolean, time_out: Int): Boolean {
-        return Dispatch.call(this, "EnableMouseSync", if (enable) 1 else 0).int == 1
+        return Dispatch.call(this, "EnableMouseSync", if (enable) 1 else 0, time_out).int == 1
     }
 
     /**

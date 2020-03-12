@@ -13,9 +13,9 @@ interface DnfUtils : DmUtils, CommonUtils {
     fun Dispatch.bindDNF(): Boolean {
         return Dispatch.call(this, "BindWindowEx", findWindow("地下城与勇士", "地下城与勇士"),
                 "dx.graphic.3d",
-//                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.focus.input.api|dx.mouse.focus.input.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.state.message|dx.mouse.api|dx.mouse.cursor|dx.mouse.raw.input|dx.mouse.input.lock.api2|dx.mouse.input.lock.api3",
-                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.api|dx.mouse.cursor",//
-                "dx.keypad.input.lock.api|dx.keypad.state.api|dx.keypad.api|dx.keypad.raw.input",//|
+                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.focus.input.api|dx.mouse.focus.input.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.state.message|dx.mouse.api|dx.mouse.cursor|dx.mouse.raw.input|dx.mouse.input.lock.api2|dx.mouse.input.lock.api3",
+//                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.api|dx.mouse.cursor",//
+                "dx.keypad.input.lock.api|dx.keypad.state.api|dx.keypad.api|dx.keypad.raw.input",
                 "dx.public.active.api|dx.public.active.message|dx.public.hide.dll|dx.public.input.ime|dx.public.graphic.protect|dx.public.anti.api|dx.public.km.protect|dx.public.prevent.block|dx.public.down.cpu",
                 0).int == 1
     }
@@ -250,25 +250,49 @@ interface DnfUtils : DmUtils, CommonUtils {
         this.leftDoubleClick()
     }
 
+    fun Dispatch.preCharacterPage(){
+//        this.moveTo(782, 91)
+//        s(100.r())
+//        this.leftClick()
+    }
+
+    fun Dispatch.nextCharacterPage(){
+        this.moveTo(782, 495)
+        s(500.r())
+        this.leftClick()
+        s(500.r())
+        this.leftClick()
+    }
+
     /**
      * 返回城镇
      */
     fun Dispatch.backToTown() {
         this.keyPress(Key.esc)
-        s(100.r())
+        s(1000.r())
         this.moveTo(580,440)
-        s(100.r())
-        this.leftDoubleClick()
+        s(1000.r())
+        for (i in 1..3){
+            this.leftDoubleClick()
+            s(50.r)
+        }
     }
 
     /**
      * 选择角色，目前仅限于1~12号
      */
-    fun Dispatch.selectCharacter(pos: Int) {
+    fun Dispatch.selectCharacter(pos: Int, needNextPage:Boolean = false) {
         if (pos < 1) return
+        if(needNextPage){
+            nextCharacterPage()
+            s(1000.r)
+        }
         this.moveTo(140 * 2 / 3 + 180 * 2 / 3 * ((pos - 1) % 6), 300 * 2 / 3 + ((pos - 1) / 6) * 300 * 2 / 3)
         s(100.r())
-        this.leftDoubleClick()
+        for (i in 1..3){
+            this.leftDoubleClick()
+            s(100.r)
+        }
         s(100.r())
         this.moveTo(700 * 2 / 3, 800 * 2 / 3)
         s(100.r())
@@ -279,7 +303,7 @@ interface DnfUtils : DmUtils, CommonUtils {
      * 选择下一个角色
      */
     fun Dispatch.selectNextCharacter(){
-        this.keyPress(RIGHT)
+        this.keyPressDelay(RIGHT, 100)
         s(1000.r())
         this.moveTo(700 * 2 / 3, 800 * 2 / 3)
         s(100.r())

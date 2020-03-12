@@ -19,6 +19,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.locks.ReentrantLock
+import kotlin.system.exitProcess
 
 /**
  * 黄龙大会脚本
@@ -43,7 +44,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
 
     companion object {
         //当此标志为true时，暂停技能循环释放
-        var needPauseSkills = AtomicBoolean(false)
+        var needPauseSkills = false
         //是否处于绑定大漠状态
         var isBind = AtomicBoolean(false)
 
@@ -64,15 +65,20 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         dm.unBindWindow().pln("解除绑定结果：")
         service.shutdownNow()
         cacheService.shutdownNow()
+        exitProcess(1)
     }
 
     private fun initComponent() {
         dm = initDmCom()
+        dm.enableMouseSync(true, 2000)
+        dm.enableKeypadSync(true, 2000)
+        dm.enableRealKeypad(true)
+        dm.enableRealMouse(2, 100, 200)
         service = Executors.newFixedThreadPool(10)
         cacheService = Executors.newCachedThreadPool()
         println("注册结果：" + dm.reg())
-        println("路径设置结果：" + dm.setPath("${DESKTOP}yellow_dragon"))
-        println("字库设置结果：" + dm.setDict(0, "字库.txt"))
+        println("路径设置结果：" + dm.setPath("${getUserDesktop()}/yellow_dragon"))
+//        println("字库设置结果：" + dm.setDict(0, "字库.txt"))
     }
 
     private fun initView(window: Window) {
@@ -97,6 +103,13 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                 tf.marginVb(20, 0, 20, 0),
                 Button("设置当前角色").clickBN {
                     currentCharacter.set(tf.text.toInt())
+                },
+                Button("选择当前角色").clickBN {
+                    dm.goToCharacterPage()
+                    s(1000.r)
+                    dm.nextCharacterPage()
+                    s(1000.r)
+                    dm.selectCharacter(6)
                 }
         ).preSize(200, 400).apply {
             alignment = Pos.CENTER
@@ -112,6 +125,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
     private lateinit var threadCheckVsTable: Thread
     @Volatile
     var currentStep = 1 //当前脚本执行到的步骤
+    var inPage2 = false
 
     /**
      * 执行脚本
@@ -124,7 +138,9 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
 
         dm keyPress SPACE //进入黄龙副本
 
-        //创建一个线程专门负责跳过对战表
+        /*
+        创建一个线程专门负责跳过对战表
+         */
         service.submit {
             threadCheckVsTable = Thread.currentThread()
             lock.lock()
@@ -132,21 +148,24 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                 if (currentStep == 1) {
                     //查找指定位置是否有“对.bmp”
                     if (check(dm.findPic(420, 60, 470, 100, "对"))) {
+                        s(1000)
                         //如果存在则按下SPACE跳过对战表
                         dm keyPress SPACE
                         //设置不需要暂停技能释放
-                        needPauseSkills.set(false)
+                        needPauseSkills = false
                         currentStep = 2 //进入第2个步骤
                         cond.signalAll()
                         cond.await()
                     }
-                    s(1000)
+                    s(500)
                 }
             }
             lock.unlock()
         }
 
-        //创建一个线程专门负责循环放技能
+        /*
+        创建一个线程专门负责循环放技能
+         */
         service.submit {
             threadLoopSkills = Thread.currentThread()
             when {
@@ -156,7 +175,9 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
             }
         }
 
-        //创建一个线程专门负责“再次挑战”
+        /*
+        创建一个线程专门负责“再次挑战”和切换角色
+         */
         service.submit {
             threadPassGame = Thread.currentThread()
             while (isBind.get()) {
@@ -166,14 +187,13 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                 if (check(result)) {
                     //如果存在
                     //暂停技能释放
-                    needPauseSkills.set(true)
+                    needPauseSkills = true
                     //关闭黄龙任务弹窗
                     if (needCloseTaskDialog) {
                         dm keyPress SPACE
                         s(100)
                         dm keyPress SPACE
                     }
-                    s(2000.r(100)) //这个时间不能短于一轮技能的时间总和
                     //自动拾取
                     dm.autoPick()
                     s(100)
@@ -186,8 +206,10 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     //那么上面的操作又将执行一次，因此必须避免这个问题
                     //方案1：设置一个值记录刷图次数，当达到满次时就切换角色
                     //方案2：重复多次执行这个函数，例如执行10次，如果10次内全是“-1|-1|-1”则再次挑战
-                    if (check(dm.findPic(770, 75, 840, 100, "再次挑战",
-                                    "101010", 0.8))) {
+                    val result = (1..5).toList().map {
+                        check(dm.findPic(770,72,810,100, "再次挑战"))
+                    }
+                    if (result.contains(true)) {
                         //返回城镇
                         dm keyPress F12
                         s(3000)
@@ -196,31 +218,39 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                         s(3000)
                         if (currentCharacter.incrementAndGet() > maxSize) {
                             //如果角色已经刷满了
-                            alert("结束啦！")
+                            dm.exitOs(1)
                         } else {
                             //如果角色没有刷满
-                            dm.selectCharacter(currentCharacter.get())
+                            if(currentCharacter.get() in 13..24 && !inPage2){
+                                dm.selectCharacter(currentCharacter.get()%12, true)
+                                inPage2 = true
+                            } else {
+                                dm.selectCharacter(currentCharacter.get())
+                            }
                             s(3000)
                             goToYellowDragon(false)
                             s(2000)
                             dm keyPress SPACE
-                            needPauseSkills.set(false)
+                            needPauseSkills = false
                         }
                     } else {
                         //再次挑战
                         dm keyPress B
-                        s(6000)
-                        needPauseSkills.set(false)
+                        s(5000)
+                        needPauseSkills = false
                     }
+                    currentStep = 1
                     cond.signalAll()
                     cond.await()
                 }
-                s(2000)
+                s(1000)
             }
             lock.unlock()
         }
 
-        //创建一个线程用于监测是否存在卡屏
+        /*
+        创建一个线程用于监测是否存在卡屏
+         */
         service.submit {
             while (isBind.get()) {
                 if (dm.isDisplayDead(0, 0, 100, 100, 10)) {

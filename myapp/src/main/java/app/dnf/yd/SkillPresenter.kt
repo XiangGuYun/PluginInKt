@@ -7,95 +7,106 @@ import java.util.concurrent.ExecutorService
 
 interface SkillPresenter : CommonUtils, DmUtils {
 
+    infix fun Dispatch.keyPressIf(code:Int){
+        if(!YellowDragonApp.needPauseSkills){
+            this.keyPress(code)
+        }
+    }
+
+    fun sIf(time:Int){
+        if(!YellowDragonApp.needPauseSkills){
+            s(time.r())
+        }
+    }
+    
     fun Dispatch.common() {
-        while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
-            this keyPress A
-            s(300.r())
-            this keyPress S
-            s(300.r())
-            this keyPress D
-            s(300.r())
+        while (YellowDragonApp.isBind.get()) {
+            if(!YellowDragonApp.needPauseSkills){
+                this keyPressIf A
+                sIf(300.r())
+                this keyPressIf S
+                sIf(300.r())
+                this keyPressIf D
+                sIf(300.r())
+            }
         }
     }
 
     fun Dispatch.hongYan() {
-        while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
-            this keyPress A
-            s(150.r())
-            this keyPress A
-            s(150.r())
-            this keyPress A
-            s(150.r())
-            this keyPress S
-            s(300.r())
-            this keyPress D
-            s(300.r())
-            this keyPress F
-            s(300.r())
-            this keyPress G
-            s(300.r())
-            this keyPress H
-            s(300.r())
-        }
-    }
-
-    fun Dispatch.ciKe() {
-        while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
-            this keyPress S
-            s(100.r())
-            this keyPress S
-            s(100.r())
-            this keyPress G
-            s(1000.r())
+        while (YellowDragonApp.isBind.get()) {
+            if(!YellowDragonApp.needPauseSkills){
+                this keyPressIf A
+                sIf(150.r())
+                this keyPressIf A
+                sIf(150.r())
+                this keyPressIf A
+                sIf(150.r())
+                this keyPressIf S
+                sIf(300.r())
+                this keyPressIf D
+                sIf(300.r())
+                this keyPressIf F
+                sIf(300.r())
+                this keyPressIf G
+                sIf(300.r())
+                this keyPressIf H
+                sIf(300.r())
+            }
         }
     }
 
     private fun Dispatch.jianHun() {
-        this keyPress A
-        s(100.r())
-        this keyPress A
-        s(100.r())
-        this keyPress S
-        s(100.r())
-        this keyPress D
-        s(100.r())
-        this keyPress F
-        s(100.r())
-        this keyPress G
-        s(100.r())
-        this keyPress H
-        s(100.r())
+        this keyPressIf A
+        sIf(100.r())
+        this keyPressIf A
+        sIf(100.r())
+        this keyPressIf S
+        sIf(100.r())
+        this keyPressIf D
+        sIf(100.r())
+        this keyPressIf F
+        sIf(100.r())
+        this keyPressIf G
+        sIf(100.r())
+        this keyPressIf H
+        sIf(100.r())
     }
 
     fun Dispatch.jianHunEx(cacheService: ExecutorService) {
         cacheService.submit {
-            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
-                this.jianHun()
+            while (YellowDragonApp.isBind.get()) {
+                if(!YellowDragonApp.needPauseSkills) this.jianHun()
             }
         }
         cacheService.submit {
-            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
-                this keyPress Q
-                s(1000)
+            while (YellowDragonApp.isBind.get()) {
+                if(!YellowDragonApp.needPauseSkills){
+                    this keyPressIf Q
+                    sIf(1000)
+                }
             }
         }
         cacheService.submit {
-            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
-                this keyPress W
-                s(200)
+            while (YellowDragonApp.isBind.get()) {
+                if(!YellowDragonApp.needPauseSkills){
+                    this keyPressIf W
+                    sIf(200)
+                }
             }
         }
         cacheService.submit {
-            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
-                this keyPress RIGHT
-                this keyPress E
-                s(100)
-                this keyPress LEFT
-                this keyPress E
-                s(100)
-                this keyPress RIGHT
-                this keyPress E
-                s(100)
+            while (YellowDragonApp.isBind.get()) {
+                if(!YellowDragonApp.needPauseSkills){
+                    this keyPressIf RIGHT
+                    this keyPressIf E
+                    sIf(100)
+                    this keyPressIf LEFT
+                    this keyPressIf E
+                    sIf(100)
+                    this keyPressIf RIGHT
+                    this keyPressIf E
+                    sIf(100)
+                }
             }
         }
     }
