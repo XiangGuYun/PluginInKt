@@ -25,7 +25,7 @@ class DmApp : BaseApp(), DmUtils, Win32Utils {
         dm.setPath(DESKTOP)
 
         btn("btnBindBaidu").click {
-            val result = dm.bindWindow(132112, BackgroundUtils.Display.GDI,
+            val result = dm.bindWindowLite(132112, BackgroundUtils.Display.GDI,
                     BackgroundUtils.Mouse.NORMAL, BackgroundUtils.Keyboard.NORMAL)
             alert("bind is success? $result")
         }
@@ -52,7 +52,7 @@ class DmApp : BaseApp(), DmUtils, Win32Utils {
         btn("btnBindLeiDian").click{
             val wh1 = dm.findWindow("LDPlayerMainFrame", "雷电模拟器")
             val wh2 = dm.findWindowEx(wh1, "RenderWindow", "TheRender")
-            val result = dm.bindWindow(wh2, BackgroundUtils.Display.NORMAL, BackgroundUtils.Mouse.WINDOWS, BackgroundUtils.Keyboard.WINDOWS)
+            val result = dm.bindWindowLite(wh2, BackgroundUtils.Display.NORMAL, BackgroundUtils.Mouse.WINDOWS, BackgroundUtils.Keyboard.WINDOWS)
             alert("绑定是否成功？$result")
         }
 

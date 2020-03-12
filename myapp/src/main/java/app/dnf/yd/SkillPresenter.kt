@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService
 interface SkillPresenter : CommonUtils, DmUtils {
 
     fun Dispatch.common() {
-        while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+        while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
             this keyPress A
             s(300.r())
             this keyPress S
@@ -19,7 +19,7 @@ interface SkillPresenter : CommonUtils, DmUtils {
     }
 
     fun Dispatch.hongYan() {
-        while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+        while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
             this keyPress A
             s(150.r())
             this keyPress A
@@ -40,7 +40,7 @@ interface SkillPresenter : CommonUtils, DmUtils {
     }
 
     fun Dispatch.ciKe() {
-        while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+        while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
             this keyPress S
             s(100.r())
             this keyPress S
@@ -69,24 +69,24 @@ interface SkillPresenter : CommonUtils, DmUtils {
 
     fun Dispatch.jianHunEx(cacheService: ExecutorService) {
         cacheService.submit {
-            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
                 this.jianHun()
             }
         }
         cacheService.submit {
-            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
                 this keyPress Q
                 s(1000)
             }
         }
         cacheService.submit {
-            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
                 this keyPress W
                 s(200)
             }
         }
         cacheService.submit {
-            while (YellowDragonApp.isBind && !YellowDragonApp.needPauseSkills) {
+            while (YellowDragonApp.isBind.get() && !YellowDragonApp.needPauseSkills.get()) {
                 this keyPress RIGHT
                 this keyPress E
                 s(100)
