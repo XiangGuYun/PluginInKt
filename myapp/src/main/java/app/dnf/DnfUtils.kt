@@ -122,7 +122,15 @@ interface DnfUtils : DmUtils, CommonUtils {
     fun Dispatch.autoPick() {
         this.keyPress(Key.enter)
         s(100.r())
-        this.sendString2(this.findWindow("地下城与勇士", "地下城与勇士"), "//移动物品")
+        this.sendString(this.findWindow("地下城与勇士", "地下城与勇士"), "//移动物品")
+        s(100.r())
+        this.keyPress(Key.enter)
+    }
+
+    fun Dispatch.autoPick(hwnd:Int) {
+        this.keyPress(Key.enter)
+        s(100.r())
+        this.sendString(hwnd, "//移动物品")
         s(100.r())
         this.keyPress(Key.enter)
     }
@@ -248,6 +256,12 @@ interface DnfUtils : DmUtils, CommonUtils {
         this.moveTo(682 * 2 / 3, 679 * 2 / 3)
         s(100.r())
         this.leftDoubleClick()
+        s(500)
+        //检查是否前往了角色选择界面
+        while (!check(findPic(685,54,706,70,"选择角色"))){
+            this.leftDoubleClick()
+            s(500)
+        }
     }
 
     fun Dispatch.preCharacterPage(){

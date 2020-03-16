@@ -86,6 +86,12 @@ interface DmUtils : ArithmeticUtils, WindowUtils, KeyboardMouseUtils, PictureCol
         this.leftClick()
     }
 
+    fun Dispatch.doubleClick(x: Int, y: Int) {
+        this.moveTo(x, y)
+        Thread.sleep(100)
+        this.leftDoubleClick()
+    }
+
     /**
      * 移动并双击坐标处
      */

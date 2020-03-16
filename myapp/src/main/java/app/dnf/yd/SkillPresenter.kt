@@ -1,15 +1,22 @@
 package app.dnf.yd
 
+import app.dnf.DnfUtils
 import base.utils.CommonUtils
 import base.utils.DmUtils
 import com.jacob.com.Dispatch
 import java.util.concurrent.ExecutorService
 
-interface SkillPresenter : CommonUtils, DmUtils {
+interface SkillPresenter : CommonUtils, DnfUtils {
 
     infix fun Dispatch.keyPressIf(code:Int){
         if(!YellowDragonApp.needPauseSkills){
             this.keyPress(code)
+        }
+    }
+
+    infix fun Dispatch.keyDownIf(code:Int){
+        if(!YellowDragonApp.needPauseSkills){
+            this.keepDownKey(1000L, code)
         }
     }
 
@@ -28,6 +35,43 @@ interface SkillPresenter : CommonUtils, DmUtils {
                 sIf(300.r())
                 this keyPressIf D
                 sIf(300.r())
+            }
+        }
+    }
+
+    fun Dispatch.skillASDF(){
+        while (YellowDragonApp.isBind.get()) {
+            if(!YellowDragonApp.needPauseSkills){
+                this keyPressIf A
+                sIf(300.r)
+                this keyPressIf S
+                sIf(300.r)
+                this keyPressIf D
+                sIf(300.r)
+            }
+        }
+    }
+
+    fun Dispatch.skillASDFG(needRun:Boolean = false){
+        while (YellowDragonApp.isBind.get()) {
+            if(!YellowDragonApp.needPauseSkills){
+                if(needRun) this.runRight(200)
+                this keyPressIf A
+                sIf(200.r())
+                if(needRun) this.runRight(200)
+                this keyPressIf S
+                sIf(200.r())
+                if(needRun) this.runRight(200)
+                this keyPressIf D
+                sIf(200.r())
+                if(needRun) this.runRight(200)
+                this keyPressIf F
+                sIf(200.r())
+                if(needRun) this.runRight(200)
+                this keyPressIf G
+                sIf(200.r())
+//                this keyPressIf H
+//                sIf(200.r())
             }
         }
     }
