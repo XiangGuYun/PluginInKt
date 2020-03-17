@@ -29,6 +29,7 @@ import kotlin.system.exitProcess
 @Style(StageStyle.UNIFIED)
 @AppTitle("YellowDragonApp")
 class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
+    private var delay: Int = 600
     //DNF句柄输入框
     private lateinit var tfHwnd: TextField
     //该线程池用于灵活释放技能
@@ -50,7 +51,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         var needPauseSkills = false
         //是否处于绑定大漠状态
         var isBind = AtomicBoolean(false)
-
+        var needBreak = false
         @JvmStatic
         fun main(args: Array<String>) {
             launch(YellowDragonApp::class.java)
@@ -68,7 +69,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         dm.enableKeypadSync(true, 2000)
         dm.enableRealKeypad(true)
 //        dm.enableRealMouse(2, 10, 300)
-        service = Executors.newFixedThreadPool(4)
+        service = Executors.newFixedThreadPool(5)
         cacheService = Executors.newCachedThreadPool()
         println("注册结果：" + dm.reg())
         println("路径设置结果：" + dm.setPath("${getUserDesktop()}/yellow_dragon"))
@@ -82,10 +83,11 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         val tfMaxChar = TextField()
         val tfStart = TextField()
         val tfEnd = TextField()
+        val tfDelay = TextField()
         tfHwnd = TextField().apply { prefWidth = 105.0 }
         window.scene = Scene(VBox().addChildren(
                 HBox().addChildren(
-                        lbBind.apply { padding = Insets(3.0,0.0,0.0,0.0) },
+                        lbBind.apply { padding = Insets(3.0, 0.0, 0.0, 0.0) },
                         tfHwnd.apply {
                             focus(false)
                             hint("请输入窗口句柄")
@@ -105,7 +107,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                             isBind.set(false)
                         },
                         Button("暂停绑定").click {
-                            if((it.source as Button).text == "暂停绑定"){
+                            if ((it.source as Button).text == "暂停绑定") {
                                 dm.enableBind(0)
                                 (it.source as Button).text = "恢复绑定"
                             } else {
@@ -114,7 +116,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                             }
                         }
                 ).apply {
-                    marginVb(20,20,20,0)
+                    marginVb(20, 20, 20, 0)
                     spacing = 10.0
                 },
                 HBox().addChildren(
@@ -127,7 +129,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                         },
                         tfMaxChar.apply { prefWidth = 50.0 }
                 ).apply {
-                    marginVb(20,0,20,0)
+                    marginVb(20, 0, 20, 0)
                     spacing = 10.0
                 },
                 HBox().addChildren(
@@ -137,7 +139,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                         Button("转移金币").clickBN {
                             Thread { transferCoinMaterial(tfStart.text.toInt(), tfEnd.text.toInt()) }.start()
                         },
-                        tfStart.apply{
+                        tfStart.apply {
                             hint("开始角色")
                             prefWidth = 70.0
                         },
@@ -146,11 +148,20 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                             prefWidth = 70.0
                         }
                 ).apply {
-                    marginVb(20,0,20,0)
+                    marginVb(20, 0, 20, 0)
                     spacing = 10.0
                 },
-                Button("开始刷图").clickBN {
-                    doScript(dm)
+                HBox().addChildren(
+                        Button("开始刷图").clickBN {
+                            doScript(dm)
+                        },
+                        Button("设置延时").clickBN {
+                            delay = tfDelay.text.toInt()
+                        },
+                        tfDelay
+                ).apply {
+                    marginVb(20, 0, 20, 0)
+                    spacing = 10.0
                 }
         ).preSize(370, 180).apply {
             alignment = Pos.TOP_CENTER
@@ -175,7 +186,9 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         /*
         创建一个线程专门负责循环放技能
          */
-        service.submit { doLoopSkills() }
+        service.submit {
+            doLoopSkills()
+        }
         /*
         创建一个线程专门负责“再次挑战”和切换角色
          */
@@ -183,9 +196,45 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         /*
         创建一个线程用于监测是否存在卡屏
          */
+        var guanKa = 0
         service.submit {
-            while (isBind.get())
-                if (dm.isDisplayDead(0, 0, 100, 100, 25)) dm.beep(1000, 3000)
+            while (isBind.get()) {
+                //if (dm.isDisplayDead(0, 0, 100, 100, 25)) dm.beep(1000, 3000)
+                val result = dm.findPic(462, 288, 504, 318, "战斗", offset = 5)
+                if (check(result)) {
+                    "战斗".pln()
+                    guanKa++
+                    s(delay)
+                    needBreak = false
+                    dm.skillCiKe()
+                }
+                s(50)
+            }
+        }
+
+        service.submit {
+            while (isBind.get()) {
+                val result1 = dm.findPic(441, 327, 478, 351, "你胜了", offset = 5)
+                if (check(result1)) {
+                    "你胜了".pln()
+                    needBreak = true
+                    s(200)
+                    if (guanKa == 4) {
+                        //自动拾取
+                        if (tfHwnd.text.isNotEmpty()) {
+                            dm.autoPick(tfHwnd.text.toInt())
+                        } else {
+                            dm.autoPick()
+                        }
+                        s(100)
+                        for (i in 1..19) {
+                            dm keyPress X
+                            s(200.r())
+                        }
+                        guanKa = 0
+                    }
+                }
+            }
         }
 
     }
@@ -208,17 +257,17 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     s(100)
                     dm keyPress SPACE
                 }
-                //自动拾取
-                if (tfHwnd.text.isNotEmpty()) {
-                    dm.autoPick(tfHwnd.text.toInt())
-                } else {
-                    dm.autoPick()
-                }
-                s(100)
-                for (i in 1..19) {
-                    dm keyPress X
-                    s(200.r())
-                }
+//                //自动拾取
+//                if (tfHwnd.text.isNotEmpty()) {
+//                    dm.autoPick(tfHwnd.text.toInt())
+//                } else {
+//                    dm.autoPick()
+//                }
+//                s(100)
+//                for (i in 1..19) {
+//                    dm keyPress X
+//                    s(200.r())
+//                }
                 //查找是否存在置灰的“再次挑战.bmp"
                 //注意这里存在一个问题，万一一次没有找到这张图而再次挑战又无法执行，
                 //那么上面的操作又将执行一次，因此必须避免这个问题
@@ -243,8 +292,11 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     s(3000)
                     if (currentCharacter.incrementAndGet() > maxSize) {
                         //如果角色已经刷满了
-                        //dm.exitOs(1)
-                        dm.beep(1000, 1000)
+                        //结束游戏
+                        dm.doubleClick(620, 547)
+                        s(500.r)
+                        //关机
+                        dm.exitOs(1)
                     } else {
                         //如果角色没有刷满
                         if (currentCharacter.get() in 13..24 && !inPage2) {
@@ -279,9 +331,9 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      */
     private fun doJumpVsTable(lock: ReentrantLock, cond: Condition) {
         lock.lock()
-        dm.selectCharacter(currentCharacter.get())
-        s(3000.r)
-        goToYellowDragon()
+//        dm.selectCharacter(currentCharacter.get())
+//        s(3000.r)
+//        goToYellowDragon()
         dm keyPress SPACE //进入黄龙副本
         while (isBind.get()) {
             if (currentStep == 1) {
@@ -306,10 +358,12 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      * 根据当前的角色索引决定如何循环释放技能
      */
     private fun doLoopSkills() {
-        when (currentCharacter.get()) {
-            in 1..7 -> dm.common()
-            in 8..9 -> dm.skillASDFG(currentCharacter.get() == 8)
-        }
+//        when (currentCharacter.get()) {
+//            in 1..7 -> dm.common()
+//            in 8..9 -> dm.skillASDFG(currentCharacter.get() == 8)
+//            10 -> dm.hongYan()
+//            11 -> dm.jianHunEx(cacheService)
+//        }
     }
 
     /**
