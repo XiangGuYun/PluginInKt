@@ -1,10 +1,6 @@
 package base.jse
 
 import org.apache.commons.io.FileUtils
-import org.apache.commons.lang.ClassUtils
-import org.apache.commons.lang.StringUtils
-import org.apache.commons.lang.SystemUtils
-import org.apache.commons.lang.Validate
 import java.io.*
 import java.math.BigDecimal
 import java.util.*
@@ -55,9 +51,9 @@ import kotlin.math.ceil
 interface JseFileIoUtils {
 
     //获取文件的大小
-    val File.KB get() = BigDecimal(length()).divide(BigDecimal(1024)).toDouble()
-    val File.MB get() = BigDecimal(length()).divide(BigDecimal(1024 * 1024)).toDouble()
-    val File.GB get() = BigDecimal(length()).divide(BigDecimal(1024 * 1024 * 1024)).toDouble()
+    val File.kb get() = BigDecimal(length()).divide(BigDecimal(1024)).toDouble()
+    val File.mb get() = BigDecimal(length()).divide(BigDecimal(1024 * 1024)).toDouble()
+    val File.gb get() = BigDecimal(length()).divide(BigDecimal(1024 * 1024 * 1024)).toDouble()
 
     /**
      * 写入对象到文件

@@ -27,7 +27,9 @@ public class CyclicBarrierSample {
                 Thread.sleep(new Random().nextInt(1000));
                 System.out.println("玩家" + id + "进入第三关...");
                 cyclicBarrier.await();
-            } catch (InterruptedException | BrokenBarrierException e) {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (BrokenBarrierException e) {
                 e.printStackTrace();
             }
         }

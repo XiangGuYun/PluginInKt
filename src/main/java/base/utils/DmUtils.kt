@@ -5,6 +5,7 @@ import com.jacob.activeX.ActiveXComponent
 import com.jacob.com.Dispatch
 import java.awt.MouseInfo
 import java.awt.Point
+import kotlin.random.Random
 
 
 interface DmUtils : ArithmeticUtils, WindowUtils, KeyboardMouseUtils, PictureColorUtils, BackgroundUtils,
@@ -15,6 +16,10 @@ interface DmUtils : ArithmeticUtils, WindowUtils, KeyboardMouseUtils, PictureCol
      */
     fun initDmCom(): Dispatch {
         return ActiveXComponent("dm.dmsoft").`object`
+    }
+
+    fun random(){
+        Random.nextInt()
     }
     
     /**

@@ -248,6 +248,37 @@ interface PictureColorUtils {
     }
 
     /**
+     * 函数简介: 多次找图，有时找一张图可能查找一次并不能找到，有一定的失败几率，那么可以调用这个方法来避免误差
+     * @param times Int 找图次数
+     * @return List<String> 结果字符串集合
+     */
+    fun Dispatch.findPicRepeatedly(times:Int, x1: Int, y1: Int, x2: Int, y2: Int, name: String, deltaColor: String = "101010", sim: Double = 0.9, dir: DIR = DIR.LR_TB): List<String> {
+        return (1..times).toList().map {
+            findPic(x1, y1, x2, y2, "$name.bmp", deltaColor, sim, dir)
+        }
+    }
+
+    /**
+     * 判断多次找图后是否找到了对应的图
+     * @param list List<String>
+     * @return Boolean true表示找到了
+     */
+    fun checkFindResult(list: List<String>): Boolean {
+        val pos = list.find { it != "-1|-1|-1" }
+        return pos != null
+    }
+
+    /**
+     * 获取多次找图后的图位置，有可能会返回空
+     * @param list List<String>
+     * @return Pair<String, String>? x和y坐标
+     */
+    fun getPosFromResult(list:List<String>): Pair<Int, Int>? {
+        val pos = list.find { it != "-1|-1|-1" } ?: return null
+        return pos.split("|")[1].toInt() to pos.split("|")[2].toInt()
+    }
+
+    /**
      * 函数简介: 查找指定区域内的图片，位图必须是24位色格式，支持透明色
      * 当图像上下左右4个顶点的颜色一样时，则这个颜色将作为透明色处理
      * 这个函数可以查找多个图片，只返回第一个找到的X Y坐标
