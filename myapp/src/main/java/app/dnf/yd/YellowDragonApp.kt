@@ -52,6 +52,14 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         //是否处于绑定大漠状态
         var isBind = AtomicBoolean(false)
         var needBreak = false
+        @Volatile
+        var guanKa = 0
+        @Volatile
+        var isPaLaDing = false
+        @Volatile
+        var findYueFei = false
+        @Volatile
+        var findFengSheng = false
         @JvmStatic
         fun main(args: Array<String>) {
             launch(YellowDragonApp::class.java)
@@ -69,7 +77,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
         dm.enableKeypadSync(true, 2000)
         dm.enableRealKeypad(true)
 //        dm.enableRealMouse(2, 10, 300)
-        service = Executors.newFixedThreadPool(5)
+        service = Executors.newFixedThreadPool(10)
         cacheService = Executors.newCachedThreadPool()
         println("注册结果：" + dm.reg())
         println("路径设置结果：" + dm.setPath("${getUserDesktop()}/yellow_dragon"))
@@ -155,10 +163,11 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                         Button("开始刷图").clickBN {
                             doScript(dm)
                         },
-                        Button("设置延时").clickBN {
-                            delay = tfDelay.text.toInt()
-                        },
-                        tfDelay
+                        Button("卖装备").clickBN {
+                            Thread {
+                                sellEquipment()
+                            }.start()
+                        }
                 ).apply {
                     marginVb(20, 0, 20, 0)
                     spacing = 10.0
@@ -170,7 +179,6 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
     }
 
     var currentStep = 1 //当前脚本执行到的步骤
-    var inPage2 = false //是否处于选择角色的第二页
 
     /**
      * 执行脚本
@@ -184,39 +192,79 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
          */
         service.submit { doJumpVsTable(lock, cond) }
         /*
-        创建一个线程专门负责循环放技能
-         */
-        service.submit {
-            doLoopSkills()
-        }
-        /*
         创建一个线程专门负责“再次挑战”和切换角色
          */
         service.submit { doChallengeAgainAndSwitchChar(lock, cond) }
         /*
-        创建一个线程用于监测是否存在卡屏
+        创建一个线程用于开始战斗时释放技能
          */
-        var guanKa = 0
         service.submit {
             while (isBind.get()) {
-                //if (dm.isDisplayDead(0, 0, 100, 100, 25)) dm.beep(1000, 3000)
-                val result = dm.findPic(462, 288, 504, 318, "战斗", offset = 5)
-                if (check(result)) {
-                    "战斗".pln()
+                if (check(if (!isPaLaDing)
+                            dm.findPic(462, 288, 504, 318, "战斗", offset = 5, isLog = false)
+                        else
+                            dm.findPic(494, 315, 504, 323, "战斗帕拉丁", offset = 5, isLog = true))
+                ) {
+                    "战斗吧".pln("****************************")
                     guanKa++
+                    findYueFei = false
+                    findFengSheng = false
                     s(delay)
                     needBreak = false
-                    dm.skillCiKe()
+                    when (currentCharacter.get()) {
+                        1 -> dm.skillTeGong()
+                        2 -> dm.skillCiYuan()
+                        3 -> dm.skillNanJieBa()
+                        4 -> dm.skillNaiBa()
+                        5 -> {
+                            dm.skillTeGong()
+                        }
+                        6 -> dm.skillTeGong()
+                        7 -> dm.skillNvQiGong()
+                        8 -> dm.skillBingJieShi()
+                        9 -> dm.skillHongYan()
+                        10 -> dm.skillNvRouDao()
+                        11 -> dm.skillNvManYou()
+                        12 -> dm.skillGuiQi()
+                        13 -> dm.skillJianHun()
+                        14 -> dm.skillSiLing()
+                        15 -> dm.skillFengFa()
+                        16 -> dm.skillGuanYu()
+                        17 -> dm.skillNvDaQiang()
+                        18 -> dm.skillJianMo()
+                        19 -> dm.skillJianZong()
+                        20 -> dm.skillAXiuLuo()
+                        21 -> dm.skillNanSanDa()
+                    }
                 }
                 s(50)
             }
         }
 
         service.submit {
+            while (isBind.get()){
+                if(check(dm.findPic(693,463,708,473, "岳非", offset = 5))){
+                    findYueFei = true
+                    dm.beep(1000, 3000)
+                }
+                s(100)
+            }
+        }
+
+        service.submit {
+            while (isBind.get()){
+                if(check(dm.findPic(719,467,728,476, "丰胜", sim = 0.95, offset = 5))){
+                    findFengSheng = true
+                    dm.beep(100, 3000)
+                }
+                s(100)
+            }
+        }
+
+        service.submit {
             while (isBind.get()) {
-                val result1 = dm.findPic(441, 327, 478, 351, "你胜了", offset = 5)
+                val result1 = dm.findPic(441, 327, 478, 351, "你胜了", offset = 5, isLog = false)
                 if (check(result1)) {
-                    "你胜了".pln()
                     needBreak = true
                     s(200)
                     if (guanKa == 4) {
@@ -244,84 +292,57 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      */
     private fun doChallengeAgainAndSwitchChar(lock: ReentrantLock, cond: Condition) {
         while (isBind.get()) {
-            lock.lock()
-            //检查指定位置是否存在“返回城镇.bmp”
-            val result = dm.findPic(770, 130, 840, 160, "返回城镇")
-            if (check(result)) {
-                //如果存在
-                //暂停技能释放
-                needPauseSkills = true
-                //关闭黄龙任务弹窗
-                if (needCloseTaskDialog) {
-                    dm keyPress SPACE
-                    s(100)
-                    dm keyPress SPACE
-                }
-//                //自动拾取
-//                if (tfHwnd.text.isNotEmpty()) {
-//                    dm.autoPick(tfHwnd.text.toInt())
-//                } else {
-//                    dm.autoPick()
-//                }
-//                s(100)
-//                for (i in 1..19) {
-//                    dm keyPress X
-//                    s(200.r())
-//                }
-                //查找是否存在置灰的“再次挑战.bmp"
-                //注意这里存在一个问题，万一一次没有找到这张图而再次挑战又无法执行，
-                //那么上面的操作又将执行一次，因此必须避免这个问题
-                //方案1：设置一个值记录刷图次数，当达到满次时就切换角色
-                //方案2：重复多次执行这个函数，例如执行10次，如果10次内全是“-1|-1|-1”则再次挑战
-                val result = (1..5).toList().map {
-                    check(dm.findPic(770, 72, 810, 100, "再次挑战"))
-                }
-                if (result.contains(true)) {
-                    //返回城镇
-                    dm keyPress F12
-                    s(3000)
-                    sellEquipment()
-                    s(100.r)
-                    //前往选择角色界面
-                    dm.goToCharacterPage()
-                    s(1000)
-                    while (!(1..3).toList().map { check(dm.findPic(685, 52, 709, 72, "选择角色")) }.contains(true)) {
-                        dm.goToCharacterPage()
-                        s(1000)
+            if (guanKa == 0) {
+                lock.lock()
+                //检查指定位置是否存在“返回城镇.bmp”
+                val result = dm.findPic(770, 130, 840, 160, "返回城镇")
+                if (check(result)) {
+                    //如果存在
+                    //暂停技能释放
+                    needPauseSkills = true
+                    //查找是否存在置灰的“再次挑战.bmp"
+                    val result = (1..5).toList().map {
+                        check(dm.findPic(770, 72, 810, 100, "再次挑战"))
                     }
-                    s(3000)
-                    if (currentCharacter.incrementAndGet() > maxSize) {
-                        //如果角色已经刷满了
-                        //结束游戏
-                        dm.doubleClick(620, 547)
-                        s(500.r)
-                        //关机
-                        dm.exitOs(1)
-                    } else {
-                        //如果角色没有刷满
-                        if (currentCharacter.get() in 13..24 && !inPage2) {
-                            dm.selectCharacter(currentCharacter.get() % 12, true)
-                            inPage2 = true
-                        } else {
-                            dm.selectCharacter(currentCharacter.get())
+                    if (result.contains(true) ) {//|| 1 == 1
+                        //返回城镇
+                        dm keyPress F12
+                        s(3000)
+                        sellEquipment()
+                        s(100.r)
+                        //前往选择角色界面
+                        while (!(1..3).toList().map { check(dm.findPic(449, 555, 521, 574, "选择角色", offset = 5)) }.contains(true)) {
+                            dm.goToCharacterPage()
+                            s(1000)
                         }
                         s(3000)
-                        goToYellowDragon(false)
-                        s(2000)
-                        dm keyPress SPACE
+                        if (currentCharacter.incrementAndGet() > maxSize) {
+                            //如果角色已经刷满了
+                            //结束游戏
+                            dm.doubleClick(620, 547)
+                            s(500.r)
+                            //关机
+                            dm.exitOs(1)
+                        } else {
+                            //如果角色没有刷满
+                            dm.selectCharacter(currentCharacter.get(), currentCharacter.get() in arrayOf(8, 15, 22, 29))
+                            goToYellowDragon(false)
+                            s(2000)
+                            dm keyPress SPACE
+                            needPauseSkills = false
+                        }
+                    } else {
+                        //再次挑战
+                        dm keyPress B
+                        s(5000)
                         needPauseSkills = false
                     }
-                } else {
-                    //再次挑战
-                    dm keyPress B
-                    s(5000)
-                    needPauseSkills = false
+                    currentStep = 1
+                    cond.signalAll()
+                    cond.await()
                 }
-                currentStep = 1
-                cond.signalAll()
-                cond.await()
             }
-            s(1000)
+            s(100)
         }
         lock.unlock()
     }
@@ -332,7 +353,6 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
     private fun doJumpVsTable(lock: ReentrantLock, cond: Condition) {
         lock.lock()
 //        dm.selectCharacter(currentCharacter.get())
-//        s(3000.r)
 //        goToYellowDragon()
         dm keyPress SPACE //进入黄龙副本
         while (isBind.get()) {
@@ -348,22 +368,10 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
                     cond.signalAll()
                     cond.await()
                 }
-                s(500)
+                s(100)
             }
         }
         lock.unlock()
-    }
-
-    /**
-     * 根据当前的角色索引决定如何循环释放技能
-     */
-    private fun doLoopSkills() {
-//        when (currentCharacter.get()) {
-//            in 1..7 -> dm.common()
-//            in 8..9 -> dm.skillASDFG(currentCharacter.get() == 8)
-//            10 -> dm.hongYan()
-//            11 -> dm.jianHunEx(cacheService)
-//        }
     }
 
     /**
@@ -371,6 +379,9 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      */
     private fun goToYellowDragon(haveClothes: Boolean = false) {
         dm.apply {
+            while (!check(dm.findPic(868,422,880,431, "邮件箱", sim = 0.8, offset = 5, isLog = true))) {
+                s(200)
+            }
             walkDown(1800)
             walkLeft(if (!haveClothes) 2400 else 1800)
             walkUp(1500)
@@ -384,23 +395,25 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      * 卖装备
      */
     private fun sellEquipment() {
-        val result = (1..3).toList().map { dm.findPic(0, 0, 960, 600, "分解机") }
+        val result = (1..3).toList().map { dm.findPic(0, 0, 960, 600, "分解机", sim = 0.8, isLog = true) }
         val fenJieJi = result.find { it != "-1|-1|-1" }
         if (fenJieJi != null) {
             dm.doubleClick(fenJieJi)
+        } else {
+            dm.beep(500,200)
         }
         s(100)
-        dm.moveR(24, 24)
+        dm.moveR(26, 26)
         s(200.r)
         dm.leftDoubleClick()
         s(200.r)
         //卖装备
-        dm.doubleClick(577, 246) //点击装备TAB
+        dm.doubleClick(575, 256) //点击装备TAB
         s(100.r)
         val startX = 568
         val zbGridWidth = 30
         val zbPosList = (0..15).toList().mapIndexed { i, it ->
-            (startX + zbGridWidth * (i % 8)) to if (i > 7) 301 else 276
+            (startX + zbGridWidth * (i % 8)) to if (i > 7) 316 else 287
         }
         zbPosList.forEachIndexed { i, it ->
             dm.moveTo(it.first, it.second)
@@ -411,14 +424,16 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
             s(200.r)
             dm.leftUp()
             s(100.r)
-            val confirm = (1..3).toList().map { dm.findPic(0, 0, 960, 600, "确认") }
+            val confirm = (1..3).toList().map { dm.findPic(0, 0, 960, 600, "确认", isLog = true) }
             val confirmPos = confirm.find { it != "-1|-1|-1" }
             if (confirmPos != null) {
                 dm.doubleClick(confirmPos)
             } else {
-                return@forEachIndexed
+                s(100.r)
+                dm.keyPress(ESC)
+                return
             }
-            s(500.r)
+            s(100.r)
         }
         s(100.r)
         dm.keyPress(ESC)
@@ -430,22 +445,12 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      * @param end Int 指定结束的角色索引
      */
     private fun buyTickets(start: Int, end: Int) {
-        var nextPage = false
         for (i in start..end) {
-            when {
-                i <= 12 -> {
-                    dm.selectCharacter(i)
-                }
-                i < 24 -> {
-                    if (!nextPage) {
-                        nextPage = true
-                        dm.selectCharacter(i % 12, nextPage)
-                    } else {
-                        dm.selectCharacter(i % 12)
-                    }
-                }
+            val nextPage = i in arrayOf(8, 15, 22, 29)
+            dm.selectCharacter(i, needNextPage = nextPage)
+            while (!check(dm.findPic(868,422,880,431, "邮件箱",sim = 0.8,  offset = 5))) {
+                s(200)
             }
-            s(2000.r)
             //打开仓库
             dm.moveTo(245, 386)
             s(300.r)
@@ -464,7 +469,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
             dm.leftUp()
             dm.enableRealMouse(0, 10, 100)
             s(500)
-            dm.sendString(dm.findWindow("地下城与勇士", "地下城与勇士"), "100")
+            dm.sendString(dm.findWindow("地下城与勇士", "地下城与勇士"), "0")
             s(500)
             dm.doubleClick(563, 275)
             s(500)
@@ -472,7 +477,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
             s(100.r)
             dm.walkDown(2000)
             dm.walkLeft(5000)
-            dm.walkDown(700)
+            dm.walkDown(800)
             dm.walkRight(1000)
             dm.doubleClick(883, 334)
             s(100.r)
@@ -484,7 +489,7 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
             s(100.r)
             dm.keyUp(SHIFT)
             s(100.r)
-            dm.sendString(dm.findWindow("地下城与勇士", "地下城与勇士"), "20")
+            dm.sendString(dm.findWindow("地下城与勇士", "地下城与勇士"), "0")
             s(500.r)
             dm.keyPress(ENTER)
             s(500.r)
@@ -504,22 +509,12 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      * @param end Int 指定结束的角色索引
      */
     private fun transferCoinMaterial(start: Int, end: Int) {
-        var nextPage = false
         for (i in start..end) {
-            when {
-                i <= 12 -> {
-                    dm.selectCharacter(i)
-                }
-                i < 24 -> {
-                    if (!nextPage) {
-                        nextPage = true
-                        dm.selectCharacter(i % 12, nextPage)
-                    } else {
-                        dm.selectCharacter(i % 12)
-                    }
-                }
+            val nextPage = i in arrayOf(8, 15, 22, 29)
+            dm.selectCharacter(i, needNextPage = nextPage)
+            while (!check(dm.findPic(265,472,276,483, "赛利亚房间", sim = 0.8, offset = 5, isLog = true))) {
+                s(200)
             }
-            s(2000.r)
             //打开仓库
             dm.moveTo(245, 386)
             s(300.r)

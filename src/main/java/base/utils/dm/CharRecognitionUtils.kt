@@ -112,7 +112,7 @@ interface CharRecognitionUtils {
      * 一般字库字符数量小于100左右，模糊度为1.0时，用FindStrEx要快一些，否则用FindStrFastEx
      */
     fun Dispatch.findStr(x1: Int, y1: Int, x2: Int, y2: Int, string: String, color_format: String,
-                         sim: Double, isFast: Boolean = false): String {
+                         sim: Double, isFast: Boolean = false, offset:Int = 5): String {
         return Dispatch.call(this, if (!isFast) "FindStrE" else "FindStrFastE",
                 x1, y1, x2, y2, string, color_format, sim).string
     }

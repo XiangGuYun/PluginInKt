@@ -236,15 +236,15 @@ interface PictureColorUtils {
      * @param offset Int 扩大矩形范围，便于查找
      * @return String 返回找到的图片序号(从0开始索引)以及X和Y坐标，形式如 "index|x|y" ，比如 "3|100|200"
      */
-    fun Dispatch.findPic(x1: Int, y1: Int, x2: Int, y2: Int, name: String, deltaColor: String = "101010", sim: Double = 0.9, dir: DIR = DIR.LR_TB, offset:Int=0): String {
-        val result = Dispatch.call(this, "FindPicE", x1-offset, y1-offset, x2+offset, y2+offset, "$name.bmp", deltaColor, sim,
+    fun Dispatch.findPic(x1: Int, y1: Int, x2: Int, y2: Int, name: String, deltaColor: String = "101010", sim: Double = 0.9, dir: DIR = DIR.LR_TB, offset: Int = 0, isLog: Boolean = false): String {
+        val result = Dispatch.call(this, "FindPicE", x1 - offset, y1 - offset, x2 + offset, y2 + offset, "$name.bmp", deltaColor, sim,
                 when (dir) {
                     DIR.LR_TB -> 0
                     DIR.LR_BT -> 1
                     DIR.RL_TB -> 2
                     else -> 3
                 }).string
-        println("==========FIND_PIC:图片\"${name}\"查找结果是$result")
+        if (isLog) println("==========FIND_PIC:图片\"${name}\"查找结果是$result")
         return result
     }
 
@@ -253,9 +253,9 @@ interface PictureColorUtils {
      * @param times Int 找图次数
      * @return List<String> 结果字符串集合
      */
-    fun Dispatch.findPicRepeatedly(times:Int, x1: Int, y1: Int, x2: Int, y2: Int, name: String, deltaColor: String = "101010", sim: Double = 0.9, dir: DIR = DIR.LR_TB, offset:Int=0): List<String> {
+    fun Dispatch.findPicRepeatedly(times: Int, x1: Int, y1: Int, x2: Int, y2: Int, name: String, deltaColor: String = "101010", sim: Double = 0.9, dir: DIR = DIR.LR_TB, offset: Int = 0, isLog:Boolean = true): List<String> {
         return (1..times).toList().map {
-            findPic(x1, y1, x2, y2, "$name.bmp", deltaColor, sim, dir, offset)
+            findPic(x1, y1, x2, y2, "$name", deltaColor, sim, dir, offset, isLog)
         }
     }
 
@@ -274,7 +274,7 @@ interface PictureColorUtils {
      * @param list List<String>
      * @return Pair<String, String>? x和y坐标
      */
-    fun getPosFromResult(list:List<String>): Pair<Int, Int>? {
+    fun getPosFromResult(list: List<String>): Pair<Int, Int>? {
         val pos = list.find { it != "-1|-1|-1" } ?: return null
         return pos.split("|")[1].toInt() to pos.split("|")[2].toInt()
     }

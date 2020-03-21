@@ -4,6 +4,7 @@ import base.constant.Key
 import base.utils.CommonUtils
 import base.utils.DmUtils
 import com.jacob.com.Dispatch
+import com.sun.jna.platform.win32.WinDef
 
 interface DnfUtils : DmUtils, CommonUtils {
 
@@ -23,7 +24,7 @@ interface DnfUtils : DmUtils, CommonUtils {
     /**
      * 绑定DNF窗口，需要传入窗口句柄
      */
-    fun Dispatch.bindDNF(wh:Int): Boolean {
+    fun Dispatch.bindDNF(wh: Int): Boolean {
         return Dispatch.call(this, "BindWindowEx", wh,
                 "dx.graphic.3d",
 //                "dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.focus.input.api|dx.mouse.focus.input.message|dx.mouse.clip.lock.api|dx.mouse.input.lock.api|dx.mouse.state.api|dx.mouse.state.message|dx.mouse.api|dx.mouse.cursor|dx.mouse.raw.input|dx.mouse.input.lock.api2|dx.mouse.input.lock.api3",
@@ -95,10 +96,10 @@ interface DnfUtils : DmUtils, CommonUtils {
     /**
      * 角色奔跑
      */
-    fun Dispatch.keepDownKeyRun(keepTime: Long, vararg keyCodes: Int) {
+    fun Dispatch.keepDownKeyRun(keepTime: Long, vararg keyCodes: Int, sTime:Long = 30) {
         keyCodes.forEach {
             keyPress(it)
-            s(30)
+            s(sTime.toInt())
             keyDown(it)
         }
         s(keepTime.toInt())
@@ -127,7 +128,7 @@ interface DnfUtils : DmUtils, CommonUtils {
         this.keyPress(Key.enter)
     }
 
-    fun Dispatch.autoPick(hwnd:Int) {
+    fun Dispatch.autoPick(hwnd: Int) {
         this.keyPress(Key.enter)
         s(100.r())
         this.sendString(hwnd, "//移动物品")
@@ -208,8 +209,8 @@ interface DnfUtils : DmUtils, CommonUtils {
     /**
      * 向右跑一段时间
      */
-    fun Dispatch.runRight(time: Int) {
-        this.keepDownKeyRun(time.toLong(), RIGHT)
+    fun Dispatch.runRight(time: Int, sTime: Long = 30) {
+        this.keepDownKeyRun(time.toLong(), RIGHT, sTime = sTime)
     }
 
     /**
@@ -244,7 +245,7 @@ interface DnfUtils : DmUtils, CommonUtils {
      * 向右下跑一段时间
      */
     fun Dispatch.runRightDown(time: Int) {
-        this.keepDownKeyRun(time.toLong(),RIGHT, DOWN)
+        this.keepDownKeyRun(time.toLong(), RIGHT, DOWN)
     }
 
     /**
@@ -252,29 +253,31 @@ interface DnfUtils : DmUtils, CommonUtils {
      */
     fun Dispatch.goToCharacterPage() {
         this.keyPress(Key.esc)
-        s(100.r())
-        this.moveTo(682 * 2 / 3, 679 * 2 / 3)
-        s(100.r())
+        s(100.r)
+        while (!checkFindResult(this.findPicRepeatedly(3,484,117,497,124,"系统菜单",offset = 5))){
+            this.keyPress(ESC)
+            s(1000)
+        }
+        this.moveTo(456, 443)
+        s(100.r)
         this.leftDoubleClick()
         s(500)
         //检查是否前往了角色选择界面
-        while (!check(findPic(685,54,706,70,"选择角色"))){
+        while (check(findPic(685, 54, 706, 70, "选择角色"))) {
             this.leftDoubleClick()
             s(500)
         }
     }
 
-    fun Dispatch.preCharacterPage(){
-//        this.moveTo(782, 91)
-//        s(100.r())
-//        this.leftClick()
+    fun Dispatch.preCharacterPage() {
+        this.moveTo(950, 342)
+        s(100.r())
+        this.leftClick()
     }
 
-    fun Dispatch.nextCharacterPage(){
-        this.moveTo(782, 495)
-        s(500.r())
-        this.leftClick()
-        s(500.r())
+    fun Dispatch.nextCharacterPage() {
+        this.moveTo(951, 537)
+        s(300.r())
         this.leftClick()
     }
 
@@ -284,31 +287,37 @@ interface DnfUtils : DmUtils, CommonUtils {
     fun Dispatch.backToTown() {
         this.keyPress(Key.esc)
         s(1000.r())
-        this.moveTo(580,440)
+        this.moveTo(580, 440)
         s(1000.r())
-        for (i in 1..3){
+        for (i in 1..3) {
             this.leftDoubleClick()
             s(50.r)
         }
     }
 
     /**
-     * 选择角色，目前仅限于1~12号
+     * 选择角色
      */
-    fun Dispatch.selectCharacter(pos: Int, needNextPage:Boolean = false) {
+    fun Dispatch.selectCharacter(pos: Int, needNextPage: Boolean = false, needPrePage: Boolean = false) {
+        "当前选择的角色位置是$pos".pln()
         if (pos < 1) return
-        if(needNextPage){
+        if (needNextPage) {
+            "选择下一页".pln()
             nextCharacterPage()
-            s(1000.r)
+            s(500.r)
         }
-        this.moveTo(140 * 2 / 3 + 180 * 2 / 3 * ((pos - 1) % 6), 300 * 2 / 3 + ((pos - 1) / 6) * 300 * 2 / 3)
-        s(100.r())
-        for (i in 1..3){
+        if (needPrePage) {
+            preCharacterPage()
+            s(500.r)
+        }
+        this.moveTo(60 + (pos%8 - if(pos in 8..14) 0 else 1) * 140, 422)
+        s(100.r)
+        for (i in 1..2) {
             this.leftDoubleClick()
             s(100.r)
         }
         s(100.r())
-        this.moveTo(700 * 2 / 3, 800 * 2 / 3)
+        this.moveTo(482, 566)
         s(100.r())
         this.leftDoubleClick()
     }
@@ -316,7 +325,7 @@ interface DnfUtils : DmUtils, CommonUtils {
     /**
      * 选择下一个角色
      */
-    fun Dispatch.selectNextCharacter(){
+    fun Dispatch.selectNextCharacter() {
         this.keyPressDelay(RIGHT, 100)
         s(1000.r())
         this.moveTo(700 * 2 / 3, 800 * 2 / 3)
@@ -327,22 +336,22 @@ interface DnfUtils : DmUtils, CommonUtils {
     /**
      * 检查是否卡屏，可判断左上角和右上角
      */
-    fun Dispatch.checkIsDeadDisplay(isGoLeftTop:Boolean, sec:Int, size:Int=30): Boolean {
-        return if(isGoLeftTop)
-            this.isDisplayDead(960-size, 0, 960,size, sec)
+    fun Dispatch.checkIsDeadDisplay(isGoLeftTop: Boolean, sec: Int, size: Int = 30): Boolean {
+        return if (isGoLeftTop)
+            this.isDisplayDead(960 - size, 0, 960, size, sec)
         else
-            this.isDisplayDead(0, 0, size,size, sec)
+            this.isDisplayDead(0, 0, size, size, sec)
     }
 
     /**
      * 检查是否卡屏
      */
-    fun Dispatch.checkIsDeadDisplay(dir:Int, sec:Int, size:Int=30): Boolean {
-        return when(dir) {
-             1 -> this.isDisplayDead(0, 0, size,size, sec)
-             2 -> this.isDisplayDead(960-size, 0, 960,size, sec)
-             3 -> this.isDisplayDead(0, 0, size,size, sec)
-             else -> this.isDisplayDead(0, 0, size,size, sec)
+    fun Dispatch.checkIsDeadDisplay(dir: Int, sec: Int, size: Int = 30): Boolean {
+        return when (dir) {
+            1 -> this.isDisplayDead(0, 0, size, size, sec)
+            2 -> this.isDisplayDead(960 - size, 0, 960, size, sec)
+            3 -> this.isDisplayDead(0, 0, size, size, sec)
+            else -> this.isDisplayDead(0, 0, size, size, sec)
         }
     }
 
