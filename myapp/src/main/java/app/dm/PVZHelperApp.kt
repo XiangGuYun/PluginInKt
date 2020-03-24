@@ -51,11 +51,11 @@ open class PVZHelperApp : BaseApp(), DmUtils, Win32Utils {
                 tf("tfSunshine").text.isEmpty() -> alert("请输入阳光值")
                 else -> {
                     //根据基址获取一级偏移地址
-                    val first = (dm.readInt(wh, "00755E0C", 0) + "868".toInt(16)).toString(16)
+                    val first = (dm.readInt(wh, "00755E0C") + "868".toInt(16)).toString(16)
                     //根据一级偏移地址获取二级偏移地址
-                    val second = (dm.readInt(wh, first, 0) + "5578".toInt(16)).toString(16)
+                    val second = (dm.readInt(wh, first) + "5578".toInt(16)).toString(16)
                     //修改阳光数量
-                    dm.writeInt(wh, second, MemoryUtils.Type.BIT32, tf("tfSunshine").text.toInt())
+                    dm.writeNumber(wh, second, tf("tfSunshine").text.toInt())
                 }
             }
         }
