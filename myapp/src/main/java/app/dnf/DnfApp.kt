@@ -13,7 +13,7 @@ import sample.base.BaseApp
 class DnfApp : BaseApp(), DnfUtils,Win32Utils {
 
     private var mainThread: Thread? = null
-    private lateinit var dm: com.jacob.com.Dispatch
+    private lateinit var dm: Dispatch
 
     companion object {
         @JvmStatic

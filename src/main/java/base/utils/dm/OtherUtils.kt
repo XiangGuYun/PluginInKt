@@ -78,5 +78,4 @@ interface OtherUtils {
         return Dispatch.call(this, "SetExitThread", if(enable)1 else 0).int == 1
     }
 
-
 }

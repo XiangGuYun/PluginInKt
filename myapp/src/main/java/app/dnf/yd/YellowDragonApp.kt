@@ -43,8 +43,6 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
     //大漠组件，这里需要添加volatile以避免指令重排序
     @Volatile
     private lateinit var dm: Dispatch
-    //是否需要关闭黄龙的任务对话框（针对部分角色）
-    private var needCloseTaskDialog = true
 
     companion object {
         //当此标志为true时，暂停技能循环释放
@@ -352,8 +350,8 @@ class YellowDragonApp : BaseApp(), DnfUtils, SkillPresenter {
      */
     private fun doJumpVsTable(lock: ReentrantLock, cond: Condition) {
         lock.lock()
-//        dm.selectCharacter(currentCharacter.get())
-//        goToYellowDragon()
+        dm.selectCharacter(currentCharacter.get())
+        goToYellowDragon()
         dm keyPress SPACE //进入黄龙副本
         while (isBind.get()) {
             if (currentStep == 1) {

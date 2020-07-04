@@ -131,8 +131,7 @@ abstract class BaseApp:Application(), CommonUtils{
 
     fun scene(name:String,width: Number,height: Number): Scene {
         contentView = FXMLLoader.load<Parent>(javaClass.classLoader.getResource("$name.fxml"))
-        return Scene(contentView,
-                width.toDouble(),height.toDouble())
+        return Scene(contentView, width.toDouble(),height.toDouble())
     }
 
     fun region(name:String): Region {

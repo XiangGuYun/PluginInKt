@@ -1,6 +1,9 @@
 package base.utils.dm
 
 import com.jacob.com.Dispatch
+import com.jacob.com.Variant
+import com.sun.org.apache.xpath.internal.operations.Bool
+
 
 /**
  * 大漠窗口模块
@@ -46,7 +49,7 @@ interface WindowUtils {
      * @param filter Int 取值定义同enumWindow
      * @return String 返回所有匹配的窗口句柄字符串,格式"hwnd1,hwnd2,hwnd3"
      */
-    fun Dispatch.enumWindowProcess(process_name: String , title: String?, class_name: String?, filter: Int = 1): String {
+    fun Dispatch.enumWindowProcess(process_name: String, title: String?, class_name: String?, filter: Int = 1): String {
         return Dispatch.call(this, "EnumWindowProcess", process_name, title, class_name, filter).string
     }
 
@@ -99,7 +102,7 @@ interface WindowUtils {
      * @return String 返回所有匹配的窗口句柄字符串,格式"hwnd1,hwnd2,hwnd3"
      * 示例:hwnds = dm.EnumWindowSuper("记事本",0,1,"notepad",1,0,0)
      */
-    fun Dispatch.enumWindowSuper(spec1: String , flag1: Int, type1: Int, spec2: String , flag2: Int, type2: Int, sort: Int): String {
+    fun Dispatch.enumWindowSuper(spec1: String, flag1: Int, type1: Int, spec2: String, flag2: Int, type2: Int, sort: Int): String {
         return Dispatch.call(this, "EnumWindowSuper", spec1, flag1, type1, spec2, flag2, type2, sort).string
     }
 
@@ -119,7 +122,7 @@ interface WindowUtils {
      * @param windowClass String 窗口类名，如果为空，则匹配所有. 这里的匹配是模糊匹配.
      * @param windowTitle String 窗口标题,如果为空，则匹配所有.这里的匹配是模糊匹配.
      */
-    fun Dispatch.findWindowByProcess(process_name:String , windowClass: String?, windowTitle: String?): Int {
+    fun Dispatch.findWindowByProcess(process_name: String, windowClass: String?, windowTitle: String?): Int {
         return Dispatch.call(this, "FindWindowByProcess", process_name, windowClass, windowTitle).int
     }
 
@@ -129,7 +132,7 @@ interface WindowUtils {
      * @param windowClass String 窗口类名，如果为空，则匹配所有. 这里的匹配是模糊匹配.
      * @param windowTitle String 窗口标题,如果为空，则匹配所有.这里的匹配是模糊匹配.
      */
-    fun Dispatch.findWindowByProcessId(process_id:String , windowClass: String?, windowTitle: String?): Int {
+    fun Dispatch.findWindowByProcessId(process_id: String, windowClass: String?, windowTitle: String?): Int {
         return Dispatch.call(this, "FindWindowByProcessId", process_id, windowClass, windowTitle).int
     }
 
@@ -147,7 +150,7 @@ interface WindowUtils {
      * 函数简介: 根据两组设定条件来查找指定窗口.
      * 参数和返回值同enumWindowSuper
      */
-    fun Dispatch.findWindowSuper(spec1: String , flag1: Int, type1: Int, spec2: String , flag2: Int, type2: Int, sort: Int): String {
+    fun Dispatch.findWindowSuper(spec1: String, flag1: Int, type1: Int, spec2: String, flag2: Int, type2: Int, sort: Int): String {
         return Dispatch.call(this, "FindWindowSuper", spec1, flag1, type1, spec2, flag2, type2, sort).string
     }
 
@@ -173,11 +176,67 @@ interface WindowUtils {
     }
 
     /**
+     * 函数简介: 获取鼠标指针当前位置
+     * @return Triple<Boolean, Int, Int> 获取是否成功，x坐标，y坐标
+     */
+    fun Dispatch.getCursorPos(): Triple<Boolean, Int, Int> {
+        val x = 0
+        val y = 0
+        val variable = arrayOfNulls<Variant>(2)
+        variable[0] = Variant(x, true)
+        variable[1] = Variant(y, true)
+        val result = Dispatch.call(this, "GetCursorPos", variable[0], variable[1]).int
+        return Triple(result == 1, variable[0]!!.int, variable[1]!!.int)
+    }
+
+    data class RectResult(val success: Boolean, val x1: Int, val y1: Int, val x2: Int, val y2: Int)
+
+    data class SizeResult(val success: Boolean, val width: Int, val height: Int)
+
+    /**
+     * 函数简介: 获取窗口矩形数据
+     * @param hwnd Int
+     * @return RectResult
+     */
+    fun Dispatch.getWindowRect(hwnd: Int): RectResult {
+        val x1 = 0
+        val y1 = 0
+        val x2 = 0
+        val y2 = 0
+        val variable = arrayOfNulls<Variant>(4)
+        variable[0] = Variant(x1, true)
+        variable[1] = Variant(y1, true)
+        variable[2] = Variant(x2, true)
+        variable[3] = Variant(y2, true)
+        val result = Dispatch.call(this, "GetWindowRect", hwnd, variable[0], variable[1], variable[2], variable[3]).int
+        return RectResult(result == 1, variable[0]!!.int, variable[1]!!.int, variable[2]!!.int, variable[3]!!.int)
+    }
+
+    /**
+     * 函数简介: 获取窗口宽高
+     * @param hwnd Int
+     * @return SizeResult
+     */
+    fun Dispatch.getWindowSize(hwnd: Int): SizeResult {
+        val x1 = 0
+        val y1 = 0
+        val x2 = 0
+        val y2 = 0
+        val variable = arrayOfNulls<Variant>(4)
+        variable[0] = Variant(x1, true)
+        variable[1] = Variant(y1, true)
+        variable[2] = Variant(x2, true)
+        variable[3] = Variant(y2, true)
+        val result = Dispatch.call(this, "GetWindowRect", hwnd, variable[0], variable[1], variable[2], variable[3]).int
+        return SizeResult(result == 1, variable[2]!!.int - variable[0]!!.int, variable[3]!!.int - variable[1]!!.int)
+    }
+
+    /**
      * 函数简介: 获取给定坐标的可见窗口句柄,可以获取到按键自带的插件无法获取到的句柄
      * @param x Int 屏幕X坐标
      * @param y Int 屏幕Y坐标
      */
-    fun Dispatch.getPointWindow(x:Int, y:Int): Int {
+    fun Dispatch.getPointWindow(x: Int, y: Int): Int {
         return Dispatch.call(this, "GetPointWindow", x, y).int
     }
 
@@ -188,7 +247,7 @@ interface WindowUtils {
      * 注: 有些时候有保护的时候，此函数返回内容会错误，那么此时可以尝试用memory保护盾来试试看.
      * 另外此接口调用会延迟1秒.
      */
-    fun Dispatch.getProcessInfo(pid:Int): Int {
+    fun Dispatch.getProcessInfo(pid: Int): Int {
         return Dispatch.call(this, "GetProcessInfo", pid).int
     }
 
@@ -199,7 +258,7 @@ interface WindowUtils {
      * 1 : 获取任务栏窗口
      * @return Int以整型数表示的窗口句柄
      */
-    fun Dispatch.getSpecialWindow(flag:Int): Int {
+    fun Dispatch.getSpecialWindow(flag: Int): Int {
         return Dispatch.call(this, "GetSpecialWindow", flag).int
     }
 
@@ -217,7 +276,7 @@ interface WindowUtils {
      * 7 : 获取顶层窗口
      * @return Int返回整型表示的窗口句柄
      */
-    fun Dispatch.getWindow(hwnd:Int, flag:Int): Int {
+    fun Dispatch.getWindow(hwnd: Int, flag: Int): Int {
         return Dispatch.call(this, "GetWindow", hwnd, flag).int
     }
 
@@ -226,7 +285,7 @@ interface WindowUtils {
      * @param hwnd Int 指定的窗口句柄
      */
     fun Dispatch.getWindowClass(hwnd: Int): String {
-        return Dispatch.call(this, "GetWindowClass", hwnd).toString ()
+        return Dispatch.call(this, "GetWindowClass", hwnd).toString()
     }
 
     /**
@@ -260,7 +319,7 @@ interface WindowUtils {
      * 8 : 另外的方式判断窗口是否无响应,如果6无效可以尝试这个
      * 9 : 判断窗口所在进程是不是64位
      */
-    fun Dispatch.getWindowState(hwnd: Int, flag:Int): Boolean {
+    fun Dispatch.getWindowState(hwnd: Int, flag: Int): Boolean {
         return Dispatch.call(this, "GetWindowState", hwnd, flag).int == 1
     }
 
@@ -269,7 +328,7 @@ interface WindowUtils {
      * @param hwnd Int 指定的窗口句柄
      */
     fun Dispatch.getWindowTitle(hwnd: Int): String {
-        return Dispatch.call(this, "GetWindowTitle", hwnd).toString ()
+        return Dispatch.call(this, "GetWindowTitle", hwnd).toString()
     }
 
     /**
@@ -278,7 +337,7 @@ interface WindowUtils {
      * @param x Int X坐标
      * @param y Int Y坐标
      */
-    fun Dispatch.moveWindow(hwnd: Int, x:Int, y:Int): Boolean {
+    fun Dispatch.moveWindow(hwnd: Int, x: Int, y: Int): Boolean {
         return Dispatch.call(this, "MoveWindow", hwnd, x, y).int == 1
     }
 
@@ -344,7 +403,7 @@ interface WindowUtils {
      * BindWindow hwnd,"normal","normal","normal","dx.public.active.api|dx.public.active.message",0
      * dm.SendStringIme2 hwnd,"哈哈",0
      */
-    fun Dispatch.sendStringIme2(hwnd:Int, str: String , mode:Int): Boolean {
+    fun Dispatch.sendStringIme2(hwnd: Int, str: String, mode: Int): Boolean {
         return Dispatch.call(this, "SendStringIme2", hwnd, str).int == 1
     }
 
